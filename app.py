@@ -20,3 +20,17 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 # fim do debug
+
+def register():
+    if request.method == "POST":
+        # Validar dados do formulário
+        username = request.form.get("username")
+        password = request.form.get("password")
+        email = request.form.get("email")
+
+        if not (username and password and email):
+            return render_template("cadastro.html", message="All fields are required.")
+        
+        return redirect("/login")
+
+    return render_template("cadastro.html")
