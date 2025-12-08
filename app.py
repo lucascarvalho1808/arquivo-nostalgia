@@ -1,7 +1,10 @@
+from dotenv import load_dotenv
 from flask import Flask, flash, render_template, request, redirect, url_for
 import os
 from supabase import create_client, Client
 from forms import CadastroForm, LoginForm 
+
+load_dotenv()
 
 app = Flask(__name__)
 url: str = os.environ.get("SUPABASE_URL")
@@ -36,7 +39,12 @@ def register():
             else:
                 flash(f'Erro no registro: {error_message}', 'danger')
     # Passe o formulário para o template para ser renderizado
-    return render_template('cadastro.html', form=form)
+    return render_template('auth/cadastro.html', form=form)
+
+# Rota de login (provisoria)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    return "Página de login (em construção)"
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
