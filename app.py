@@ -103,6 +103,11 @@ def login():
                 
     return render_template('auth/login.html', form=form)
 
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/")
+
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
     app.run(debug=True)
