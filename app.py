@@ -68,18 +68,40 @@ def register():
     # Passe o formulário para o template para ser renderizado
     return render_template('auth/cadastro.html', form=form)
 
-# Rota de login (provisoria)
+# Rota de login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-        if request.method == "POST":
-            user_login = request.form.get("email")
-            password = request.form.get("password")
-
-            if user_login and password:
-                session["user_id"] = user.id
-                return redirect("/")
+    form = LoginForm()
+    if form.validate_on_submit():
+        try:
+            # 1. Tenta autenticar no Supabase
+            res = supabase.auth.sign_in_with_password({
+                "email": form.email.data,
+                "password": form.senha.data
+            })
+            
+            # 2. Se chegou aqui, o login no Supabase funcionou.
+            user_data = res.user
+            username = user_data.user_metadata.get('username', 'Usuário')
+            user = User(id=user_data.id, email=user_data.email, username=username)
+            
+            # 3. Loga o usuário na sessão do Flask
+            login_user(user)
+            
+            flash('Login realizado com sucesso!', 'success')
+            
+            # Redireciona para a página que o usuário tentou acessar ou para a home
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('index'))
+            
+        except Exception as e:
+            error_message = str(e)
+            if 'Invalid login credentials' in error_message:
+                flash('E-mail ou senha inválidos.', 'danger')
             else:
-                return render_template("login.html", message="Invalid username or password.")
+                flash(f'Erro ao fazer login: {error_message}', 'danger')
+                
+    return render_template('auth/login.html', form=form)
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
