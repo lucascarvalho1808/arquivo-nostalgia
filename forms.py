@@ -13,3 +13,12 @@ class LoginForm(FlaskForm):
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class EsqueceuSenhaForm(FlaskForm):
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    submit = SubmitField('Enviar Link de Recuperação')
+
+class RedefinirSenhaForm(FlaskForm):
+    senha = PasswordField('Nova Senha', validators=[DataRequired(), Length(min=8, max=20)])
+    confirmar_senha = PasswordField('Confirmar Nova Senha', validators=[DataRequired(), EqualTo('senha')])
+    submit = SubmitField('Alterar Senha')
