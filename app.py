@@ -71,7 +71,15 @@ def register():
 # Rota de login (provisoria)
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    return "Página de login (em construção)"
+        if request.method == "POST":
+            user_login = request.form.get("email")
+            password = request.form.get("password")
+
+            if user_login and password:
+                session["user_id"] = user.id
+                return redirect("/")
+            else:
+                return render_template("login.html", message="Invalid username or password.")
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
