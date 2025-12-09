@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="../../static/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="cartao-formulario">
+        <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logotipo" class="logo-form">
+        <h2 class="titulo-nostalgia">Recuperar Senha</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mensagens-flash">
+                    {% for category, message in messages %}
+                        <div class="alerta alerta-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="grupo-campo">
+                <label class="label-visual"><i class="fa-regular fa-envelope"></i> {{ form.email.label.text }}</label>
+                {{ form.email(class="caixa-branca", placeholder="Digite seu e-mail cadastrado") }}
+                {% for error in form.email.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            {{ form.submit(class="botao-entrar") }}
+        </form>
+        
+        <div class="links-login">
+            <a href="{{ url_for('login') }}">Voltar para o Login</a>
+        </div>
+    </div>
+</body>
+</html>
