@@ -93,6 +93,7 @@ input.caixa-branca {
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
+    transition: background 1.3s;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -102,6 +103,29 @@ input.caixa-branca {
     background: #042946;
     color: white;
 
+}
+
+/* --- Botão de cadastro --- */
+.botao-entrar {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    background: #0c3757;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background 1.3s;
+}
+
+/* --- Botão de cadastro com o mouse em cima--- */
+.botao-entrar:hover {
+    filter: brightness(1.1);
+    background: #042946;
+    color: white;
 }
 
 /* --- Link "Entrar aqui" --- */
@@ -115,6 +139,21 @@ input.caixa-branca {
 .link-entrar a {
     color: white;
     text-decoration: underline;
+}
+
+/* Faz com que os dois links fiquem separados (esquerda e direita) */
+.links-login {
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 20px;
+    font-size: 12px; 
+}
+
+/* Estiliza os links da página de login */
+.links-login a {
+    color: white;
+    text-decoration: underline;
+    font-weight: bold;
 }
 
 
@@ -136,6 +175,12 @@ input.caixa-branca {
     }
 
     .botao-cadastrar {
+        /* Fonte do botão um pouco menor */
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    .botao-entrar {
         /* Fonte do botão um pouco menor */
         font-size: 18px;
         padding: 12px;
