@@ -3,7 +3,7 @@ from flask import Flask, flash, render_template, request, redirect, url_for
 import os
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from supabase import create_client, Client
-from forms import CadastroForm, LoginForm 
+from forms import CadastroForm, LoginForm, EsqueceuSenhaForm, RedefinirSenhaForm # Atualize a importação
 from models import User
 
 load_dotenv()
@@ -114,6 +114,39 @@ def logout():
     
     flash('Você saiu com sucesso.', 'info')
     return redirect(url_for('login')) 
+
+@app.route('/esqueceu-senha', methods=['GET', 'POST'])
+def forgot_password():
+    form = EsqueceuSenhaForm()
+    if form.validate_on_submit():
+        try:
+            # Supabase envia um e-mail com um link para redefinir a senha
+            supabase.auth.reset_password_email(form.email.data, options={
+                "redirect_to": url_for('reset_password', _external=True) 
+            })
+            flash('Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.', 'info')
+            return redirect(url_for('login'))
+        except Exception as e:
+            flash(f'Erro ao enviar e-mail: {str(e)}', 'danger')
+            
+    return render_template('auth/esqueceu_senha.html', form=form)
+
+@app.route('/redefinir-senha', methods=['GET', 'POST'])
+def reset_password():
+    # Esta rota é acessada quando o usuário clicar no link do e-mail.    
+    form = RedefinirSenhaForm()
+    if form.validate_on_submit():
+        try:
+            # Atualiza a senha do usuário logado
+            supabase.auth.update_user({
+                "password": form.senha.data
+            })
+            flash('Sua senha foi alterada com sucesso! Faça login novamente.', 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            flash(f'Erro ao atualizar senha: {str(e)}', 'danger')
+            
+    return render_template('auth/redefinir_senha.html', form=form)
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
