@@ -16,28 +16,59 @@
         <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logotipo do Site" class="logo-form">
         <h2 class="titulo-nostalgia">Arquivo Nostalgia</h2>
 
+        <!-- Bloco para exibir mensagens de erro -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="mensagens-flash">
+                    {% for category, message in messages %}
+                        <div class="alerta alerta-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         <form action="" method="POST">
+            <!-- Token de segurança obrigatório -->
+            {{ form.hidden_tag() }}
 
             <div class="grupo-campo">
                 <label class="label-visual" for="email">
-                    <i class="fa-regular fa-envelope"></i> E-mail :
+                    <i class="fa-regular fa-envelope"></i> {{ form.email.label.text }} :
                 </label>
-                <input type="email" id="email" name="email" class="caixa-branca">
+                
+                <!-- Renderiza o campo de email com a classe CSS -->
+                {{ form.email(class="caixa-branca", id="email", placeholder="Digite seu e-mail") }}
+                
+                <!-- Exibe erros de validação do email -->
+                {% for error in form.email.errors %}
+                    <span style="color: red; font-size: 0.9em;">{{ error }}</span>
+                {% endfor %}
             </div>
 
             <div class="grupo-campo">
                 <label class="label-visual" for="senha">
-                    <i class="fa-solid fa-key"></i> Senha :
+                    <i class="fa-solid fa-key"></i> {{ form.senha.label.text }} :
                 </label>
-                <input type="password" id="senha" name="senha" class="caixa-branca">
+                
+                <!-- Renderiza o campo de senha -->
+                {{ form.senha(class="caixa-branca", id="senha", placeholder="Digite sua senha") }}
+                
+                <!-- Exibe erros de validação da senha -->
+                {% for error in form.senha.errors %}
+                    <span style="color: red; font-size: 0.9em;">{{ error }}</span>
+                {% endfor %}
             </div>
 
-            <button type="submit" class="botao-entrar">Entrar</button>
+            <!-- Botão de submit do formulário -->
+            {{ form.submit(class="botao-entrar") }}
 
         </form>
 
         <div class="links-login">
-            <a href="cadastro.html">Não tem conta? Cadastre aqui.</a>
+            <!-- Link dinâmico para a rota de cadastro -->
+            <a href="{{ url_for('register') }}">Não tem conta? Cadastre aqui.</a>
             <a href="#">Esqueceu sua senha?</a>
         </div>
 

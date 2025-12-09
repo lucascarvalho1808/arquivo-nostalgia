@@ -104,9 +104,16 @@ def login():
     return render_template('auth/login.html', form=form)
 
 @app.route("/logout")
+@login_required # Garante que apenas quem está logado pode acessar essa rota
 def logout():
+    # 1. Desloga do Supabase (invalida o token)
+    supabase.auth.sign_out()
+    
+    # 2. Limpa a sessão do Flask
     logout_user()
-    return redirect("/")
+    
+    flash('Você saiu com sucesso.', 'info')
+    return redirect(url_for('login')) 
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
