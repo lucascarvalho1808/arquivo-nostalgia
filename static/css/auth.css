@@ -1,0 +1,192 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* --- Fundo da página --- */
+body {
+    background-color: #417eaa;
+    font-family: sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* --- Caixa do formulário --- */
+.cartao-formulario {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    background: #22658f;
+    border-radius: 20px;
+    padding: 40px 30px;
+    color: white;
+}
+
+/* --- Logo --- */
+.logo-form {
+    display: block;
+    margin: 0 auto 10px auto;
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+}
+
+/* --- Título "Arquivo Nostalgia" --- */
+.titulo-nostalgia {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Margem para cima dos campos para preencher --- */
+.grupo-campo {
+    margin-bottom: 20px;
+}
+
+/* --- Ajusta os labels --- */
+.label-visual {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* --- Ajusta os ícones --- */
+i {
+    font-size: 26px;
+    margin-right: 10px;
+    color: #0c3757;
+}
+
+/* --- Estilo caixas de input --- */
+input.caixa-branca {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    color: #000000;
+    box-sizing: border-box;
+}
+
+/* --- Botão de cadastro --- */
+.botao-cadastrar {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    background: #0c3757;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 1.3s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Botão de cadastro com o mouse em cima--- */
+.botao-cadastrar:hover {
+    filter: brightness(1.1);
+    background: #042946;
+    color: white;
+
+}
+
+/* --- Botão de cadastro --- */
+.botao-entrar {
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border: none;
+    background: #0c3757;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background 1.3s;
+}
+
+/* --- Botão de cadastro com o mouse em cima--- */
+.botao-entrar:hover {
+    filter: brightness(1.1);
+    background: #042946;
+    color: white;
+}
+
+/* --- Link "Entrar aqui" --- */
+.link-entrar {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+/* --- Link "Entrar aqui" com  --- */
+.link-entrar a {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Faz com que os dois links fiquem separados (esquerda e direita) */
+.links-login {
+    display: flex;
+    justify-content: space-between; 
+    margin-top: 20px;
+    font-size: 12px; 
+}
+
+/* Estiliza os links da página de login */
+.links-login a {
+    color: white;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+
+@media (max-width: 300px) {
+    .cartao-formulario {
+        /* Diminui o padding lateral para sobrar espaço para o conteúdo */
+        padding: 30px 15px;
+    }
+
+    .titulo-nostalgia {
+        /* Diminui a fonte do título */
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .logo-form {
+        /* Diminui um pouco a logo para não ocupar a tela toda */
+        max-width: 120px;
+    }
+
+    .botao-cadastrar {
+        /* Fonte do botão um pouco menor */
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    .botao-entrar {
+        /* Fonte do botão um pouco menor */
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    .label-visual {
+        font-size: 16px;
+    }
+}

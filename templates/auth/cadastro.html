@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Cadastro</title>
+    <link rel="stylesheet" href="../../static/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../../static/img/logo_arquivo_nostalgia.png" type="image/x-icon">
+</head>
+
+<body>
+
+    <div class="cartao-formulario">
+
+        <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logótipo do Site" class="logo-form">
+        <h2 class="titulo-nostalgia">Arquivo Nostalgia</h2>
+
+        <form action="" method="POST">
+            {{ form.hidden_tag() }} <!-- Proteção CSRF -->
+
+            <div class="grupo-campo">
+                {{ form.nome.label(class="label-visual") }} <!-- Usa o label do formulário -->
+                {{ form.nome(class="caixa-branca", id="usuario") }} <!-- Renderiza o campo de nome -->
+                {% for error in form.nome.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="grupo-campo">
+                {{ form.email.label(class="label-visual") }}
+                {{ form.email(class="caixa-branca", id="email") }}
+                {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="grupo-campo">
+                {{ form.senha.label(class="label-visual") }}
+                {{ form.senha(class="caixa-branca", id="senha") }}
+                {% for error in form.senha.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <div class="grupo-campo">
+                {{ form.confirmar_senha.label(class="label-visual") }}
+                {{ form.confirmar_senha(class="caixa-branca", id="conf_senha") }}
+                {% for error in form.confirmar_senha.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            {{ form.submit(class="botao-cadastrar") }} <!-- Renderiza o botão de submit -->
+
+        </form>
+
+        <div class="link-entrar">
+            Já tem conta? <a href="{{ url_for('login') }}">Entre aqui.</a>
+        </div>
+
+    </div>
+</body>
+
+</html>
