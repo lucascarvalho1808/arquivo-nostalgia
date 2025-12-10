@@ -17,6 +17,8 @@ app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+login_manager.login_message = "Faça login para continuar." 
+login_manager.login_message_category = "info" 
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -147,6 +149,24 @@ def reset_password():
             flash(f'Erro ao atualizar senha: {str(e)}', 'danger')
             
     return render_template('auth/redefinir_senha.html', form=form)
+
+#Rotas Protegidas (provisórias)
+
+@app.route('/perfil')
+@login_required
+def perfil():
+    # Exibe o nome do usuário logado para provar que o login funcionou
+    return f"<h1>Página de Perfil</h1><p>Bem-vindo, {current_user.username}!</p>"
+
+@app.route('/criar-arquivo-nostalgia')
+@login_required
+def criar_arquivo():
+    return "<h1>Criar Arquivo Nostalgia</h1><p>Aqui ficará o formulário de criação.</p>"
+
+@app.route('/meus-arquivos')
+@login_required
+def meus_arquivos():
+    return "<h1>Meus Arquivos</h1><p>Lista dos arquivos que você criou.</p>"
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
