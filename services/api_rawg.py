@@ -70,6 +70,42 @@ def pesquisar_jogos(query, pagina=1):
         print(f"Erro ao pesquisar jogo '{query}': {e}")
         return []
 
+def buscar_detalhes_jogo(jogo_id):
+    """
+    Busca os detalhes completos de um jogo específico pelo ID.
+    """
+    endpoint = f"{BASE_URL}/games/{jogo_id}"
+    params = {
+        'key': RAWG_API_KEY
+    }
+
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        jogo = response.json()
+
+        # Remove tags HTML da descrição (a RAWG retorna <p>texto</p>)
+        import re
+        descricao_limpa = re.sub('<[^<]+?>', '', jogo.get('description', ''))
+
+        return {
+            'id': jogo['id'],
+            'titulo': jogo['name'],
+            'sinopse': descricao_limpa or "Descrição indisponível.",
+            'data_lancamento': jogo.get('released'),
+            'poster_url': jogo.get('background_image'),
+            'nota': jogo.get('rating'),
+            'generos': [g['name'] for g in jogo.get('genres', [])],
+            'plataformas': [p['platform']['name'] for p in jogo.get('platforms', [])],
+            'desenvolvedores': [d['name'] for d in jogo.get('developers', [])],
+            'website': jogo.get('website'),
+            'tipo': 'game'
+        }
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar detalhes do jogo {jogo_id}: {e}")
+        return None
+
 # Teste 
 if __name__ == "__main__":
     print("--- Testando Jogos Populares ---")
