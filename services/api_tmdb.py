@@ -101,7 +101,7 @@ def pesquisar_midia(query, pagina=1):
         'language': 'pt-BR', 
         'page': pagina,
         'query': query,
-        'include_adult': 'flase' 
+        'include_adult': 'false'
     }
     
     try:
@@ -111,6 +111,39 @@ def pesquisar_midia(query, pagina=1):
     except requests.exceptions.RequestException as e:
         print(f"Erro ao pesquisar mídia '{query}': {e}")
         return []
+
+def buscar_detalhes_filme(filme_id):
+    """
+    Busca os detalhes completos de um filme específico pelo ID.
+    """
+    endpoint = f"{BASE_URL}/movie/{filme_id}"
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'pt-BR'
+    }
+
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        filme = response.json()
+
+        # Formata os dados para um dicionário simples
+        return {
+            'id': filme['id'],
+            'titulo': filme['title'],
+            'sinopse': filme.get('overview', 'Sinopse indisponível.'),
+            'data_lancamento': filme.get('release_date'),
+            'poster_url': f"{IMAGE_BASE_URL}{filme['poster_path']}" if filme.get('poster_path') else None,
+            'backdrop_url': f"{IMAGE_BASE_URL}{filme['backdrop_path']}" if filme.get('backdrop_path') else None,
+            'nota': filme.get('vote_average'),
+            'generos': [g['name'] for g in filme.get('genres', [])], # Lista de nomes dos gêneros
+            'duracao': filme.get('runtime'), # Duração em minutos
+            'tipo': 'movie'
+        }
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar detalhes do filme {filme_id}: {e}")
+        return None
 
 # Teste rápido das funções
 if __name__ == "__main__":
