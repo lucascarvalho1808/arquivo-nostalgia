@@ -10,3 +10,5 @@ from .api_rawg import (
     pesquisar_jogos, 
     buscar_detalhes_jogo
 )
+
+from .ia_gemini import gerar_arquivo_confidencial
