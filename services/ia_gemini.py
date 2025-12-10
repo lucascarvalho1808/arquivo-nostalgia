@@ -21,8 +21,8 @@ def gerar_arquivo_confidencial(titulo, tipo_midia):
         return "Curiosidade confidencial indisponível no momento."
 
     try:
-        
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
+
         prompt = f"""
         Aja como um especialista em curiosidades de cinema, séries e games.
         Escreva UMA única curiosidade surpreendente de bastidores sobre o {tipo_midia}: "{titulo}".
@@ -39,7 +39,7 @@ def gerar_arquivo_confidencial(titulo, tipo_midia):
 
         response = model.generate_content(prompt)
         
-        # Retorna o texto gerado limpo
+        # Retorna o texto gerado 
         return response.text.strip()
 
     except Exception as e:
@@ -48,7 +48,7 @@ def gerar_arquivo_confidencial(titulo, tipo_midia):
 
 # Teste rápido
 if __name__ == "__main__":
-    print("--- Testando Curiosidade do Dia ---")
+    print("Testando Curiosidade do Dia")
     # Teste com o exemplo que você deu para ver se a IA segue o padrão
     resultado = gerar_arquivo_confidencial("De Volta para o Futuro", "filme")
     print(f"Resultado:\n{resultado}")
