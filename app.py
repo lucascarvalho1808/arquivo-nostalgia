@@ -5,6 +5,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from supabase import create_client, Client
 from forms import CadastroForm, LoginForm, EsqueceuSenhaForm, RedefinirSenhaForm # Atualize a importação
 from models import User
+from services.curiosidade_do_dia import get_curiosidade_diaria
 
 load_dotenv()
 
@@ -43,7 +44,10 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    # Pega a curiosidade (seja do cache ou gera uma nova)
+    curiosidade = get_curiosidade_diaria()
+    
+    return render_template('index.html', curiosidade=curiosidade)
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def register():
