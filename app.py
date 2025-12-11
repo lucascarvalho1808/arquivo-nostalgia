@@ -6,6 +6,7 @@ from supabase import create_client, Client
 from forms import CadastroForm, LoginForm, EsqueceuSenhaForm, RedefinirSenhaForm # Atualize a importação
 from models import User
 from services.curiosidade_do_dia import get_curiosidade_diaria
+from services import buscar_filmes_populares, buscar_series_populares, buscar_jogos_populares
 
 load_dotenv()
 
@@ -47,7 +48,17 @@ def index():
     # Pega a curiosidade (seja do cache ou gera uma nova)
     curiosidade = get_curiosidade_diaria()
     
-    return render_template('index.html', curiosidade=curiosidade)
+    filmes = buscar_filmes_populares()
+
+    series = buscar_series_populares()
+
+    jogos = buscar_jogos_populares()
+    
+    return render_template('index.html',
+                           curiosidade=curiosidade,
+                           filmes=filmes,
+                           jogos=jogos,
+                           series=series)
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def register():
