@@ -192,7 +192,7 @@ body {
 
 /* ---  Título Carrosséis --- */
 .titulo-categoria {
-    display: inline-flex;
+    display: inline-flex; 
     align-items: center;
     background-color: #22658f;
     color: white;
@@ -201,11 +201,28 @@ body {
     font-weight: 800;
     font-size: 20px;
     margin-bottom: 15px;
+    
+    /* Animação */
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ---  Título Carrosséis com Hover --- */
+/* ---  Efeito Hover  --- */
 .titulo-categoria:hover {
-    background-color: #042946;
+    background-color: #042946; 
+    color: #4a90e2; 
+    transform: translateX(10px); 
+}
+
+/* ---  Ícone dentro do título --- */
+.titulo-categoria i { 
+    margin-left: 10px; 
+    transition: color 0.3s ease;
+}
+
+/* ---  Ícone fica branco no hover --- */
+.titulo-categoria:hover i {
+    color: #fff; 
 }
 
 /* ---  Setas dos Título dos Carrosséis --- */
