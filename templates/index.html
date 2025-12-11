@@ -173,6 +173,57 @@
         </section>
         {% endif %}
 
+        <!-- FILMES EXTRAS -->
+        <section class="categoria">
+            <div class="titulo-categoria">
+                Clássicos do Cinema <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="center">
+                <div class="carrossel">
+    
+                    <div class="carrosselBox" id="slider-filmes-destaque">
+                        
+                        {% for filme in filmes_destaque %}
+                            <div class="item-poster poster-clean">
+                                {% if filme.poster_url %}
+                                    <img src="{{ filme.poster_url }}" alt="{{ filme.titulo }}" class="poster-img">
+                                {% else %}
+                                    <div class="poster-placeholder">Sem Imagem</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-filmes-destaque')">&#10094;</a>
+                    <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-filmes-destaque')">&#10095;</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SÉRIES EXTRAS -->
+        <section class="categoria">
+            <div class="titulo-categoria">
+                Séries que Marcaram Época <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div class="center">
+                <div class="carrossel">
+                    <div class="carrosselBox" id="slider-series-nostalgia">
+                       
+                        {% for serie in series_nostalgia %}
+                            <div class="item-poster poster-clean">
+                                {% if serie.poster_url %}
+                                    <img src="{{ serie.poster_url }}" alt="{{ serie.titulo }}" class="poster-img">
+                                {% else %}
+                                    <div class="poster-placeholder">Sem Imagem</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-series-nostalgia')">&#10094;</a>
+                    <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-series-nostalgia')">&#10095;</a>
+                </div>
+            </div>
+        </section>
+
     </main>
     
     <footer class="rodape-principal">
