@@ -145,6 +145,51 @@ def buscar_detalhes_filme(filme_id):
         print(f"Erro ao buscar detalhes do filme {filme_id}: {e}")
         return None
 
+def buscar_filmes_classicos(pagina=1):
+    """
+    Busca filmes bem avaliados (Top Rated) para a seção de Clássicos.
+    """
+    endpoint = f"{BASE_URL}/movie/top_rated"
+    
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'pt-BR',
+        'page': pagina
+    }
+
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        return _formatar_resultados(response.json().get('results', []), tipo_midia_padrao='movie')
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar filmes clássicos: {e}")
+        return []
+
+def buscar_series_nostalgia(pagina=1):
+    """
+    Busca séries populares que foram lançadas antes de 2010 (Anos 2000/90).
+    """
+    endpoint = f"{BASE_URL}/discover/tv"
+    
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'pt-BR',
+        'sort_by': 'vote_count.desc', # Ordena por quantidade de votos (geralmente indica clássicos populares)
+        'first_air_date.lte': '2014-12-31', # Apenas séries lançadas antes de 2014
+        'first_air_date.gte': '1990-01-01', # A partir de 1990
+        'page': pagina
+    }
+
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        return _formatar_resultados(response.json().get('results', []), tipo_midia_padrao='tv')
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar séries nostalgia: {e}")
+        return []
+
 # Teste rápido das funções
 if __name__ == "__main__":
     print("--- Testando Filmes ---")

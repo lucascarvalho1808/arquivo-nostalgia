@@ -3,10 +3,17 @@ from flask import Flask, flash, render_template, request, redirect, url_for
 import os
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from supabase import create_client, Client
-from forms import CadastroForm, LoginForm, EsqueceuSenhaForm, RedefinirSenhaForm # Atualize a importação
+from forms import CadastroForm, LoginForm, EsqueceuSenhaForm, RedefinirSenhaForm 
 from models import User
+from services.api_rawg import buscar_jogos_populares    
 from services.curiosidade_do_dia import get_curiosidade_diaria
-from services import buscar_filmes_populares, buscar_series_populares, buscar_jogos_populares
+from services.api_tmdb import (
+    buscar_filmes_populares, 
+    buscar_series_populares, 
+    buscar_filmes_classicos,  
+    buscar_series_nostalgia   
+)
+import random
 
 load_dotenv()
 
@@ -45,20 +52,27 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    # Pega a curiosidade (seja do cache ou gera uma nova)
+    # Buscando dados das APIs
+    filmes_populares = buscar_filmes_populares()
+    series_populares = buscar_series_populares()
+    jogos_populares = buscar_jogos_populares() 
+    
+    # Buscando as novas categorias
+    filmes_classicos = buscar_filmes_classicos()
+    series_nostalgia = buscar_series_nostalgia()
+
+    # Lógica original restaurada (Cache + Curiosidade do Dia)
     curiosidade = get_curiosidade_diaria()
-    
-    filmes = buscar_filmes_populares()
 
-    series = buscar_series_populares()
-
-    jogos = buscar_jogos_populares()
-    
-    return render_template('index.html',
-                           curiosidade=curiosidade,
-                           filmes=filmes,
-                           jogos=jogos,
-                           series=series)
+    return render_template(
+        'index.html',
+        filmes=filmes_populares,
+        series=series_populares,
+        jogos=jogos_populares,
+        curiosidade=curiosidade,
+        filmes_destaque=filmes_classicos,
+        series_nostalgia=series_nostalgia
+    )
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def register():

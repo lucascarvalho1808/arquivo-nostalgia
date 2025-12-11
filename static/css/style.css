@@ -192,7 +192,7 @@ body {
 
 /* ---  Título Carrosséis --- */
 .titulo-categoria {
-    display: inline-flex;
+    display: inline-flex; 
     align-items: center;
     background-color: #22658f;
     color: white;
@@ -201,11 +201,28 @@ body {
     font-weight: 800;
     font-size: 20px;
     margin-bottom: 15px;
+    
+    /* Animação */
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ---  Título Carrosséis com Hover --- */
+/* ---  Efeito Hover  --- */
 .titulo-categoria:hover {
-    background-color: #042946;
+    background-color: #042946; 
+    color: #4a90e2; 
+    transform: translateX(10px); 
+}
+
+/* ---  Ícone dentro do título --- */
+.titulo-categoria i { 
+    margin-left: 10px; 
+    transition: color 0.3s ease;
+}
+
+/* ---  Ícone fica branco no hover --- */
+.titulo-categoria:hover i {
+    color: #fff; 
 }
 
 /* ---  Setas dos Título dos Carrosséis --- */
@@ -456,6 +473,90 @@ body {
     font-weight: bold;
 }
 
+/* Remove estilos padrão do container para Filmes e Séries */
+.poster-clean {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilo da imagem para Filmes e Séries */
+.poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Container de "Sem Imagem" para Filmes e Séries */
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: white;
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA JOGOS --- */
+
+/* Card do Jogo */
+.game-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #4a90e2;
+    border-radius: 15px;
+    padding: 8px;
+    min-width: 190px;
+    margin-right: 15px;
+    transition: transform 0.2s;
+}
+
+/* Container da Imagem do Jogo */
+.game-img-container {
+    width: 100%;
+    height: 115px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+/* Imagem do Jogo */
+.game-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Placeholder "Sem Imagem" do Jogo */
+.game-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+}
+
+/* Título do Jogo */
+.game-title {
+    color: #fff;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+    line-height: 1.3;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* --- Footer --- */
 .rodape-principal {
     width: 100%;
@@ -468,6 +569,48 @@ body {
     letter-spacing: 0.5px;
     margin-top: auto; 
     flex-shrink: 0;
+}
+
+/* --- RODAPÉ: LINKS E COPYRIGHT --- */
+
+/* Garante que o rodapé organize os itens em coluna  */
+.rodape-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+    padding: 20px 0; 
+}
+
+.links-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.links-rodape a {
+    color: #a0a0a0; 
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    transition: color 0.3s;
+}
+
+.links-rodape a:hover {
+    color: #ffffff; 
+    text-decoration: underline;
+}
+
+.separador {
+    color: #555; 
+    font-size: 0.8rem;
+}
+
+.texto-copyright {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 10px;
 }
 
 /* --- MEDIA QUERIES --- */
@@ -592,10 +735,13 @@ body {
         padding: 0; 
     }
     
-    .carrosselBox img {
-        min-width: 160px; 
-        max-width: 160px;
-        height: 240px;
+    
+    .carrosselBox {
+        gap: 8px; 
+    }
+
+    .item-poster, .carrosselBox img {
+        margin: 0;
     }
 }  
 
