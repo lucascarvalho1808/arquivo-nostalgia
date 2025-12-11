@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo Nostalgia - Início</title>
+    <link rel="stylesheet" href="pagina_principal.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <img src="img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
+            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </div>
+
+        <div class="barra-busca">
+            <input type="text" placeholder="Buscar Memórias:">
+            <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+        </div>
+
+        <nav class="menu-icones">
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span>Filmes</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-tv"></i>
+                <span>Séries</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Jogos</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </header>
+
+    <main class="container-principal">
+
+        <section class="descricao_site">
+            <h1 class="titulo_descricao">O PASSADO NUNCA ESTEVE TÃO VIVO!</h1>
+            <p class="subtitulo_descricao">
+                Crie sua biografia cultural. Reúna os filmes que você assistiu, as séries que maratonou na TV e os jogos
+                que definiram suas tardes.
+            </p>
+            <a href="#" class="botao_descricao">Começar meu Arquivo</a>
+        </section>
+
+        <section class="categoria">
+            <div class="titulo-categoria">
+                Filmes <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <div class="center">
+                <div class="carrossel">
+                    <div class="carrosselBox">
+                    </div>
+
+                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft()">
+                        &#10094; </a>
+
+                    <a class="switchRight sliderButton" onclick="sliderScrollRight()">
+                        &#10095; </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="categoria">
+            <div class="titulo-categoria">
+                Séries <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <div class="carrosel-horizontal">
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+            </div>
+        </section>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
+        <script src="js/script.js"></script>
+
+        <section class="categoria">
+            <div class="titulo-categoria">
+                Jogos <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <div class="carrosel-horizontal">
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+                <div class="item-poster"></div>
+            </div>
+        </section>
+
+        <section class="secao_arquivo_confidencial">
+            <div class="titulo-pill">Arquivo Confidencial</div>
+
+            <div class="cartao-destaque">
+                <div class="conteudo-destaque">
+
+                    <div class="cabecalho_arquivo_confidencial">
+                        <h3 class="titulo-obra">"De Volta para o Futuro"</h3>
+                        <p class="data-lancamento"><i class="fa-regular fa-calendar"></i> Lançamento: 03 de Julho de
+                            1985</p>
+                    </div>
+
+                    <div class="corpo-destaque">
+                        <div class="capa-filme-destaque">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+
+                        <div class="texto-curiosidade">
+                            <p>“Originalmente, a máquina do tempo seria uma geladeira, mas Steven Spielberg mudou a
+                                ideia por medo de que crianças começassem a se trancar em geladeiras para tentar viajar
+                                no tempo.”</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <footer class="rodape-principal">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+    </footer>
+
+</body>
+
+</html>
