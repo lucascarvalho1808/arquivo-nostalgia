@@ -554,6 +554,48 @@ body {
     flex-shrink: 0;
 }
 
+/* --- RODAPÉ: LINKS E COPYRIGHT --- */
+
+/* Garante que o rodapé organize os itens em coluna  */
+.rodape-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+    padding: 20px 0; 
+}
+
+.links-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.links-rodape a {
+    color: #a0a0a0; 
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    transition: color 0.3s;
+}
+
+.links-rodape a:hover {
+    color: #ffffff; 
+    text-decoration: underline;
+}
+
+.separador {
+    color: #555; 
+    font-size: 0.8rem;
+}
+
+.texto-copyright {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 10px;
+}
+
 /* --- MEDIA QUERIES --- */
 @media (min-width: 1025px) {
     .barra-busca {
