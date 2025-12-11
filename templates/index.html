@@ -35,14 +35,34 @@
                 <i class="fa-solid fa-gamepad"></i>
                 <span>Jogos</span>
             </a>
-            <a href="{{ url_for('meus_arquivos') }}" class="item-menu">
-                <i class="fa-regular fa-folder-open"></i>
-                <span>Arquivos</span>
-            </a>
-            <a href="{{ url_for('perfil') }}" class="item-menu">
-                <i class="fa-solid fa-circle-user"></i>
-                <span>Perfil</span>
-            </a>
+
+            {% if current_user.is_authenticated %}
+                <!-- MENU PARA QUEM ESTÁ LOGADO -->
+                <a href="{{ url_for('meus_arquivos') }}" class="item-menu">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Arquivos</span>
+                </a>
+                <a href="{{ url_for('perfil') }}" class="item-menu">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span>Perfil</span>
+                </a>
+                <!-- Botão de Logout  -->
+                <a href="{{ url_for('logout') }}" class="item-menu">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Sair</span>
+                </a>
+            {% else %}
+                <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+                 <a href="{{ url_for('meus_arquivos') }}" class="item-menu">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <span>Arquivos</span>
+                </a>
+                <a href="{{ url_for('login') }}" class="item-menu">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Login</span>
+                </a>
+
+            {% endif %}
         </nav>
     </header>
 

@@ -135,16 +135,18 @@ def login():
     return render_template('auth/login.html', form=form)
 
 @app.route("/logout")
-@login_required # Garante que apenas quem está logado pode acessar essa rota
+@login_required
 def logout():
-    # 1. Desloga do Supabase (invalida o token)
+    # 1. Desloga do Supabase
     supabase.auth.sign_out()
     
     # 2. Limpa a sessão do Flask
     logout_user()
     
     flash('Você saiu com sucesso.', 'info')
-    return redirect(url_for('login')) 
+    
+    #  Redireciona para a página inicial (index) 
+    return redirect(url_for('index')) 
 
 @app.route('/esqueceu-senha', methods=['GET', 'POST'])
 def forgot_password():
