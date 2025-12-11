@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arquivo Nostalgia - Início</title>
-    <link rel="stylesheet" href="../../static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
@@ -13,7 +13,7 @@
 
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
+            <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
             <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
         </div>
 
@@ -39,7 +39,7 @@
                 <i class="fa-regular fa-folder-open"></i>
                 <span>Arquivos</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('perfil') }}" class="item-menu">
                 <i class="fa-solid fa-circle-user"></i>
                 <span>Perfil</span>
             </a>
@@ -63,14 +63,20 @@
             </div>
             <div class="center">
                 <div class="carrossel">
-                    <div class="carrosselBox">
+                    <div class="carrosselBox" id="slider-filmes">
+                        {% for filme in filmes %}
+                            <!-- Usando a classe .poster-clean -->
+                            <div class="item-poster poster-clean">
+                                {% if filme.poster_url %}
+                                    <img src="{{ filme.poster_url }}" alt="{{ filme.titulo }}" class="poster-img">
+                                {% else %}
+                                    <div class="poster-placeholder">Sem Imagem</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
                     </div>
-
-                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft()">
-                        &#10094; </a>
-
-                    <a class="switchRight sliderButton" onclick="sliderScrollRight()">
-                        &#10095; </a>
+                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-filmes')">&#10094;</a>
+                    <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-filmes')">&#10095;</a>
                 </div>
             </div>
         </section>
@@ -79,41 +85,60 @@
             <div class="titulo-categoria">
                 Séries <i class="fa-solid fa-arrow-right"></i>
             </div>
-            <div class="carrosel-horizontal">
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
+            <div class="center">
+                <div class="carrossel">
+                    <div class="carrosselBox" id="slider-series">
+                        {% for serie in series %}
+                            <!-- Usando a classe .poster-clean -->
+                            <div class="item-poster poster-clean">
+                                {% if serie.poster_url %}
+                                    <img src="{{ serie.poster_url }}" alt="{{ serie.titulo }}" class="poster-img">
+                                {% else %}
+                                    <div class="poster-placeholder">Sem Imagem</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-series')">&#10094;</a>
+                    <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-series')">&#10095;</a>
+                </div>
             </div>
         </section>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
-        <script src="js/script.js"></script>
 
         <section class="categoria">
             <div class="titulo-categoria">
                 Jogos <i class="fa-solid fa-arrow-right"></i>
             </div>
-            <div class="carrosel-horizontal">
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
-                <div class="item-poster"></div>
+            <div class="center">
+                <div class="carrossel">
+                    <div class="carrosselBox" id="slider-jogos">
+                        {% for jogo in jogos %}
+                            <!-- Usando a classe .game-card -->
+                            <div class="item-poster game-card">
+                                
+                                <div class="game-img-container">
+                                    {% if jogo.poster_url %}
+                                        <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="game-img">
+                                    {% else %}
+                                        <div class="game-placeholder">Sem Imagem</div>
+                                    {% endif %}
+                                </div>
+
+                                <p class="game-title">
+                                    {{ jogo.titulo }}
+                                </p>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-jogos')">&#10094;</a>
+                    <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-jogos')">&#10095;</a>
+                </div>
             </div>
         </section>
 
+        <!-- Funcionalidade Dinâmica do Arquivo Confidencial -->
+        {% if curiosidade %}
         <section class="secao_arquivo_confidencial">
             <div class="titulo-pill">Arquivo Confidencial</div>
 
@@ -121,31 +146,41 @@
                 <div class="conteudo-destaque">
 
                     <div class="cabecalho_arquivo_confidencial">
-                        <h3 class="titulo-obra">"De Volta para o Futuro"</h3>
-                        <p class="data-lancamento"><i class="fa-regular fa-calendar"></i> Lançamento: 03 de Julho de
-                            1985</p>
+                        <!-- Título dinâmico sem aspas -->
+                        <h3 class="titulo-obra">{{ curiosidade.titulo }}</h3>
+                        <p class="data-lancamento">
+                            <i class="fa-regular fa-calendar"></i> Lançamento: {{ curiosidade.data_lancamento }}
+                        </p>
                     </div>
 
                     <div class="corpo-destaque">
                         <div class="capa-filme-destaque">
-                            <i class="fa-solid fa-image"></i>
+                            {% if curiosidade.poster_url %}
+                                <img src="{{ curiosidade.poster_url }}" alt="Capa" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                            {% else %}
+                                <i class="fa-solid fa-image"></i>
+                            {% endif %}
                         </div>
 
                         <div class="texto-curiosidade">
-                            <p>“Originalmente, a máquina do tempo seria uma geladeira, mas Steven Spielberg mudou a
-                                ideia por medo de que crianças começassem a se trancar em geladeiras para tentar viajar
-                                no tempo.”</p>
+                            <!-- Texto dinâmico sem aspas -->
+                            <p>{{ curiosidade.texto }}</p>
                         </div>
                     </div>
 
                 </div>
             </div>
         </section>
+        {% endif %}
 
     </main>
     <footer class="rodape-principal">
         Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
     </footer>
+
+    <!-- Scripts Externos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 

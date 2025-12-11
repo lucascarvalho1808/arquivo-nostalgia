@@ -456,6 +456,90 @@ body {
     font-weight: bold;
 }
 
+/* Remove estilos padrão do container para Filmes e Séries */
+.poster-clean {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Estilo da imagem para Filmes e Séries */
+.poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Container de "Sem Imagem" para Filmes e Séries */
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: white;
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA JOGOS --- */
+
+/* Card do Jogo */
+.game-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid #4a90e2;
+    border-radius: 15px;
+    padding: 8px;
+    min-width: 190px;
+    margin-right: 15px;
+    transition: transform 0.2s;
+}
+
+/* Container da Imagem do Jogo */
+.game-img-container {
+    width: 100%;
+    height: 115px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+/* Imagem do Jogo */
+.game-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Placeholder "Sem Imagem" do Jogo */
+.game-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+}
+
+/* Título do Jogo */
+.game-title {
+    color: #fff;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+    line-height: 1.3;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* --- Footer --- */
 .rodape-principal {
     width: 100%;
@@ -592,10 +676,13 @@ body {
         padding: 0; 
     }
     
-    .carrosselBox img {
-        min-width: 160px; 
-        max-width: 160px;
-        height: 240px;
+    
+    .carrosselBox {
+        gap: 8px; 
+    }
+
+    .item-poster, .carrosselBox img {
+        margin: 0;
     }
 }  
 
