@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Séries - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../static/css/conteudos.css">
+</head>
+
+<body>
+
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
+            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </div>
+
+        <div class="header-centro">
+            <div class="caixa-titulo">
+                <h1>Séries</h1>
+            </div>
+        </div>
+
+        <nav class="menu-icones">
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span>Filmes</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Jogos</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </header>
+
+    <div class="container-layout">
+
+        <input type="checkbox" id="gatilho-filtro" class="input-gatilho">
+
+        <label for="gatilho-filtro" class="botao-toggle-filtro">
+            <i class="fas fa-filter"></i>
+            <i class="fas fa-chevron-right seta-abre"></i>
+        </label>
+
+        <aside class="sidebar-filtro">
+            <div class="titulo-filtro">
+                <h2>Séries</h2>
+            </div>
+
+            <div class="sidebar-conteudo">
+
+                <form class="lista-generos grade-generos">
+
+                                        <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-rocket"></i>
+                            <span>Sci-Fi/Fant.</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                            <span>Animação</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-laugh-squint"></i>
+                            <span>Comédia</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-fingerprint"></i>
+                            <span>Crime</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-video"></i>
+                            <span>Documentário</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-theater-masks"></i>
+                            <span>Drama</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-users"></i>
+                            <span>Família</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-hat-cowboy"></i>
+                            <span>Faroeste</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-child"></i>
+                            <span>Kids</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-user-secret"></i>
+                            <span>Mistério</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-newspaper"></i>
+                            <span>News</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-eye"></i>
+                            <span>Reality</span>
+                        </div>
+                    </label>
+
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-comments"></i>
+                            <span>Talk</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-heart"></i>
+                            <span>Novelas</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Ação e Aventura</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-landmark"></i>
+                            <span>Guerra e Política</span>
+                        </div>
+                    </label>
+
+                </form>
+
+                <button class="botao-buscar">BUSCAR</button>
+
+            </div>
+        </aside>
+
+        <main class="area-scrollavel">
+
+            <div class="barra-busca-container">
+                <div class="barra-topo">
+                    <input type="text" placeholder="Pesquisar série...">
+                    <i class="fas fa-search icone-lupa"></i>
+                </div>
+            </div>
+
+            <div class="grade-posters">
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+            </div>
+
+            <div class="container-botao-mais">
+                <button id="botao-ver-mais">Ver mais</button>
+            </div>
+        </main>
+    </div>
+
+    <footer class="rodape-principal">
+        <div class="links-rodape">
+            <a href="#">Termos de Uso</a>
+            <span class="separador">|</span>
+            <a href="#">Política de Privacidade</a>
+        </div>
+
+        <!-- Texto de Copyright -->
+        <div class="texto-copyright">
+            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+        </div>
+    </footer>
+
+</body>
+
+</html>
