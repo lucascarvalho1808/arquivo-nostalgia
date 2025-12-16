@@ -1,5 +1,6 @@
 import os
 import requests
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,6 +25,80 @@ def _formatar_jogos(resultados):
             'tipo': 'game'
         })
     return jogos_formatados
+
+def _extrair_steam_id(stores):
+    """
+    Tenta encontrar o ID da Steam dentro da lista de lojas da RAWG.
+    """
+    if not stores:
+        return None
+        
+    for loja_item in stores:
+        store_info = loja_item.get('store', {})
+        if store_info.get('slug') == 'steam':
+            url_loja = loja_item.get('url', '')
+            match = re.search(r'/app/(\d+)', url_loja)
+            if match:
+                return match.group(1)
+    return None
+
+def _buscar_dados_steam(app_id):
+    """
+    Busca dados ricos (Preço, PT-BR, Requisitos) na API pública da Steam.
+    """
+    url_steam = f"https://store.steampowered.com/api/appdetails?appids={app_id}&l=brazilian"
+    try:
+        response = requests.get(url_steam, timeout=5)
+        dados = response.json()
+        
+        # Verifica se a requisição foi bem sucedida na estrutura da Steam
+        if dados and str(app_id) in dados and dados[str(app_id)]['success']:
+            return dados[str(app_id)]['data']
+    except Exception as e:
+        print(f"Erro ao conectar na Steam: {e}")
+    
+    return None
+
+def _formatar_jogo_hibrido(dados_rawg, dados_steam=None):
+    """
+    Mescla os dados. Prioriza Steam para texto/preço e RAWG para metadados.
+    """
+    jogo = {
+        'id': dados_rawg.get('id'),
+        'titulo': dados_rawg.get('name'),
+        'poster_url': dados_rawg.get('background_image'), # RAWG costuma ter imagens melhores/maiores
+        'lancamento': dados_rawg.get('released'),
+        'nota': dados_rawg.get('metacritic'),
+        'generos': [g['name'] for g in dados_rawg.get('genres', [])],
+        'plataformas': [p['platform']['name'] for p in dados_rawg.get('platforms', [])],
+        
+        # Dados que tentaremos pegar da Steam (padrão RAWG ou vazio se falhar)
+        'descricao': dados_rawg.get('description_raw', ''),
+        'preco': 'Não informado',
+        'requisitos': None,
+        'loja_url': f"https://rawg.io/games/{dados_rawg.get('slug')}"
+    }
+
+    # Se tivermos dados da Steam, enriquecemos o objeto
+    if dados_steam:
+        # Descrição em Português
+        if 'short_description' in dados_steam:
+            jogo['descricao'] = dados_steam['short_description']
+        
+        # Preço em Reais
+        if 'price_overview' in dados_steam:
+            jogo['preco'] = dados_steam['price_overview'].get('final_formatted', 'Grátis')
+        elif dados_steam.get('is_free'):
+            jogo['preco'] = 'Gratuito'
+
+        # Requisitos de Sistema (PC)
+        if 'pc_requirements' in dados_steam and 'minimum' in dados_steam['pc_requirements']:
+            jogo['requisitos'] = dados_steam['pc_requirements']['minimum']
+            
+        # Imagem de Capa (Opcional: Steam Header às vezes é melhor para cards horizontais)
+        # jogo['poster_url'] = dados_steam.get('header_image', jogo['poster_url'])
+
+    return jogo
 
 def buscar_jogos_populares(pagina=1, page_size=20):
     """
@@ -85,7 +160,6 @@ def buscar_detalhes_jogo(jogo_id):
         jogo = response.json()
 
         # Remove tags HTML da descrição (a RAWG retorna <p>texto</p>)
-        import re
         descricao_limpa = re.sub('<[^<]+?>', '', jogo.get('description', ''))
 
         return {
