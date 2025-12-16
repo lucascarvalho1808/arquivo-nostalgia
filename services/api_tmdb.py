@@ -213,6 +213,27 @@ def buscar_catalogo_filmes(pagina=1):
         print(f"Erro ao buscar catálogo de filmes: {e}")
         return []
 
+def buscar_catalogo_series(pagina=1):
+    """
+    Função para a página /series.
+    Busca séries populares para preencher a grade do catálogo.
+    """
+    endpoint = f"{BASE_URL}/tv/popular"
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'pt-BR',
+        'page': pagina
+    }
+    
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        return _formatar_resultados(response.json().get('results', []), tipo_midia_padrao='tv')
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar catálogo de séries: {e}")
+        return []
+
 # Teste rápido das funções
 if __name__ == "__main__":
     print("--- Testando Filmes ---")

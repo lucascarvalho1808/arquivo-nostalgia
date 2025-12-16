@@ -6,15 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Séries - Arquivo Nostalgia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../static/css/conteudos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudos.css') }}">
 </head>
 
 <body>
 
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
-            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+            <a href="{{ url_for('index') }}" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; color: inherit;">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
+                <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+            </a>
         </div>
 
         <div class="header-centro">
@@ -24,11 +26,11 @@
         </div>
 
         <nav class="menu-icones">
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('filmes') }}" class="item-menu">
                 <i class="fa-solid fa-clapperboard"></i>
                 <span>Filmes</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('jogos') }}" class="item-menu">
                 <i class="fa-solid fa-gamepad"></i>
                 <span>Jogos</span>
             </a>
@@ -61,7 +63,7 @@
 
                 <form class="lista-generos grade-generos">
 
-                                        <label class="botao-genero">
+                    <label class="botao-genero">
                         <input type="checkbox">
                         <div class="design-botao">
                             <i class="fas fa-rocket"></i>
@@ -157,7 +159,6 @@
                         </div>
                     </label>
 
-
                     <label class="botao-genero">
                         <input type="checkbox">
                         <div class="design-botao">
@@ -207,37 +208,17 @@
             </div>
 
             <div class="grade-posters">
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
+                {% for serie in series %}
+                    {% if serie.poster_url %}
+                    <div class="item-poster">
+                        <a href="#">
+                            <img src="{{ serie.poster_url }}" alt="{{ serie.titulo }}" loading="lazy">
+                        </a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <p style="color: white; text-align: center; grid-column: 1/-1;">Nenhuma série encontrada.</p>
+                {% endfor %}
             </div>
 
             <div class="container-botao-mais">
@@ -253,11 +234,13 @@
             <a href="#">Política de Privacidade</a>
         </div>
 
-        <!-- Texto de Copyright -->
+        <!--Texto Copyright-->
         <div class="texto-copyright">
             Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
         </div>
     </footer>
+
+    <script src="{{ url_for('static', filename='js/series.js') }}"></script>
 
 </body>
 

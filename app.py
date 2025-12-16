@@ -12,7 +12,8 @@ from services.api_tmdb import (
     buscar_series_populares, 
     buscar_filmes_classicos,  
     buscar_series_nostalgia,
-    buscar_catalogo_filmes # Adicione a importação da NOVA função
+    buscar_catalogo_filmes, 
+    buscar_catalogo_series  
 )
 import random
 
@@ -215,7 +216,15 @@ def api_filmes():
 # Rotas provisórias para os links do menu não quebrarem a página
 @app.route('/series')
 def series():
-    return render_template('conteudo/series.html') #
+    lista_series = buscar_catalogo_series(pagina=1)
+    return render_template('conteudo/series.html', series=lista_series)
+
+@app.route('/api/series')
+def api_series():
+    """API que retorna séries populares em JSON para o botão 'Ver mais'."""
+    pagina = request.args.get('pagina', 1, type=int)
+    lista_series = buscar_catalogo_series(pagina=pagina)
+    return jsonify(lista_series)
 
 @app.route('/jogos')
 def jogos():
