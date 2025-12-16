@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for, jsonify
 import os
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from supabase import create_client, Client
@@ -204,6 +204,13 @@ def meus_arquivos():
 def filmes():
     lista_filmes = buscar_catalogo_filmes(pagina=1)
     return render_template('conteudo/filmes.html', filmes=lista_filmes)
+
+@app.route('/api/filmes')
+def api_filmes():
+    """API que retorna filmes populares em JSON para o botão 'Ver mais'."""
+    pagina = request.args.get('pagina', 1, type=int)
+    lista_filmes = buscar_catalogo_filmes(pagina=pagina)
+    return jsonify(lista_filmes)
 
 # Rotas provisórias para os links do menu não quebrarem a página
 @app.route('/series')
