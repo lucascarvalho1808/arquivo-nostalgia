@@ -503,7 +503,7 @@ body {
 
 /* --- ESTILOS ESPECÍFICOS PARA JOGOS --- */
 
-/* Card do Jogo */
+/* Card do Jogo (Container Principal) */
 .game-card {
     display: flex;
     flex-direction: column;
@@ -511,15 +511,26 @@ body {
     border: 1px solid #4a90e2;
     border-radius: 15px;
     padding: 8px;
-    min-width: 190px;
+    min-width: 160px; 
+    width: 160px;
+    height: 240px; 
     margin-right: 15px;
-    transition: transform 0.2s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s;
+    cursor: pointer;
+}
+
+/* HOVER NO CONTAINER */
+.game-card:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Container da Imagem do Jogo */
 .game-img-container {
     width: 100%;
-    height: 115px;
+    height: 190px; 
     overflow: hidden;
     border-radius: 10px;
 }
@@ -528,7 +539,14 @@ body {
 .game-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; 
+    object-position: center;
+}
+
+.carrosselBox .game-card img:hover {
+    transform: none;
+    box-shadow: none;
+    z-index: auto;
 }
 
 /* Placeholder "Sem Imagem" do Jogo */
@@ -545,11 +563,11 @@ body {
 /* Título do Jogo */
 .game-title {
     color: #fff;
-    font-size: 1rem;
+    font-size: 0.85rem; 
     text-align: center;
-    margin-top: 10px;
+    margin-top: 6px; 
     margin-bottom: 0;
-    line-height: 1.3;
+    line-height: 1.2;
     font-weight: 600;
     font-family: 'Segoe UI', sans-serif;
     white-space: nowrap;

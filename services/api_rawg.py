@@ -8,75 +8,108 @@ load_dotenv()
 RAWG_API_KEY = os.environ.get('RAWG_API_KEY')
 BASE_URL = "https://api.rawg.io/api"
 
-def _extrair_steam_id(stores):
+_steam_id_cache = {}
+
+def _buscar_id_steam_por_nome(nome_jogo):
     """
-    Tenta encontrar o ID da Steam dentro da lista de lojas da RAWG.
+    Busca o AppID da Steam usando o nome do jogo na API de busca da Steam.
     """
-    if not stores:
-        return None
+    # Verifica cache primeiro
+    if nome_jogo in _steam_id_cache:
+        return _steam_id_cache[nome_jogo]
+
+    try:
+        # API de busca da Steam 
+        url = f"https://store.steampowered.com/api/storesearch/?term={nome_jogo}&l=english&cc=US"
+        response = requests.get(url, timeout=1) # Timeout curto
+        data = response.json()
         
-    for loja_item in stores:
-        store_info = loja_item.get('store', {})
-        if store_info.get('slug') == 'steam':
-            url_loja = loja_item.get('url', '') or loja_item.get('url_en', '')
-            
-            match = re.search(r'/app/(\d+)', str(url_loja))
-            if match:
-                return match.group(1)
+        if data and data.get('total') > 0:
+            items = data.get('items', [])
+            if items:
+                # Pega o primeiro resultado
+                steam_id = str(items[0]['id'])
+                _steam_id_cache[nome_jogo] = steam_id
+                return steam_id
+    except:
+        pass # Se falhar, paciência, usa a capa da RAWG
+    
+    return None
+
+def _extrair_steam_id(stores, nome_jogo):
+    """
+    Tenta encontrar o ID da Steam.
+    1. Tenta pela URL da RAWG (se disponível).
+    2. Se tiver loja Steam mas sem URL, busca pelo nome na Steam.
+    """
+    tem_steam = False
+    
+    if stores:
+        for loja_item in stores:
+            store_info = loja_item.get('store', {})
+            if store_info.get('slug') == 'steam':
+                tem_steam = True
+                # Tenta pegar URL direta se existir
+                url_loja = loja_item.get('url', '') or loja_item.get('url_en', '')
+                match = re.search(r'/app/(\d+)', str(url_loja))
+                if match:
+                    return match.group(1)
+                break
+    
+    
+    if tem_steam and nome_jogo:
+        return _buscar_id_steam_por_nome(nome_jogo)
+        
     return None
 
 def _gerar_capa_steam(steam_id):
-    """
-    Gera a URL da capa vertical (library_600x900) da Steam sem precisar chamar a API.
-    """
+    """Gera a URL da capa vertical da Steam."""
     if not steam_id:
         return None
     return f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{steam_id}/library_600x900.jpg"
 
 def _buscar_dados_steam_detalhes(app_id):
-    """
-    Busca dados ricos (Preço, PT-BR, Requisitos) na API pública da Steam.
-    """
+    """Busca dados ricos na API pública da Steam."""
     url_steam = f"https://store.steampowered.com/api/appdetails?appids={app_id}&l=brazilian"
     try:
-        response = requests.get(url_steam, timeout=3) # Timeout curto para não travar
+        response = requests.get(url_steam, timeout=3)
         dados = response.json()
-        
         if dados and str(app_id) in dados and dados[str(app_id)]['success']:
             return dados[str(app_id)]['data']
     except Exception as e:
         print(f"Erro ao conectar na Steam: {e}")
-    
     return None
 
 def _formatar_jogos_lista(resultados):
-    """
-    Formata a lista de jogos, tentando substituir a imagem da RAWG pela capa da Steam.
-    """
+    """Formata a lista. Define se usa estilo Steam ou RAWG."""
     jogos_formatados = []
     for jogo in resultados:
-        # Tenta achar o ID da Steam
-        steam_id = _extrair_steam_id(jogo.get('stores', []))
+        # 1. Tenta achar ID e Capa Steam
+        steam_id = _extrair_steam_id(jogo.get('stores', []), jogo.get('name'))
+        capa_steam = _gerar_capa_steam(steam_id)
         
-        # Se tiver Steam ID, usa a capa vertical da Steam. Se não, usa o wallpaper da RAWG.
-        poster = _gerar_capa_steam(steam_id)
-        if not poster:
-            poster = jogo.get('background_image')
+        # 2. Define a imagem principal e o estilo
+        if capa_steam:
+            poster_principal = capa_steam
+            origem = 'steam' # Estilo Limpo (Só imagem)
+        else:
+            poster_principal = jogo.get('background_image')
+            origem = 'rawg'  # Estilo Card (Com título)
 
         jogos_formatados.append({
             'id': jogo['id'],
             'titulo': jogo['name'],
             'slug': jogo.get('slug'),
-            'poster_url': poster, # Aqui vai a capa da Steam se existir
+            'poster_url': poster_principal,
+            'imagem_rawg': jogo.get('background_image'), 
+            'origem_imagem': origem, # Para o HTML saber qual layout usar
             'nota': jogo.get('metacritic'),
             'tipo': 'game'
         })
     return jogos_formatados
 
 def buscar_jogos_populares(pagina=1, page_size=12):
-    """
-    Busca jogos populares e tenta usar capas da Steam.
-    """
+    """Busca jogos populares."""
     endpoint = f"{BASE_URL}/games"
     params = {
         'key': RAWG_API_KEY,
@@ -95,9 +128,7 @@ def buscar_jogos_populares(pagina=1, page_size=12):
         return []
 
 def pesquisar_jogos(query):
-    """
-    Pesquisa jogos por nome na RAWG.
-    """
+    """Pesquisa jogos por nome."""
     endpoint = f"{BASE_URL}/games"
     params = {
         'key': RAWG_API_KEY,
@@ -115,17 +146,13 @@ def pesquisar_jogos(query):
         return []
 
 def buscar_detalhes_jogo(game_id_ou_slug):
-    """
-    Busca detalhada HÍBRIDA: RAWG + Steam (se disponível).
-    """
-    # 1. Busca na RAWG
+    """Busca detalhada HÍBRIDA."""
     url_rawg = f"{BASE_URL}/games/{game_id_ou_slug}?key={RAWG_API_KEY}"
     
     try:
         response = requests.get(url_rawg)
         dados_rawg = response.json()
         
-        # 2. Prepara objeto base com dados da RAWG
         descricao_limpa = re.sub('<[^<]+?>', '', dados_rawg.get('description', ''))
         
         jogo_final = {
@@ -142,32 +169,27 @@ def buscar_detalhes_jogo(game_id_ou_slug):
             'tipo': 'game'
         }
 
-        # 3. Tenta colcoar dados da Steam
-        steam_id = _extrair_steam_id(dados_rawg.get('stores', []))
+        steam_id = _extrair_steam_id(dados_rawg.get('stores', []), dados_rawg.get('name'))
         
         if steam_id:
-            # Tenta usar a capa vertical da Steam também nos detalhes
             capa_steam = _gerar_capa_steam(steam_id)
             if capa_steam:
                 jogo_final['poster_url'] = capa_steam
 
-            # Busca dados extras (Preço, Requisitos)
             dados_steam = _buscar_dados_steam_detalhes(steam_id)
             if dados_steam:
                 if 'short_description' in dados_steam:
                     jogo_final['sinopse'] = dados_steam['short_description']
-                
                 if 'price_overview' in dados_steam:
                     jogo_final['preco'] = dados_steam['price_overview'].get('final_formatted', 'Grátis')
                 elif dados_steam.get('is_free'):
                     jogo_final['preco'] = 'Gratuito'
-
                 if 'pc_requirements' in dados_steam and 'minimum' in dados_steam['pc_requirements']:
                     jogo_final['requisitos'] = dados_steam['pc_requirements']['minimum']
             
         return jogo_final
 
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         print(f"Erro ao buscar detalhes do jogo {game_id_ou_slug}: {e}")
         return None
 

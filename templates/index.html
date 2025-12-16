@@ -132,24 +132,34 @@
             <div class="center">
                 <div class="carrossel">
                     <div class="carrosselBox" id="slider-jogos">
-                        {% for jogo in jogos %}
-                            <!-- Usando a classe .game-card -->
-                            <div class="item-poster game-card">
-                                
-                                <div class="game-img-container">
-                                    {% if jogo.poster_url %}
-                                        <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="game-img">
-                                    {% else %}
-                                        <div class="game-placeholder">Sem Imagem</div>
-                                    {% endif %}
-                                </div>
+    {% for jogo in jogos %}
+        
+        {% if jogo.origem_imagem == 'steam' %}
+            <!-- ESTILO 1: STEAM (Capa Limpa Vertical - Igual Filmes) -->
+            <div class="item-poster poster-clean">
+                <a href="#">
+                    <img src="{{ jogo.poster_url }}" 
+                         alt="{{ jogo.titulo }}" 
+                         class="poster-img"
+                         onerror="this.onerror=null; this.src='{{ jogo.imagem_rawg }}';">
+                </a>
+            </div>
 
-                                <p class="game-title">
-                                    {{ jogo.titulo }}
-                                </p>
+        {% else %}
+            <!-- ESTILO 2: RAWG (O Estilo Clássico que você quer) -->
+            <div class="game-card">
+                <div class="game-img-container">
+                    {% if jogo.poster_url %}
+                        <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="game-img">
+                    {% else %}
+                        <div class="poster-placeholder">Sem Imagem</div>
+                    {% endif %}
+                </div>
+                <h3 class="game-title">{{ jogo.titulo }}</h3>
+            </div>
+        {% endif %}
 
-                            </div>
-                        {% endfor %}
+    {% endfor %}
                     </div>
                     <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-jogos')">&#10094;</a>
                     <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-jogos')">&#10095;</a>
