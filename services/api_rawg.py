@@ -94,6 +94,26 @@ def buscar_jogos_populares(pagina=1, page_size=12):
         print(f"Erro ao buscar jogos na RAWG: {e}")
         return []
 
+def pesquisar_jogos(query):
+    """
+    Pesquisa jogos por nome na RAWG.
+    """
+    endpoint = f"{BASE_URL}/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'search': query,
+        'page_size': 12
+    }
+
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        return _formatar_jogos_lista(response.json().get('results', []))
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao pesquisar jogos: {e}")
+        return []
+
 def buscar_detalhes_jogo(game_id_ou_slug):
     """
     Busca detalhada HÍBRIDA: RAWG + Steam (se disponível).
@@ -151,7 +171,7 @@ def buscar_detalhes_jogo(game_id_ou_slug):
         print(f"Erro ao buscar detalhes do jogo {game_id_ou_slug}: {e}")
         return None
 
-# Testes comentados para evitar chamadas desnecessárias na API durante o desenvolvimento
+# Testes
 if __name__ == "__main__":
     print("--- Testando Jogos Populares ---")
     jogos = buscar_jogos_populares()
