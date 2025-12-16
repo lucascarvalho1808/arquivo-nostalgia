@@ -199,6 +199,19 @@ def criar_arquivo():
 def meus_arquivos():
     return "<h1>Meus Arquivos</h1><p>Lista dos arquivos que você criou.</p>"
 
+@app.route('/filmes')
+def filmes():
+    return render_template('conteudo/filmes.html')
+
+# Rotas provisórias para os links do menu não quebrarem a página
+@app.route('/series')
+def series():
+    return render_template('conteudo/series.html') #
+
+@app.route('/jogos')
+def jogos():
+    return render_template('conteudo/jogos.html') 
+
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
     app.run(debug=True)
