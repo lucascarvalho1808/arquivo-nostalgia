@@ -40,10 +40,17 @@ body {
     text-align: center;
     z-index: 1001;
     flex-shrink: 0;
-    width: 240px
+    width: 240px;
 }
 
-/* --- Logo --- */
+.logo-container a {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
 .logo-pequena {
     max-width: 110px;
     margin-bottom: 5px;
@@ -86,7 +93,7 @@ body {
     gap: 20px;
     align-items: center;
     flex-shrink: 0;
-    width: 240px; /* Mesma largura da logo! */
+    width: 240px; 
     justify-content: flex-end;
 }
 
@@ -143,7 +150,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Sidebar ("Header) --- */
+/* --- Sidebar ("Header") --- */
 .titulo-filtro {
     background-color: #082d47;
     text-align: center;
@@ -314,32 +321,39 @@ body {
 /* --- Área de Pôsteres --- */
 .grade-posters {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, 160px);
     gap: 20px;
-    padding-bottom: 20px;
+    padding: 20px;
+    justify-content: center; 
 }
 
-/* --- Área de Pôsteres (Estilização) --- */
-.poster-vazio {
-    background-color: #22658f;
-    aspect-ratio: 2 / 3;
-    border-radius: 20px;
-    transition: transform 0.3s;
-}
-
-/* --- Área de Pôsteres (Hover) --- */
-.poster-vazio:hover {
-    transform: scale(1.05);
+/* Estilo do Poster */
+.item-poster {
+    width: 160px;  
+    height: 240px; 
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
     cursor: pointer;
-    background-color: #15456b;
+    background-color: #222;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-.input-gatilho {
-    display: none;
+.item-poster:hover {
+    transform: scale(1.05);
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
 }
 
-/* --- Botão filtro no Celular --- */
-.botao-toggle-filtro {
+.item-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Remove o estilo antigo do poster-vazio se ainda existir */
+.poster-vazio {
     display: none;
 }
 

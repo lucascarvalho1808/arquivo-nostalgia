@@ -11,7 +11,8 @@ from services.api_tmdb import (
     buscar_filmes_populares, 
     buscar_series_populares, 
     buscar_filmes_classicos,  
-    buscar_series_nostalgia   
+    buscar_series_nostalgia,
+    buscar_catalogo_filmes # Adicione a importação da NOVA função
 )
 import random
 
@@ -201,7 +202,8 @@ def meus_arquivos():
 
 @app.route('/filmes')
 def filmes():
-    return render_template('conteudo/filmes.html')
+    lista_filmes = buscar_catalogo_filmes(pagina=1)
+    return render_template('conteudo/filmes.html', filmes=lista_filmes)
 
 # Rotas provisórias para os links do menu não quebrarem a página
 @app.route('/series')

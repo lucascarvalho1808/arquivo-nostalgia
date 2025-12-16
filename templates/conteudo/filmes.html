@@ -230,38 +230,18 @@
             </div>
 
             <div class="grade-posters">
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
+                {% for filme in filmes %}
+                    {% if filme.poster_url %}
+                    <!-- Item do Filme -->
+                    <div class="item-poster">
+                        <a href="#"> 
+                            <img src="{{ filme.poster_url }}" alt="{{ filme.titulo }}" loading="lazy">
+                        </a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum filme encontrado.</p>
+                {% endfor %}
             </div>
 
             <div class="container-botao-mais">
