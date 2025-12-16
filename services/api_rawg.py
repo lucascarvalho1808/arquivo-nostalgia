@@ -32,7 +32,7 @@ def _buscar_id_steam_por_nome(nome_jogo):
                 _steam_id_cache[nome_jogo] = steam_id
                 return steam_id
     except:
-        pass # Se falhar, paciência, usa a capa da RAWG
+        pass # Se falhar, usa a capa da RAWG
     
     return None
 
@@ -108,7 +108,7 @@ def _formatar_jogos_lista(resultados):
         })
     return jogos_formatados
 
-def buscar_jogos_populares(pagina=1, page_size=12):
+def buscar_jogos_populares(pagina=1, page_size=25):
     """Busca jogos populares."""
     endpoint = f"{BASE_URL}/games"
     params = {
