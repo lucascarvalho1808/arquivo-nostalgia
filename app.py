@@ -13,7 +13,8 @@ from services.api_tmdb import (
     buscar_filmes_classicos,  
     buscar_series_nostalgia,
     buscar_catalogo_filmes, 
-    buscar_catalogo_series  
+    buscar_catalogo_series, 
+    buscar_filmes_por_genero
 )
 import random
 
@@ -211,6 +212,20 @@ def api_filmes():
     """API que retorna filmes populares em JSON para o botão 'Ver mais'."""
     pagina = request.args.get('pagina', 1, type=int)
     lista_filmes = buscar_catalogo_filmes(pagina=pagina)
+    return jsonify(lista_filmes)
+
+@app.route('/api/filmes/filtrar')
+def api_filmes_filtrar():
+    """API que retorna filmes filtrados por gênero."""
+    generos = request.args.get('generos', '')  
+    pagina = request.args.get('pagina', 1, type=int)
+    
+    if generos:
+        lista_filmes = buscar_filmes_por_genero(generos=generos, pagina=pagina)
+    else:
+        # Se nenhum gênero selecionado, retorna populares
+        lista_filmes = buscar_catalogo_filmes(pagina=pagina)
+    
     return jsonify(lista_filmes)
 
 # Rotas provisórias para os links do menu não quebrarem a página

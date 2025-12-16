@@ -234,6 +234,35 @@ def buscar_catalogo_series(pagina=1):
         print(f"Erro ao buscar catálogo de séries: {e}")
         return []
 
+def buscar_filmes_por_genero(generos, pagina=1):
+    """
+    Busca filmes filtrados por gênero(s).
+    
+    Args:
+        generos: String com IDs separados por vírgula (ex: "28,12,35")
+        pagina: Número da página
+    
+    Returns:
+        Lista de filmes formatados
+    """
+    endpoint = f"{BASE_URL}/discover/movie"
+    params = {
+        'api_key': TMDB_API_KEY,
+        'language': 'pt-BR',
+        'page': pagina,
+        'sort_by': 'popularity.desc',
+        'with_genres': generos  # Ex: "28,35" = Ação E Comédia
+    }
+    
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        return _formatar_resultados(response.json().get('results', []), tipo_midia_padrao='movie')
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar filmes por gênero: {e}")
+        return []
+
 # Teste rápido das funções
 if __name__ == "__main__":
     print("--- Testando Filmes ---")

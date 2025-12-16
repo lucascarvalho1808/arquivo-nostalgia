@@ -1,50 +1,115 @@
-// Controle da página atual
+// Controle de estado
 let paginaAtual = 1;
+let generosSelecionados = '';  // Guarda os gêneros do filtro ativo
+
+// Elementos do DOM
 const botaoVerMais = document.getElementById('botao-ver-mais');
 const gradePosters = document.querySelector('.grade-posters');
+const btnBuscarFiltro = document.getElementById('btn-buscar-filtro');
+const formFiltros = document.getElementById('form-filtros');
 
-// Executa se o botão existir na página
+/**
+ * Cria o HTML de um poster e adiciona na grade
+ */
+function criarPoster(filme) {
+    if (filme.poster_url) {
+        const divPoster = document.createElement('div');
+        divPoster.className = 'item-poster';
+        divPoster.innerHTML = `
+            <a href="#">
+                <img src="${filme.poster_url}" alt="${filme.titulo}" loading="lazy">
+            </a>
+        `;
+        gradePosters.appendChild(divPoster);
+    }
+}
+
+/**
+ * Limpa a grade de posters
+ */
+function limparGrade() {
+    gradePosters.innerHTML = '';
+}
+
+/**
+ * Coleta os IDs dos gêneros selecionados nos checkboxes
+ */
+function coletarGenerosSelecionados() {
+    const checkboxes = formFiltros.querySelectorAll('input[name="genero"]:checked');
+    const ids = Array.from(checkboxes).map(cb => cb.value);
+    return ids.join(',');  // Ex: "28,35,12"
+}
+
+/**
+ * Busca filmes (com ou sem filtro) e atualiza a grade
+ */
+async function buscarFilmes(pagina, generos, substituir = false) {
+    try {
+        let url = `/api/filmes/filtrar?pagina=${pagina}`;
+        if (generos) {
+            url += `&generos=${generos}`;
+        }
+
+        const response = await fetch(url);
+        const filmes = await response.json();
+
+        if (filmes.length === 0) {
+            if (substituir) {
+                gradePosters.innerHTML = '<p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum filme encontrado para estes filtros.</p>';
+            }
+            botaoVerMais.textContent = 'Fim da lista';
+            botaoVerMais.disabled = true;
+            return;
+        }
+
+        // Se for uma nova busca (filtro), limpa a grade primeiro
+        if (substituir) {
+            limparGrade();
+        }
+
+        // Adiciona os filmes na grade
+        filmes.forEach(filme => criarPoster(filme));
+
+        // Reativa o botão
+        botaoVerMais.disabled = false;
+        botaoVerMais.textContent = 'Ver mais';
+
+    } catch (error) {
+        console.error('Erro ao carregar filmes:', error);
+        botaoVerMais.textContent = 'Erro - Tentar novamente';
+        botaoVerMais.disabled = false;
+    }
+}
+
+// --- EVENT LISTENERS ---
+
+// Botão "Ver mais" - Carrega próxima página
 if (botaoVerMais) {
     botaoVerMais.addEventListener('click', async function() {
-        // Desabilita o botão enquanto carrega
         botaoVerMais.disabled = true;
         botaoVerMais.textContent = 'Carregando...';
+        
+        paginaAtual++;
+        await buscarFilmes(paginaAtual, generosSelecionados, false);
+    });
+}
 
-        try {
-            // Incrementa a página e busca os novos filmes
-            paginaAtual++;
-            const response = await fetch(`/api/filmes?pagina=${paginaAtual}`);
-            const filmes = await response.json();
+// Botão "BUSCAR" do filtro - Aplica os filtros selecionados
+if (btnBuscarFiltro) {
+    btnBuscarFiltro.addEventListener('click', async function() {
+        // Reseta para página 1 quando aplica novo filtro
+        paginaAtual = 1;
+        generosSelecionados = coletarGenerosSelecionados();
+        
+        // Feedback visual
+        btnBuscarFiltro.textContent = 'Buscando...';
+        btnBuscarFiltro.disabled = true;
 
-            // Se não houver mais filmes, esconde o botão
-            if (filmes.length === 0) {
-                botaoVerMais.textContent = 'Fim da lista';
-                botaoVerMais.disabled = true;
-                return;
-            }
+        // Busca com os novos filtros (substituir = true)
+        await buscarFilmes(paginaAtual, generosSelecionados, true);
 
-            // Adiciona cada filme na grade
-            filmes.forEach(filme => {
-                if (filme.poster_url) {
-                    const divPoster = document.createElement('div');
-                    divPoster.className = 'item-poster';
-                    divPoster.innerHTML = `
-                        <a href="#">
-                            <img src="${filme.poster_url}" alt="${filme.titulo}" loading="lazy">
-                        </a>
-                    `;
-                    gradePosters.appendChild(divPoster);
-                }
-            });
-
-            // Reativa o botão
-            botaoVerMais.disabled = false;
-            botaoVerMais.textContent = 'Ver mais';
-
-        } catch (error) {
-            console.error('Erro ao carregar filmes:', error);
-            botaoVerMais.textContent = 'Erro - Tentar novamente';
-            botaoVerMais.disabled = false;
-        }
+        // Restaura o botão
+        btnBuscarFiltro.textContent = 'BUSCAR';
+        btnBuscarFiltro.disabled = false;
     });
 }
