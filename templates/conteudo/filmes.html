@@ -6,15 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filmes - Arquivo Nostalgia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../../static/css/conteudos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudos.css') }}">
 </head>
 
 <body>
 
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
-            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+            <a href="{{ url_for('index') }}" style="text-decoration: none; display: flex; align-items: center; color: inherit;">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
+                <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+            </a>
         </div>
 
         <div class="header-centro">
@@ -24,11 +26,11 @@
         </div>
 
         <nav class="menu-icones">
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('series') }}" class="item-menu">
                 <i class="fa-solid fa-tv"></i>
                 <span>Séries</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('jogos') }}" class="item-menu">
                 <i class="fa-solid fa-gamepad"></i>
                 <span>Jogos</span>
             </a>
@@ -228,6 +230,7 @@
             </div>
 
             <div class="grade-posters">
+                <div class="poster-vazio"></div>
                 <div class="poster-vazio"></div>
                 <div class="poster-vazio"></div>
                 <div class="poster-vazio"></div>
