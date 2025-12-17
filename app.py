@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from flask import Flask, flash, render_template, request, redirect, url_for
+from flask import Flask, flash, render_template, request, redirect, url_for, jsonify
 import os
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from supabase import create_client, Client
@@ -11,7 +11,11 @@ from services.api_tmdb import (
     buscar_filmes_populares, 
     buscar_series_populares, 
     buscar_filmes_classicos,  
-    buscar_series_nostalgia   
+    buscar_series_nostalgia,
+    buscar_catalogo_filmes, 
+    buscar_catalogo_series, 
+    buscar_filmes_por_genero,
+    buscar_series_por_genero
 )
 import random
 
@@ -198,6 +202,62 @@ def criar_arquivo():
 @login_required
 def meus_arquivos():
     return "<h1>Meus Arquivos</h1><p>Lista dos arquivos que você criou.</p>"
+
+@app.route('/filmes')
+def filmes():
+    lista_filmes = buscar_catalogo_filmes(pagina=1)
+    return render_template('conteudo/filmes.html', filmes=lista_filmes)
+
+@app.route('/api/filmes')
+def api_filmes():
+    """API que retorna filmes populares em JSON para o botão 'Ver mais'."""
+    pagina = request.args.get('pagina', 1, type=int)
+    lista_filmes = buscar_catalogo_filmes(pagina=pagina)
+    return jsonify(lista_filmes)
+
+@app.route('/api/filmes/filtrar')
+def api_filmes_filtrar():
+    """API que retorna filmes filtrados por gênero."""
+    generos = request.args.get('generos', '')  
+    pagina = request.args.get('pagina', 1, type=int)
+    
+    if generos:
+        lista_filmes = buscar_filmes_por_genero(generos=generos, pagina=pagina)
+    else:
+        # Se nenhum gênero selecionado, retorna populares
+        lista_filmes = buscar_catalogo_filmes(pagina=pagina)
+    
+    return jsonify(lista_filmes)
+
+# Rotas provisórias para os links do menu não quebrarem a página
+@app.route('/series')
+def series():
+    lista_series = buscar_catalogo_series(pagina=1)
+    return render_template('conteudo/series.html', series=lista_series)
+
+@app.route('/api/series')
+def api_series():
+    """API que retorna séries populares em JSON para o botão 'Ver mais'."""
+    pagina = request.args.get('pagina', 1, type=int)
+    lista_series = buscar_catalogo_series(pagina=pagina)
+    return jsonify(lista_series)
+
+@app.route('/api/series/filtrar')
+def api_series_filtrar():
+    """API que retorna séries filtradas por gênero."""
+    generos = request.args.get('generos', '')
+    pagina = request.args.get('pagina', 1, type=int)
+    
+    if generos:
+        lista_series = buscar_series_por_genero(generos=generos, pagina=pagina)
+    else:
+        lista_series = buscar_catalogo_series(pagina=pagina)
+    
+    return jsonify(lista_series)
+
+@app.route('/jogos')
+def jogos():
+    return render_template('conteudo/jogos.html') 
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
