@@ -14,7 +14,8 @@ from services.api_tmdb import (
     buscar_series_nostalgia,
     buscar_catalogo_filmes, 
     buscar_catalogo_series, 
-    buscar_filmes_por_genero
+    buscar_filmes_por_genero,
+    buscar_series_por_genero
 )
 import random
 
@@ -239,6 +240,19 @@ def api_series():
     """API que retorna séries populares em JSON para o botão 'Ver mais'."""
     pagina = request.args.get('pagina', 1, type=int)
     lista_series = buscar_catalogo_series(pagina=pagina)
+    return jsonify(lista_series)
+
+@app.route('/api/series/filtrar')
+def api_series_filtrar():
+    """API que retorna séries filtradas por gênero."""
+    generos = request.args.get('generos', '')
+    pagina = request.args.get('pagina', 1, type=int)
+    
+    if generos:
+        lista_series = buscar_series_por_genero(generos=generos, pagina=pagina)
+    else:
+        lista_series = buscar_catalogo_series(pagina=pagina)
+    
     return jsonify(lista_series)
 
 @app.route('/jogos')
