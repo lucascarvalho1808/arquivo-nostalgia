@@ -189,6 +189,11 @@ body {
     gap: 10px;
 }
 
+/* Esconde o checkbox original que controla o filtro */
+.input-gatilho {
+    display: none;
+}
+
 /* --- Esconde o checkbox original (a bolinha/quadrado) --- */
 .botao-genero input[type="checkbox"] {
     display: none;
@@ -243,7 +248,6 @@ body {
 /* --- Botão Buscar --- */
 .botao-buscar {
     width: 100%;
-    /* --- Estado normal: Azul Escuro (Apagado) --- */
     background-color: #0c3757;
     color: white;
     border: 1px solid #22658f;

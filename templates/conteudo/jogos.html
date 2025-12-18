@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogos - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/conteudos.css') }}">
+</head>
+
+<body>
+
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <a href="{{ url_for('index') }}" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; color: inherit;">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
+                <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+            </a>
+        </div>
+
+        <div class="header-centro">
+            <div class="caixa-titulo">
+                <h1>Jogos</h1>
+            </div>
+        </div>
+
+        <nav class="menu-icones">
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span>Filmes</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-tv"></i>
+                <span>Séries</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="#" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </header>
+
+    <div class="container-layout">
+
+        <input type="checkbox" id="gatilho-filtro" class="input-gatilho">
+
+        <label for="gatilho-filtro" class="botao-toggle-filtro">
+            <i class="fas fa-filter"></i>
+            <i class="fas fa-chevron-right seta-abre"></i>
+        </label>
+
+        <aside class="sidebar-filtro">
+            <div class="titulo-filtro">
+                <h2>Jogos</h2>
+            </div>
+
+            <div class="sidebar-conteudo">
+
+                <form class="lista-generos grade-generos">
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-bomb"></i>
+                            <span>Ação</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-compass"></i>
+                            <span>Aventura</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-dice-d20"></i>
+                            <span>RPG</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-crosshairs"></i>
+                            <span>Tiro</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Indie</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-chess-rook"></i>
+                            <span>Estratégia</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-mug-hot"></i>
+                            <span>Casual</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-city"></i>
+                            <span>Simulação</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-puzzle-piece"></i>
+                            <span>Puzzle</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-coins"></i>
+                            <span>Arcade</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-cubes"></i>
+                            <span>Plataforma</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>Corrida</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-basketball"></i>
+                            <span>Esportes</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-hand-fist"></i>
+                            <span>Luta</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-globe"></i>
+                            <span>MMO</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-users"></i>
+                            <span>Família</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-dice"></i>
+                            <span>Tabuleiro</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-layer-group"></i>
+                            <span>Cartas</span>
+                        </div>
+                    </label>
+
+                    <label class="botao-genero">
+                        <input type="checkbox">
+                        <div class="design-botao">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Educativo</span>
+                        </div>
+                    </label>
+
+                </form>
+
+                <button class="botao-buscar">BUSCAR</button>
+
+            </div>
+        </aside>
+
+        <main class="area-scrollavel">
+
+            <div class="barra-busca-container">
+                <div class="barra-topo">
+                    <input type="text" placeholder="Pesquisar jogo...">
+                    <i class="fas fa-search icone-lupa"></i>
+                </div>
+            </div>
+
+            <div class="grade-posters">
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+                <div class="poster-vazio"></div>
+            </div>
+
+            <div class="container-botao-mais">
+                <button id="botao-ver-mais">Ver mais</button>
+            </div>
+        </main>
+    </div>
+
+    <footer class="rodape-principal">
+        <div class="links-rodape">
+            <a href="#">Termos de Uso</a>
+            <span class="separador">|</span>
+            <a href="#">Política de Privacidade</a>
+        </div>
+
+        <div class="texto-copyright">
+            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+        </div>
+    </footer>
+
+</body>
+
+</html>
