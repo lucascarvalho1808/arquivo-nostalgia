@@ -14,6 +14,7 @@ email-validator==2.3.0
 Flask==3.1.2
 Flask-Login==0.6.3
 Flask-WTF==1.2.2
+gunicorn==23.0.0
 google-ai-generativelanguage==0.6.15
 google-api-core==2.28.1
 google-api-python-client==2.187.0
