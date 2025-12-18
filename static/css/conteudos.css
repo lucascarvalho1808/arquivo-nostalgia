@@ -1,0 +1,631 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- Fundo da página --- */
+body {
+    background-color: #417eaa;
+    color: white;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+/* --- Header --- */
+.cabecalho-principal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #22658f;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* --- Logo --- */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 1001;
+    flex-shrink: 0;
+    width: 240px;
+}
+
+.logo-container a {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-pequena {
+    max-width: 110px;
+    margin-bottom: 5px;
+}
+
+/* --- Nome Logo --- */
+.nome-site-header {
+    font-size: 12px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Título Central "Filmes" */
+.header-centro {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+/* Caixa Título Central "Filmes" */
+.caixa-titulo {
+    background-color: #0c3757;
+    padding: 10px 80px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Palavra Título Central "Filmes" */
+.caixa-titulo h1 {
+    font-size: 32px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Menu de Ícones */
+.menu-icones {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-shrink: 0;
+    width: 240px; 
+    justify-content: flex-end;
+}
+
+/* Decoração dos Ícones */
+.item-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+/* Decoração dos Ícones com Hover */
+.item-menu:hover {
+    opacity: 0.8;
+    color: #0c3757;
+}
+
+/* Tamanho dos Ícones */
+.item-menu i {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+
+/* --- Container Principal (Barra de Pesquisa e Pôsteres) --- */
+.container-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    padding-top: 140px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    gap: 30px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* --- Sidebar (Filtro) --- */
+.sidebar-filtro {
+    width: 250px;
+    background-color: #084063;
+    border-radius: 20px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: auto;
+    max-height: 62vh;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Sidebar ("Header") --- */
+.titulo-filtro {
+    background-color: #082d47;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* --- Sidebar (Nome "Filtro") --- */
+.titulo-filtro h2 {
+    margin: 0;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* --- Sidebar (Conteúdo "Gêneros") --- */
+.sidebar-conteudo {
+    padding: 15px;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 10px;
+    /* Para Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #0c3757 #084063;
+}
+
+/* --- ESTILO DA BARRA (Chrome, Edge, Safari, Opera) --- */
+.sidebar-conteudo::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* --- Transforma a lista numa grade de 2 colunas --- */
+.grade-generos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Esconde o checkbox original que controla o filtro */
+.input-gatilho {
+    display: none;
+}
+
+/* --- Esconde o checkbox original (a bolinha/quadrado) --- */
+.botao-genero input[type="checkbox"] {
+    display: none;
+}
+
+/* --- Caixa dos Gêneros do Filtro --- */
+.design-botao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background-color: #0c3757;
+    border: 1px solid #22658f;
+    border-radius: 12px;
+    padding: 15px 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #b0c4de;
+    text-align: center;
+}
+
+/* --- Caixa dos Gêneros do Filtro (Ícones) --- */
+.design-botao i {
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+/* --- Caixa dos Gêneros do Filtro (Texto) --- */
+.design-botao span {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* --- Caixa dos Gêneros do Filtro (Hover) --- */
+.botao-genero:hover .design-botao {
+    background-color: rgba(34, 101, 143, 0.3);
+    border-color: #22658f;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* --- Caixa dos Gêneros do Filtro (Quando selecionado) --- */
+.botao-genero input:checked+.design-botao {
+    background-color: #22658f;
+    color: white;
+    border-color: #5aa1d1;
+    box-shadow: 0 0 15px rgba(34, 101, 143, 0.6);
+    font-weight: 900;
+}
+
+/* --- Botão Buscar --- */
+.botao-buscar {
+    width: 100%;
+    background-color: #0c3757;
+    color: white;
+    border: 1px solid #22658f;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Botão Buscar (Hover) --- */
+.botao-buscar:hover {
+    background-color: #22658f;
+    border-color: #5aa1d1;
+    box-shadow: 0 0 20px rgba(34, 101, 143, 0.6);
+    transform: translateY(-2px);
+}
+
+/* --- Área de Scroll (DIREITA) --- */
+.area-scrollavel {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #0c3757 #417eaa;
+}
+
+/* --- Barra de Busca Espaçamento para Cima --- */
+.barra-busca-container {
+    margin-bottom: 20px;
+}
+
+/* --- Barra de Busca (Placeholder) --- */
+.barra-busca-container input::placeholder {
+    color: #0c3757;
+    opacity: 1;
+}
+
+/* --- Barra de Busca (Posição) --- */
+.barra-topo {
+    position: relative;
+    width: 100%;
+}
+
+/* --- Barra de Busca --- */
+.barra-topo input {
+    width: 100%;
+    padding: 15px 25px;
+    border-radius: 30px;
+    border: 3px solid #0c3757;
+    /* Borda igual da home */
+    outline: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #0c3757;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* --- Barra de Busca (ícone Lupa) --- */
+.icone-lupa {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0c3757;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* --- Área de Pôsteres --- */
+.grade-posters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 160px);
+    gap: 20px;
+    padding: 20px;
+    justify-content: center; 
+}
+
+/* Estilo do Poster */
+.item-poster {
+    width: 160px;  
+    height: 240px; 
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    background-color: #222;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.item-poster:hover {
+    transform: scale(1.05);
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.6);
+}
+
+.item-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Remove o estilo antigo do poster-vazio se ainda existir */
+.poster-vazio {
+    display: none;
+}
+
+/* --- Área Botão "Ver Mais" --- */
+.container-botao-mais {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 20px 0;
+}
+
+/* --- Estilização Botão "Ver Mais" --- */
+#botao-ver-mais {
+    background-color: #22658f;
+    border: 2px solid #0c3757;
+    color: #0c3757;
+    padding: 12px 50px;
+    font-size: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* --- Hover Botão "Ver Mais" --- */
+#botao-ver-mais:hover {
+    background-color: #0c3757;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(12, 55, 87, 0.3);
+}
+
+/* --- Footer --- */
+.rodape-principal {
+    width: 100%;
+    background-color: #0c3757;
+    color: #d1d1d1;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.px;
+    margin-top: auto;
+    flex-shrink: 0;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+/* --- Links Footer --- */
+.links-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- Links Footer Estilização --- */
+.links-rodape a {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    transition: color 0.3s;
+}
+
+/* --- Links Footer Hover --- */
+.links-rodape a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* --- Links Footer Separador --- */
+.separador {
+    color: #555;
+    font-size: 0.8rem;
+}
+
+/* --- Texto Copyrigth e Frase de Efeito --- */
+.texto-copyright {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (min-width: 861px) and (max-width: 1024px) {
+
+    .container-layout {
+        gap: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .sidebar-filtro {
+        width: 190px;
+        position: static;
+        height: auto;
+        transform: none;
+        display: flex;
+        max-height: 61vh;
+    }
+
+    .grade-generos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+    }
+
+    .titulo-filtro h2 {
+        font-size: 14px;
+    }
+
+    .item-genero {
+        font-size: 13px;
+    }
+
+    .design-botao {
+        padding: 10px 5px;
+    }
+
+    .design-botao i {
+        font-size: 16px;
+    }
+
+    .design-botao span {
+        font-size: 10px;
+    }
+
+    .grade-posters {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+
+    m-menu span {
+        display: none;
+    }
+
+    .input-gatilho, .botao-toggle-filtro {
+        display: none;
+    }
+}
+
+@media (max-width: 860px) {
+
+    .cabecalho-principal {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 10px;
+        gap: 15px;
+    }
+
+    .logo-container {
+        order: 1;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .menu-icones {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        gap: 25px;
+    }
+
+    .item-menu span {
+        display: block;
+    }
+
+    .header-centro {
+        order: 3;
+        width: 100%;
+    }
+
+    .caixa-titulo {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .caixa-titulo h1 {
+        font-size: 20px;
+    }
+
+    .container-layout {
+        padding-top: 260px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .sidebar-filtro {
+        position: fixed;
+        width: 210px;
+        top: 300px;
+        left: -250px;
+        height: calc(100vh - 310px);
+        max-height: none;
+        max-height: 67vh;
+        z-index: 1999;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .botao-toggle-filtro {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: fixed;
+        left: 0;
+        top: 322px;
+        z-index: 2000;
+        background-color: #0c3757;
+        color: white;
+        padding: 10px 12px 10px 8px;
+        border-radius: 0 30px 30px 0;
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        transition: left 0.3s ease, background 0.3s;
+    }
+
+    .input-gatilho:checked~.sidebar-filtro {
+        left: 5px;
+    }
+
+    .input-gatilho:checked~.botao-toggle-filtro {
+        left: 215px;
+        background-color: #084063;
+    }
+
+    .input-gatilho:checked~.botao-toggle-filtro .seta-abre {
+        transform: rotate(180deg);
+    }
+
+    .grade-generos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .design-botao span {
+        white-space: normal;
+        font-size: 10px;
+        line-height: 1.1;
+        text-align: center;
+        overflow-wrap: break-word;
+    }
+
+    .design-botao {
+        padding: 8px 2px;
+    }
+
+    .rodape-principal {
+        display: none;
+    }
+
+    .container-botao-mais {
+        margin-bottom: 40px;
+    }
+}
+
+@media (min-width: 1025px) {
+
+    .sidebar-filtro {
+        max-height: 100vh;
+    }
+
+    .input-gatilho, .botao-toggle-filtro {
+        display: none;
+    }
+}
