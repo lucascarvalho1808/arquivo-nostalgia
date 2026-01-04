@@ -10,31 +10,30 @@ BASE_URL = "https://api.rawg.io/api"
 
 _steam_id_cache = {}
 
+
 def _buscar_id_steam_por_nome(nome_jogo):
     """
     Busca o AppID da Steam usando o nome do jogo na API de busca da Steam.
     """
-    # Verifica cache primeiro
     if nome_jogo in _steam_id_cache:
         return _steam_id_cache[nome_jogo]
 
     try:
-        # API de busca da Steam 
         url = f"https://store.steampowered.com/api/storesearch/?term={nome_jogo}&l=english&cc=US"
-        response = requests.get(url, timeout=1) # Timeout curto
+        response = requests.get(url, timeout=1)
         data = response.json()
         
         if data and data.get('total') > 0:
             items = data.get('items', [])
             if items:
-                # Pega o primeiro resultado
                 steam_id = str(items[0]['id'])
                 _steam_id_cache[nome_jogo] = steam_id
                 return steam_id
     except:
-        pass # Se falhar, usa a capa da RAWG
+        pass
     
     return None
+
 
 def _extrair_steam_id(stores, nome_jogo):
     """
@@ -49,24 +48,24 @@ def _extrair_steam_id(stores, nome_jogo):
             store_info = loja_item.get('store', {})
             if store_info.get('slug') == 'steam':
                 tem_steam = True
-                # Tenta pegar URL direta se existir
                 url_loja = loja_item.get('url', '') or loja_item.get('url_en', '')
                 match = re.search(r'/app/(\d+)', str(url_loja))
                 if match:
                     return match.group(1)
                 break
     
-    
     if tem_steam and nome_jogo:
         return _buscar_id_steam_por_nome(nome_jogo)
         
     return None
+
 
 def _gerar_capa_steam(steam_id):
     """Gera a URL da capa vertical da Steam."""
     if not steam_id:
         return None
     return f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{steam_id}/library_600x900.jpg"
+
 
 def _buscar_dados_steam_detalhes(app_id):
     """Busca dados ricos na API pública da Steam."""
@@ -80,21 +79,20 @@ def _buscar_dados_steam_detalhes(app_id):
         print(f"Erro ao conectar na Steam: {e}")
     return None
 
+
 def _formatar_jogos_lista(resultados):
     """Formata a lista. Define se usa estilo Steam ou RAWG."""
     jogos_formatados = []
     for jogo in resultados:
-        # 1. Tenta achar ID e Capa Steam
         steam_id = _extrair_steam_id(jogo.get('stores', []), jogo.get('name'))
         capa_steam = _gerar_capa_steam(steam_id)
         
-        # 2. Define a imagem principal e o estilo
         if capa_steam:
             poster_principal = capa_steam
-            origem = 'steam' # Estilo Limpo (Só imagem)
+            origem = 'steam'
         else:
             poster_principal = jogo.get('background_image')
-            origem = 'rawg'  # Estilo Card (Com título)
+            origem = 'rawg'
 
         jogos_formatados.append({
             'id': jogo['id'],
@@ -102,11 +100,12 @@ def _formatar_jogos_lista(resultados):
             'slug': jogo.get('slug'),
             'poster_url': poster_principal,
             'imagem_rawg': jogo.get('background_image'), 
-            'origem_imagem': origem, # Para o HTML saber qual layout usar
+            'origem_imagem': origem,
             'nota': jogo.get('metacritic'),
             'tipo': 'game'
         })
     return jogos_formatados
+
 
 def buscar_jogos_populares(pagina=1, page_size=25):
     """Busca jogos populares."""
@@ -127,6 +126,7 @@ def buscar_jogos_populares(pagina=1, page_size=25):
         print(f"Erro ao buscar jogos na RAWG: {e}")
         return []
 
+
 def pesquisar_jogos(query):
     """Pesquisa jogos por nome."""
     endpoint = f"{BASE_URL}/games"
@@ -144,6 +144,7 @@ def pesquisar_jogos(query):
     except requests.exceptions.RequestException as e:
         print(f"Erro ao pesquisar jogos: {e}")
         return []
+
 
 def buscar_detalhes_jogo(game_id_ou_slug):
     """Busca detalhada HÍBRIDA."""
@@ -192,6 +193,74 @@ def buscar_detalhes_jogo(game_id_ou_slug):
     except Exception as e:
         print(f"Erro ao buscar detalhes do jogo {game_id_ou_slug}: {e}")
         return None
+
+
+def buscar_catalogo_jogos(pagina=1):
+    """
+    Busca jogos para a página /jogos.
+    Usa a mesma lógica de formatação da Home.
+    """
+    endpoint = f"{BASE_URL}/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'page': pagina,
+        'page_size': 20,
+        'ordering': '-added',
+    }
+    
+    try:
+        response = requests.get(endpoint, params=params, timeout=10)
+        response.raise_for_status()
+        resultados = response.json().get('results', [])
+        
+        # Usa a mesma função de formatação da Home
+        jogos = _formatar_jogos_lista(resultados)
+        
+        # Adiciona campos extras para a página de catálogo
+        for jogo in jogos:
+            jogo['imagem_fallback'] = jogo.get('imagem_rawg')
+            jogo['data_lancamento'] = None
+        
+        return jogos
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar catálogo de jogos: {e}")
+        return []
+
+
+def buscar_jogos_por_genero(generos, pagina=1):
+    """
+    Busca jogos filtrados por gênero.
+    Usa a mesma lógica de formatação da Home.
+    """
+    endpoint = f"{BASE_URL}/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'page': pagina,
+        'page_size': 20,
+        'ordering': '-added',
+        'genres': generos
+    }
+    
+    try:
+        response = requests.get(endpoint, params=params, timeout=10)
+        response.raise_for_status()
+        resultados = response.json().get('results', [])
+        
+        # Usa a mesma função de formatação da Home
+        jogos = _formatar_jogos_lista(resultados)
+        
+        # Adiciona campos extras para a página de catálogo
+        for jogo in jogos:
+            jogo['imagem_fallback'] = jogo.get('imagem_rawg')
+            jogo['data_lancamento'] = None
+        
+        return jogos
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar jogos por gênero: {e}")
+        return []
+
 
 # Testes
 if __name__ == "__main__":

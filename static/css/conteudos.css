@@ -629,3 +629,48 @@ body {
         display: none;
     }
 }
+
+/* --- Cards de Jogos (imagens horizontais do RAWG) --- */
+.game-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    background-color: #0c3757;
+}
+
+.game-card:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.game-card a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.game-img-container {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.game-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-title {
+    padding: 8px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #0c3757;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
