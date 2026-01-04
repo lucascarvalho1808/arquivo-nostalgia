@@ -193,6 +193,141 @@ def buscar_detalhes_jogo(game_id_ou_slug):
         print(f"Erro ao buscar detalhes do jogo {game_id_ou_slug}: {e}")
         return None
 
+def buscar_catalogo_jogos(pagina=1):
+    """
+    Função EXCLUSIVA para a página /jogos.
+    Busca jogos populares com preferência para capas da Steam.
+    """
+    endpoint = f"{BASE_URL}/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'page': pagina,
+        'page_size': 20,
+        'ordering': '-rating'
+    }
+    
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        dados = response.json()
+        
+        jogos_formatados = []
+        for item in dados.get('results', []):
+            # Tenta pegar o Steam ID para usar a capa vertical
+            steam_id = None
+            stores = item.get('stores') or []
+            for store in stores:
+                store_info = store.get('store', {})
+                if store_info.get('slug') == 'steam':
+                    # Precisamos buscar detalhes do jogo para pegar o Steam App ID
+                    steam_id = _buscar_steam_id(item.get('id'))
+                    break
+            
+            # Define a URL do poster
+            if steam_id:
+                poster_url = f"https://steamcdn-a.akamaihd.net/steam/apps/{steam_id}/library_600x900.jpg"
+                imagem_fallback = item.get('background_image')
+            else:
+                poster_url = item.get('background_image')
+                imagem_fallback = None
+            
+            jogos_formatados.append({
+                'id': item.get('id'),
+                'titulo': item.get('name'),
+                'poster_url': poster_url,
+                'imagem_fallback': imagem_fallback,
+                'nota': item.get('rating'),
+                'data_lancamento': item.get('released'),
+                'tem_steam': steam_id is not None
+            })
+        
+        return jogos_formatados
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar catálogo de jogos: {e}")
+        return []
+
+
+def _buscar_steam_id(game_id):
+    """
+    Busca o Steam App ID de um jogo específico.
+    """
+    endpoint = f"{BASE_URL}/games/{game_id}/stores"
+    params = {'key': RAWG_API_KEY}
+    
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        dados = response.json()
+        
+        for store in dados.get('results', []):
+            if store.get('store_id') == 1:  # Steam = ID 1
+                url = store.get('url', '')
+                # Extrai o App ID da URL da Steam
+                # Ex: https://store.steampowered.com/app/123456/
+                if '/app/' in url:
+                    parts = url.split('/app/')
+                    if len(parts) > 1:
+                        app_id = parts[1].split('/')[0]
+                        return app_id
+        return None
+        
+    except:
+        return None
+
+
+def buscar_jogos_por_genero(generos, pagina=1):
+    """
+    Busca jogos filtrados por gênero(s) com preferência para capas da Steam.
+    """
+    endpoint = f"{BASE_URL}/games"
+    params = {
+        'key': RAWG_API_KEY,
+        'page': pagina,
+        'page_size': 20,
+        'ordering': '-rating',
+        'genres': generos
+    }
+    
+    try:
+        response = requests.get(endpoint, params=params)
+        response.raise_for_status()
+        dados = response.json()
+        
+        jogos_formatados = []
+        for item in dados.get('results', []):
+            # Tenta pegar o Steam ID
+            steam_id = None
+            stores = item.get('stores') or []
+            for store in stores:
+                store_info = store.get('store', {})
+                if store_info.get('slug') == 'steam':
+                    steam_id = _buscar_steam_id(item.get('id'))
+                    break
+            
+            if steam_id:
+                poster_url = f"https://steamcdn-a.akamaihd.net/steam/apps/{steam_id}/library_600x900.jpg"
+                imagem_fallback = item.get('background_image')
+            else:
+                poster_url = item.get('background_image')
+                imagem_fallback = None
+            
+            jogos_formatados.append({
+                'id': item.get('id'),
+                'titulo': item.get('name'),
+                'poster_url': poster_url,
+                'imagem_fallback': imagem_fallback,
+                'nota': item.get('rating'),
+                'data_lancamento': item.get('released'),
+                'tem_steam': steam_id is not None
+            })
+        
+        return jogos_formatados
+
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao buscar jogos por gênero: {e}")
+        return []
+
 # Testes
 if __name__ == "__main__":
     print("--- Testando Jogos Populares ---")

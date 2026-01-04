@@ -26,11 +26,11 @@
         </div>
 
         <nav class="menu-icones">
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('filmes') }}" class="item-menu">
                 <i class="fa-solid fa-clapperboard"></i>
                 <span>Filmes</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('series') }}" class="item-menu">
                 <i class="fa-solid fa-tv"></i>
                 <span>Séries</span>
             </a>
@@ -60,35 +60,34 @@
             </div>
 
             <div class="sidebar-conteudo">
-
-                <form class="lista-generos grade-generos">
+                <form class="lista-generos grade-generos" id="form-filtros">
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="4">
                         <div class="design-botao">
-                            <i class="fas fa-bomb"></i>
+                            <i class="fas fa-fist-raised"></i>
                             <span>Ação</span>
                         </div>
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="3">
                         <div class="design-botao">
-                            <i class="fas fa-compass"></i>
+                            <i class="fas fa-map-marked-alt"></i>
                             <span>Aventura</span>
                         </div>
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="5">
                         <div class="design-botao">
-                            <i class="fas fa-dice-d20"></i>
+                            <i class="fas fa-hat-wizard"></i>
                             <span>RPG</span>
                         </div>
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="2">
                         <div class="design-botao">
                             <i class="fas fa-crosshairs"></i>
                             <span>Tiro</span>
@@ -96,23 +95,15 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="10">
                         <div class="design-botao">
-                            <i class="fas fa-lightbulb"></i>
-                            <span>Indie</span>
-                        </div>
-                    </label>
-
-                    <label class="botao-genero">
-                        <input type="checkbox">
-                        <div class="design-botao">
-                            <i class="fas fa-chess-rook"></i>
+                            <i class="fas fa-chess"></i>
                             <span>Estratégia</span>
                         </div>
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="14">
                         <div class="design-botao">
                             <i class="fas fa-mug-hot"></i>
                             <span>Casual</span>
@@ -128,7 +119,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="7">
                         <div class="design-botao">
                             <i class="fas fa-puzzle-piece"></i>
                             <span>Puzzle</span>
@@ -136,7 +127,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="11">
                         <div class="design-botao">
                             <i class="fas fa-coins"></i>
                             <span>Arcade</span>
@@ -144,7 +135,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="83">
                         <div class="design-botao">
                             <i class="fas fa-cubes"></i>
                             <span>Plataforma</span>
@@ -152,7 +143,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="1">
                         <div class="design-botao">
                             <i class="fas fa-flag-checkered"></i>
                             <span>Corrida</span>
@@ -160,7 +151,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="15">
                         <div class="design-botao">
                             <i class="fas fa-basketball"></i>
                             <span>Esportes</span>
@@ -168,7 +159,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="6">
                         <div class="design-botao">
                             <i class="fas fa-hand-fist"></i>
                             <span>Luta</span>
@@ -176,7 +167,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="19">
                         <div class="design-botao">
                             <i class="fas fa-globe"></i>
                             <span>MMO</span>
@@ -192,7 +183,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="28">
                         <div class="design-botao">
                             <i class="fas fa-dice"></i>
                             <span>Tabuleiro</span>
@@ -200,7 +191,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="51">
                         <div class="design-botao">
                             <i class="fas fa-layer-group"></i>
                             <span>Cartas</span>
@@ -208,7 +199,7 @@
                     </label>
 
                     <label class="botao-genero">
-                        <input type="checkbox">
+                        <input type="checkbox" name="genero" value="59">
                         <div class="design-botao">
                             <i class="fas fa-graduation-cap"></i>
                             <span>Educativo</span>
@@ -217,8 +208,7 @@
 
                 </form>
 
-                <button class="botao-buscar">BUSCAR</button>
-
+                <button type="button" class="botao-buscar" id="btn-buscar-filtro">BUSCAR</button>
             </div>
         </aside>
 
@@ -232,26 +222,22 @@
             </div>
 
             <div class="grade-posters">
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
-                <div class="poster-vazio"></div>
+                {% for jogo in jogos %}
+                    {% if jogo.poster_url %}
+                    <div class="item-poster">
+                        <a href="#">
+                            <img src="{{ jogo.poster_url }}" 
+                                 alt="{{ jogo.titulo }}" 
+                                 loading="lazy"
+                                 {% if jogo.imagem_fallback %}
+                                 onerror="this.onerror=null; this.src='{{ jogo.imagem_fallback }}';"
+                                 {% endif %}>
+                        </a>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum jogo encontrado.</p>
+                {% endfor %}
             </div>
 
             <div class="container-botao-mais">
@@ -271,6 +257,8 @@
             Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
         </div>
     </footer>
+
+    <script src="{{ url_for('static', filename='js/jogos.js') }}"></script>
 
 </body>
 
