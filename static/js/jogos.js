@@ -8,14 +8,19 @@ const btnBuscarFiltro = document.getElementById('btn-buscar-filtro');
 const formFiltros = document.getElementById('form-filtros');
 
 /**
- * Cria o HTML de um poster e adiciona na grade
+ * Cria o HTML de um poster e adiciona na grade.
+ * Jogos da Steam: capa vertical (poster)
+ * Jogos sem Steam: imagem horizontal do RAWG (card com título)
  */
 function criarPoster(jogo) {
-    if (jogo.poster_url) {
-        const divPoster = document.createElement('div');
+    if (!jogo.poster_url) return;
+    
+    const divPoster = document.createElement('div');
+    
+    if (jogo.origem_imagem === 'steam') {
+        // Jogo da Steam: poster vertical
         divPoster.className = 'item-poster';
         
-        // Adiciona fallback se existir
         const fallbackAttr = jogo.imagem_fallback 
             ? `onerror="this.onerror=null; this.src='${jogo.imagem_fallback}';"` 
             : '';
@@ -28,8 +33,20 @@ function criarPoster(jogo) {
                      ${fallbackAttr}>
             </a>
         `;
-        gradePosters.appendChild(divPoster);
+    } else {
+        // Jogo sem Steam: card com imagem horizontal + título
+        divPoster.className = 'item-poster game-card';
+        divPoster.innerHTML = `
+            <a href="#">
+                <div class="game-img-container">
+                    <img src="${jogo.poster_url}" alt="${jogo.titulo}" loading="lazy">
+                </div>
+                <h3 class="game-title">${jogo.titulo}</h3>
+            </a>
+        `;
     }
+    
+    gradePosters.appendChild(divPoster);
 }
 
 /**
@@ -70,15 +87,12 @@ async function buscarJogos(pagina, generos, substituir = false) {
             return;
         }
 
-        // Se for uma nova busca (filtro), limpa a grade primeiro
         if (substituir) {
             limparGrade();
         }
 
-        // Adiciona os jogos na grade
         jogos.forEach(jogo => criarPoster(jogo));
 
-        // Reativa o botão
         botaoVerMais.disabled = false;
         botaoVerMais.textContent = 'Ver mais';
 
@@ -90,7 +104,6 @@ async function buscarJogos(pagina, generos, substituir = false) {
 }
 
 
-// Botão "Ver mais" - Carrega próxima página
 if (botaoVerMais) {
     botaoVerMais.addEventListener('click', async function() {
         botaoVerMais.disabled = true;
@@ -101,7 +114,6 @@ if (botaoVerMais) {
     });
 }
 
-// Botão "BUSCAR" do filtro - Aplica os filtros selecionados
 if (btnBuscarFiltro) {
     btnBuscarFiltro.addEventListener('click', async function() {
         paginaAtual = 1;
