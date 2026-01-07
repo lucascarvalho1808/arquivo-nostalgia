@@ -156,6 +156,55 @@ input.caixa-branca {
     font-weight: bold;
 }
 
+/* --- MEDIA QUERIES --- */
+
+@media (max-width: 480px) {
+
+    .cartao-formulario {
+        padding: 30px 15px;
+        width: 100%;
+        margin: 20px auto;
+    }
+
+    .titulo-nostalgia {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .logo-form {
+        max-width: 150px;
+        margin-bottom: 5px;
+    }
+
+    .botao-cadastrar, 
+    .botao-entrar {
+        font-size: 15px;
+        padding: 12px 10px;
+        white-space: normal; 
+        line-height: 1.2;
+        width: 100%;
+    }
+
+    input.caixa-branca {
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    .label-visual {
+        font-size: 15px;
+    }
+    
+    i {
+        font-size: 20px;
+    }
+
+    .links-login {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+    }
+}
 
 @media (max-width: 300px) {
     .cartao-formulario {
