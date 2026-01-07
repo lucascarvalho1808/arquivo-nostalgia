@@ -686,6 +686,33 @@ body {
     }
 }
 
+@media (max-width: 480px) {
+
+    .container-layout {
+        padding-left: 20px; 
+        padding-right: 20px;
+    }
+
+    .grade-posters {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px; 
+        padding-bottom: 20px;
+        justify-content: center;
+    }
+
+    .item-poster {
+        width: 100%;
+        aspect-ratio: auto;
+        height: auto; 
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        margin: 0;
+        display: block;
+    }
+}
+
 /* --- Cards de Jogos (imagens horizontais do RAWG) --- */
 .game-card {
     position: relative;
