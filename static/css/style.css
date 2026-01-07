@@ -200,11 +200,13 @@ body {
     border-radius: 30px;
     font-weight: 800;
     font-size: 20px;
-    margin-bottom: 15px;
-    
+    margin-bottom: 15px;   
     /* Animação */
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    position: relative;  
+    z-index: 100;        
+    display: inline-block;
 }
 
 /* ---  Efeito Hover  --- */
