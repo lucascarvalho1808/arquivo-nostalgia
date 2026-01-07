@@ -6,9 +6,11 @@ from .api_tmdb import (
 )
 
 from .api_rawg import (
-    buscar_jogos_populares, 
-    pesquisar_jogos, 
-    buscar_detalhes_jogo
+   buscar_jogos_populares,
+    pesquisar_jogos,
+    buscar_detalhes_jogo,
+    buscar_catalogo_jogos,
+    buscar_jogos_por_genero
 )
 
 from .ia_gemini import gerar_arquivo_confidencial

@@ -1,6 +1,6 @@
 import random
 from datetime import datetime
-from services.api_tmdb import buscar_filmes_populares
+from services.api_tmdb import buscar_filmes_classicos
 from services.ia_gemini import gerar_arquivo_confidencial
 
 _cache_curiosidade = None
@@ -23,8 +23,8 @@ def get_curiosidade_diaria():
     print("Gerando nova curiosidade do dia...")
 
     try:
-        # Busca lista de filmes populares
-        filmes = buscar_filmes_populares(pagina=1)
+        # Busca lista de filmes clássicos
+        filmes = buscar_filmes_classicos(pagina=1)
         
         if not filmes:
             return None

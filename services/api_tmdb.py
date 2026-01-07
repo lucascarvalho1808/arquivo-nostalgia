@@ -145,7 +145,7 @@ def buscar_detalhes_filme(filme_id):
         print(f"Erro ao buscar detalhes do filme {filme_id}: {e}")
         return None
 
-def buscar_filmes_classicos(pagina=1):
+def buscar_filmes_classicos(pagina=[1, 2]):
     """
     Busca filmes bem avaliados (Top Rated) para a seção de Clássicos.
     """
