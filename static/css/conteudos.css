@@ -447,6 +447,18 @@ body {
 }
 
 /* --- MEDIA QUERIES --- */
+
+@media (min-width: 1025px) {
+
+    .sidebar-filtro {
+        max-height: 100vh;
+    }
+
+    .input-gatilho, .botao-toggle-filtro {
+        display: none;
+    }
+}
+
 @media (min-width: 861px) and (max-width: 1024px) {
 
     .container-layout {
@@ -498,6 +510,61 @@ body {
         display: none;
     }
 
+    .input-gatilho, .botao-toggle-filtro {
+        display: none;
+    }
+}
+
+@media (min-width: 861px) and (max-width: 1023px) {
+
+    .container-layout {
+        gap: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .sidebar-filtro {
+        width: 200px; 
+        min-width: 200px; 
+        display: flex;
+        flex-direction: column;
+        max-height: 65vh; 
+        height: auto;
+        overflow-y: auto;
+        align-self: flex-start;
+    }
+
+    .grade-generos { 
+        grid-template-columns: repeat(2, minmax(0, 1fr)); 
+        gap: 5px; }
+
+    .titulo-filtro h2 { 
+        font-size: 14px; 
+    }
+
+    .design-botao { 
+        padding: 8px 4px; 
+    }
+
+    .design-botao i { 
+        font-size: 16px; 
+    }
+
+    .design-botao span { 
+        font-size: 10px; 
+    }
+
+    .grade-posters {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); 
+        gap: 15px;
+    }
+
+    .item-poster {
+        width: 100%;       
+        height: auto;      
+        aspect-ratio: 2/3; 
+    }
+    
     .input-gatilho, .botao-toggle-filtro {
         display: none;
     }
@@ -616,17 +683,6 @@ body {
 
     .container-botao-mais {
         margin-bottom: 40px;
-    }
-}
-
-@media (min-width: 1025px) {
-
-    .sidebar-filtro {
-        max-height: 100vh;
-    }
-
-    .input-gatilho, .botao-toggle-filtro {
-        display: none;
     }
 }
 
