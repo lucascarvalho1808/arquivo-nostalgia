@@ -185,6 +185,13 @@ body {
     transition: background 1.3s;
 }
 
+/* --- Botão Criar Arquivo com Hover--- */
+.botao_descricao:hover{
+    background-color: #084063; 
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
+
 /* --- Listas / Carrosséis --- */
 .categoria {
     margin-bottom: 50px;
