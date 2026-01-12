@@ -146,6 +146,7 @@ body {
     width: 95%; 
     max-width: 1100px; 
     margin: 0 auto 40px auto; 
+    box-shadow: 10px 10px 1px #0c3757;
 }
 
 /* --- Seção Descrição(Título)--- */
@@ -501,6 +502,7 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     display: flex;
     justify-content: center;
+    box-shadow: 10px 10px 1px #0c3757;
 }
 
 /* --- Joga o conteúdo do Arquivo Confidencial mais para o meio --- */
