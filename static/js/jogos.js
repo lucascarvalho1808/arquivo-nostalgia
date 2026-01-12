@@ -18,31 +18,49 @@ function criarPoster(jogo) {
     const divPoster = document.createElement('div');
     
     if (jogo.origem_imagem === 'steam') {
-        // Jogo da Steam: poster vertical
-        divPoster.className = 'item-poster';
+        // --- ESTILO 1: STEAM (Vertical) ---
+        divPoster.className = 'item-poster poster-clean steam-card';
         
         const fallbackAttr = jogo.imagem_fallback 
             ? `onerror="this.onerror=null; this.src='${jogo.imagem_fallback}';"` 
             : '';
-        
+            
         divPoster.innerHTML = `
-            <a href="#">
-                <img src="${jogo.poster_url}" 
-                     alt="${jogo.titulo}" 
-                     loading="lazy"
-                     ${fallbackAttr}>
+            <a href="#" style="display: block; position: relative; height: 100%;">
+                <div class="poster-wrapper" style="height: 100%; width: 100%;">
+                    <img src="${jogo.poster_url}" 
+                         alt="${jogo.titulo}" 
+                         class="poster-jogos" 
+                         loading="lazy"
+                         style="height: 100%; width: 100%; object-fit: cover;"
+                         ${fallbackAttr}>
+                    
+                    <div class="game-info-overlay">
+                        <h3 class="game-title">${jogo.titulo}</h3>
+                    </div>
+                </div>
             </a>
         `;
     } else {
-        // Jogo sem Steam: card com imagem horizontal + título
-        divPoster.className = 'item-poster game-card';
+        // --- ESTILO 2: RAWG (Horizontal forçado a preencher) ---
+        // Aqui está o segredo: adicionei os styles inline igual fizemos no HTML
+        divPoster.className = 'game-card';
+        divPoster.style.height = '100%'; // Garante altura total
+
         divPoster.innerHTML = `
-            <a href="#">
-                <div class="game-img-container">
-                    <img src="${jogo.poster_url}" alt="${jogo.titulo}" loading="lazy">
-                </div>
-                <h3 class="game-title">${jogo.titulo}</h3>
-            </a>
+            <div class="item-poster poster-clean" style="height: 100%; width: 100%;">
+                <a href="#" style="display: block; height: 100%; width: 100%; position: relative;">
+                    <img src="${jogo.poster_url}" 
+                         alt="${jogo.titulo}" 
+                         class="poster-jogos" 
+                         loading="lazy"
+                         style="height: 100%; width: 100%; object-fit: cover; object-position: center top; display: block;">
+                    
+                    <div class="game-info-overlay">
+                        <h3 class="game-title">${jogo.titulo}</h3>
+                    </div>
+                </a>
+            </div>
         `;
     }
     
