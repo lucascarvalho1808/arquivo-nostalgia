@@ -93,6 +93,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     color: #0c3757;
+    cursor: pointer;
 }
 
 .menu-icones {
@@ -215,17 +216,17 @@ body {
 }
 
 .tipo-filme {
-    background-color: #d64949; 
+    background-color: #0c3757; 
 }
 
 /* Verde suave para Séries */
 .tipo-serie {
-    background-color: #4caf50;
+    background-color: #0c3757;
 }
 
 /* Roxo suave para Jogos */
 .tipo-jogo {
-    background-color: #9c27b0;
+    background-color: #0c3757;
 }
 
 .poster-vazio:hover {
@@ -365,4 +366,155 @@ body {
     .cabecalho-principal {
         padding: 15px 15px;
     }
+}
+
+/* --- Estilos para os posters com imagem --- */
+.item-poster {
+    position: relative;
+    aspect-ratio: 2 / 3;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.item-poster:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.item-poster a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.item-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+/* --- Página Sem Resultados --- */
+.sem-resultados-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    min-height: 50vh;
+}
+
+.icone-sem-resultado {
+    font-size: 4rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 25px;
+    animation: girar 4s linear infinite;
+}
+
+@keyframes girar {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.sem-resultados-container h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.sem-resultados-container > p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+}
+
+.termo-buscado {
+    margin: 15px 0;
+}
+
+.termo-buscado strong {
+    color: #0c3757;
+}
+
+.sugestoes {
+    background-color:#22658f;
+    padding: 20px 30px;
+    border-radius: 15px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.sugestoes p {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.sugestoes ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sugestoes li {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 5px 0;
+    font-size: 0.95rem;
+}
+
+.sugestoes li::before {
+    content: "• ";
+    color: #0c3757;
+}
+
+.btn-voltar-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #1a4b6e;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-voltar-home:hover {
+    background-color: #0c3757;
+    transform: scale(1.05);
+}
+
+/* --- Crédito API --- */
+.credito-api {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 5px 0;
+}
+
+.credito-api a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+}
+
+.credito-api a:hover {
+    text-decoration: underline;
+}
+
+/* --- Cursor da busca --- */
+.icone-busca {
+    cursor: pointer;
+}
+
+/* --- Footer ajuste de altura --- */
+.rodape-principal {
+    height: auto;
+    min-height: 60px;
+    padding: 15px 0;
+    gap: 5px;
 }

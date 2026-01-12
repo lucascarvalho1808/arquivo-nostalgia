@@ -4,92 +4,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Busca - Arquivo Nostalgia</title>
+    <title>Busca: "{{ termo }}" - Arquivo Nostalgia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/resultados.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" type="image/x-icon">
 </head>
 
 <body>
 
     <header class="cabecalho-principal">
         <div class="logo-container">
-            <img
-            src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
-            alt="Logo"
-            class="logo-pequena"
-          />
+            <a href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena" />
+            </a>
             <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
         </div>
 
-        <div class="barra-busca">
-            <input type="text" placeholder="Buscar Memórias:">
-            <i class="fa-solid fa-magnifying-glass icone-busca"></i>
-        </div>
+        <form action="{{ url_for('busca.busca_geral') }}" method="GET" class="barra-busca">
+            <input type="text" name="q" placeholder="Buscar Memórias:" value="{{ termo }}" required>
+            <i class="fa-solid fa-magnifying-glass icone-busca" onclick="this.closest('form').submit()"></i>
+        </form>
 
         <nav class="menu-icones">
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('filmes.index') }}" class="item-menu">
                 <i class="fa-solid fa-clapperboard"></i>
                 <span>Filmes</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('series.index') }}" class="item-menu">
                 <i class="fa-solid fa-tv"></i>
                 <span>Séries</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('jogos.index') }}" class="item-menu">
                 <i class="fa-solid fa-gamepad"></i>
                 <span>Jogos</span>
             </a>
-            <a href="#" class="item-menu">
+            <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
                 <i class="fa-regular fa-folder-open"></i>
                 <span>Arquivos</span>
             </a>
-            <a href="#" class="item-menu">
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('main.perfil') }}" class="item-menu">
                 <i class="fa-solid fa-circle-user"></i>
                 <span>Perfil</span>
             </a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Login</span>
+            </a>
+            {% endif %}
         </nav>
     </header>
 
     <main class="container-principal">
-        
         <div class="area-conteudo-central">
 
             <div class="texto-resultado">
-                <h2>Resultados para a busca: "Super Mario"</h2>
-                <p>Rebobinamos a fita e achamos X títulos no nosso acervo.</p>
+                <h2>Resultados para a busca: "{{ termo }}"</h2>
+                <p>Rebobinamos a fita e achamos {{ total }} títulos no nosso acervo.</p>
             </div>
 
             <div class="filtros-container">
-                <button class="btn-filtro ativo">Todos</button>
-                <button class="btn-filtro">Filmes</button>
-                <button class="btn-filtro">Séries</button>
-                <button class="btn-filtro">Jogos</button>
+                <button class="btn-filtro ativo" data-filtro="todos">Todos ({{ total }})</button>
+                <button class="btn-filtro" data-filtro="filme">Filmes ({{ filmes|length }})</button>
+                <button class="btn-filtro" data-filtro="serie">Séries ({{ series|length }})</button>
+                <button class="btn-filtro" data-filtro="jogo">Jogos ({{ jogos|length }})</button>
             </div>
 
             <div class="grade-posters">
-                <div class="poster-vazio tipo-jogo"></div>
-                <div class="poster-vazio tipo-filme"></div>
-                <div class="poster-vazio tipo-jogo"></div>
-                <div class="poster-vazio tipo-serie"></div>
-                <div class="poster-vazio tipo-filme"></div>
-                <div class="poster-vazio tipo-serie"></div>
-                <div class="poster-vazio tipo-jogo"></div>
-                <div class="poster-vazio tipo-filme"></div>
-                <div class="poster-vazio tipo-filme"></div>
-                <div class="poster-vazio tipo-serie"></div>
-                <div class="poster-vazio tipo-jogo"></div>
-                <div class="poster-vazio tipo-serie"></div>
-                <div class="poster-vazio tipo-filme"></div>
-                <div class="poster-vazio tipo-jogo"></div>
-                <div class="poster-vazio tipo-serie"></div>
-                <div class="poster-vazio tipo-filme"></div>
+                {% for filme in filmes %}
+                <div class="item-poster" data-tipo="filme">
+                    <a href="#">
+                        {% if filme.poster %}
+                        <img src="{{ filme.poster }}" alt="{{ filme.titulo }}" loading="lazy">
+                        {% else %}
+                        <div class="poster-vazio tipo-filme"></div>
+                        {% endif %}
+                    </a>
+                </div>
+                {% endfor %}
+
+                {% for serie in series %}
+                <div class="item-poster" data-tipo="serie">
+                    <a href="#">
+                        {% if serie.poster %}
+                        <img src="{{ serie.poster }}" alt="{{ serie.titulo }}" loading="lazy">
+                        {% else %}
+                        <div class="poster-vazio tipo-serie"></div>
+                        {% endif %}
+                    </a>
+                </div>
+                {% endfor %}
+
+                {% for jogo in jogos %}
+                <div class="item-poster" data-tipo="jogo">
+                    <a href="#">
+                        {% if jogo.poster %}
+                        <img src="{{ jogo.poster }}" alt="{{ jogo.titulo }}" loading="lazy">
+                        {% else %}
+                        <div class="poster-vazio tipo-jogo"></div>
+                        {% endif %}
+                    </a>
+                </div>
+                {% endfor %}
             </div>
 
-            <div class="container-botao-mais">
-                <button id="botao-ver-mais">Ver Mais</button>
-            </div>
         </div>
-
     </main>
 
     <footer class="rodape-principal">
@@ -98,12 +118,12 @@
             <span class="separador">|</span>
             <a href="#">Política de Privacidade</a>
         </div>
+        <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
         <div class="texto-copyright">
             Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
         </div>
     </footer>
 
-    <!-- Script específico da página de busca -->
     <script src="{{ url_for('static', filename='js/resultados.js') }}"></script>
 
 </body>
