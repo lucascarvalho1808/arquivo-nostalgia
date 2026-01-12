@@ -292,6 +292,62 @@ def buscar_series_por_genero(generos, pagina=1):
         print(f"Erro ao buscar séries por gênero: {e}")
         return []
 
+def buscar_filmes(termo, pagina=1):
+    """Busca filmes pelo termo digitado"""
+    try:
+        url = f"{BASE_URL}/search/movie"
+        params = {
+            "api_key": TMDB_API_KEY,
+            "language": "pt-BR",
+            "query": termo,
+            "page": pagina
+        }
+        response = requests.get(url, params=params)
+        dados = response.json()
+        
+        filmes = []
+        for filme in dados.get("results", []):
+            filmes.append({
+                "id": filme.get("id"),
+                "titulo": filme.get("title"),
+                "poster": f"https://image.tmdb.org/t/p/w300{filme.get('poster_path')}" if filme.get("poster_path") else None,
+                "ano": filme.get("release_date", "")[:4] if filme.get("release_date") else "",
+                "nota": filme.get("vote_average"),
+                "tipo": "filme"
+            })
+        return filmes
+    except Exception as e:
+        print(f"Erro ao buscar filmes: {e}")
+        return []
+
+def buscar_series(termo, pagina=1):
+    """Busca séries pelo termo digitado"""
+    try:
+        url = f"{BASE_URL}/search/tv"
+        params = {
+            "api_key": TMDB_API_KEY,
+            "language": "pt-BR",
+            "query": termo,
+            "page": pagina
+        }
+        response = requests.get(url, params=params)
+        dados = response.json()
+        
+        series = []
+        for serie in dados.get("results", []):
+            series.append({
+                "id": serie.get("id"),
+                "titulo": serie.get("name"),
+                "poster": f"https://image.tmdb.org/t/p/w300{serie.get('poster_path')}" if serie.get("poster_path") else None,
+                "ano": serie.get("first_air_date", "")[:4] if serie.get("first_air_date") else "",
+                "nota": serie.get("vote_average"),
+                "tipo": "serie"
+            })
+        return series
+    except Exception as e:
+        print(f"Erro ao buscar séries: {e}")
+        return []
+
 # Teste rápido das funções
 if __name__ == "__main__":
     print("--- Testando Filmes ---")

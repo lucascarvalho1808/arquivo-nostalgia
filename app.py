@@ -11,6 +11,7 @@ from routes.main import main_bp
 from routes.filmes import filmes_bp
 from routes.series import series_bp
 from routes.jogos import jogos_bp
+from routes.busca import busca_bp  
 
 load_dotenv()
 
@@ -43,6 +44,7 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(filmes_bp)
 app.register_blueprint(series_bp)
 app.register_blueprint(jogos_bp)
+app.register_blueprint(busca_bp)  # NOVO
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':

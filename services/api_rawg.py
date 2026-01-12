@@ -262,6 +262,34 @@ def buscar_jogos_por_genero(generos, pagina=1):
         return []
 
 
+def buscar_jogos(termo, pagina=1):
+    """Busca jogos pelo termo digitado"""
+    try:
+        url = f"{BASE_URL}/games"
+        params = {
+            "key": RAWG_API_KEY,
+            "search": termo,
+            "page": pagina,
+            "page_size": 20
+        }
+        response = requests.get(url, params=params)
+        dados = response.json()
+        
+        jogos = []
+        for jogo in dados.get("results", []):
+            jogos.append({
+                "id": jogo.get("id"),
+                "titulo": jogo.get("name"),
+                "poster": jogo.get("background_image"),
+                "ano": jogo.get("released", "")[:4] if jogo.get("released") else "",
+                "nota": jogo.get("rating"),
+                "tipo": "jogo"
+            })
+        return jogos
+    except Exception as e:
+        print(f"Erro ao buscar jogos: {e}")
+        return []
+
 # Testes
 if __name__ == "__main__":
     print("--- Testando Jogos Populares ---")
