@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redefinir Senha - Arquivo Nostalgia</title>
-    <link rel="stylesheet" href="../../static/css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" type="image/x-icon">
 </head>
 <body>
     <div class="cartao-formulario">
-        <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logotipo" class="logo-form">
+        <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logótipo" class="logo-form">
         <h2 class="titulo-nostalgia">Nova Senha</h2>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -35,7 +35,7 @@
 
             <div class="grupo-campo">
                 <label class="label-visual"><i class="fa-solid fa-lock"></i> {{ form.confirmar_senha.label.text }}</label>
-                {{ form.confirmar_senha(class="caixa-branca", placeholder="Confirme a nova senha") }}
+                {{ form.confirmar_senha(class="caixa-branca", placeholder="Confirme a senha") }}
                 {% for error in form.confirmar_senha.errors %}
                     <span style="color: red;">{{ error }}</span>
                 {% endfor %}
