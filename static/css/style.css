@@ -835,3 +835,33 @@ body {
   .carrossel .switchLeft { left: -40; }
   .carrossel .switchRight { right: -40; }
 }
+
+/* Crédito API - Rodapé */
+.credito-api {
+    font-size: 0.70rem;
+    color: #888;
+    margin-top: 10px;
+}
+
+.credito-api a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+.credito-api a:hover {
+    text-decoration: underline;
+}
+
+/* Crédito API - Abaixo da seção de jogos */
+.credito-api-jogos {
+    display: block;
+    text-align: right;
+    font-size: 0.65rem;
+    color: #666;
+    margin-top: 5px;
+    padding-right: 10px;
+}
+
+.credito-api-jogos a {
+    color: #888;
+}
