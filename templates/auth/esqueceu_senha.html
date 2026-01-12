@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Senha - Arquivo Nostalgia</title>
-    <link rel="stylesheet" href="../../static/css/auth.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="cartao-formulario">
-        <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logotipo" class="logo-form">
+        <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logótipo" class="logo-form">
         <h2 class="titulo-nostalgia">Recuperar Senha</h2>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -34,8 +35,8 @@
             {{ form.submit(class="botao-entrar") }}
         </form>
         
-        <div class="links-login">
-            <a href="{{ url_for('login') }}">Voltar para o Login</a>
+        <div class="link-entrar">
+            <a href="{{ url_for('auth.login') }}">Voltar para Login</a>
         </div>
     </div>
 </body>
