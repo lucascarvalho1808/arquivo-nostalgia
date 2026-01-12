@@ -1,0 +1,368 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+/* --- Fundo da página --- */
+body {
+    background-color: #417eaa;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.cabecalho-principal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #22658f;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 1001;
+    flex-shrink: 0;
+    width: 240px;
+}
+
+.logo-container a {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.logo-pequena {
+    max-width: 110px;
+    margin-bottom: 5px;
+}
+
+.nome-site-header {
+    font-size: 12px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.barra-busca {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 5px 0;
+}
+
+.barra-busca input {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border: none;
+    outline: none;
+    font-weight: bold;
+    color: #22658f;
+    font-size: 15px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 3px solid #0c3757;
+}
+
+.barra-busca input::placeholder {
+  color: #0c3757;
+  opacity: 1; 
+}
+
+.icone-busca {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0c3757;
+}
+
+.menu-icones {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-shrink: 0; 
+}
+
+.item-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.item-menu:hover {
+    opacity: 0.8;
+    color: #0c3757;
+}
+
+.item-menu i {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.container-principal {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 130px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.area-conteudo-central {
+    width: 100%;
+    max-width: 1400px;
+    padding: 20px 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.area-conteudo-central::-webkit-scrollbar {
+    width: 8px;
+}
+.area-conteudo-central::-webkit-scrollbar-thumb {
+    background-color: #22658f;
+    border-radius: 4px;
+}
+
+.texto-resultado {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.texto-resultado h2 {
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    margin-bottom: 5px;
+}
+
+.texto-resultado p {
+    font-size: 16px;
+    color: #0c3757;
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+.filtros-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn-filtro {
+    background-color: #1a4b6e;
+    color: white;
+    border: none;
+    padding: 8px 35px;
+    border-radius: 20px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+
+.btn-filtro:hover, .btn-filtro.ativo {
+    background-color: #0c3757;
+    transform: scale(1.05);
+}
+
+.grade-posters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+/* --- Área de Pôsteres (Estilização Base) --- */
+.poster-vazio {
+    background-color: #22658f; /* Cor padrão caso não tenha tipo */
+    aspect-ratio: 2 / 3;
+    border-radius: 20px;
+    transition: transform 0.3s;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Sombra interna leve */
+}
+
+.tipo-filme {
+    background-color: #d64949; 
+}
+
+/* Verde suave para Séries */
+.tipo-serie {
+    background-color: #4caf50;
+}
+
+/* Roxo suave para Jogos */
+.tipo-jogo {
+    background-color: #9c27b0;
+}
+
+.poster-vazio:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+    filter: brightness(1.1);
+}
+
+.container-botao-mais {
+    margin-bottom: 30px;
+}
+
+#botao-ver-mais {
+    background-color: #2b5d85;
+    color: white;
+    border: 2px solid #0c3757;
+    padding: 10px 50px;
+    border-radius: 30px;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: background 0.3s;
+}
+
+#botao-ver-mais:hover {
+    background-color: #0c3757;
+}
+
+.rodape-principal {
+    width: 100%;
+    background-color: #0c3757;
+    color: #d1d1d1;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.px;
+    margin-top: auto;
+    flex-shrink: 0;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.links-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.links-rodape a {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    transition: color 0.3s;
+}
+
+.links-rodape a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.separador {
+    color: #555;
+    font-size: 0.8rem;
+}
+
+.texto-copyright {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 860px) {
+    .cabecalho-principal {
+        flex-direction: column;
+        padding: 10px 10px;
+        height: auto;
+    }
+    
+    .logo-container { order: 1; margin-bottom: 10px; }
+    .menu-icones { order: 2; width: 100%; justify-content: center; gap: 20px; }
+    .barra-busca { order: 3; margin-top: 10px; }
+
+    .container-principal {
+        padding-top: 240px;
+    }
+
+    .grade-posters {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .area-conteudo-central {
+        max-width: 1500px;
+    }
+    
+    .grade-posters {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (min-width: 861px) and (max-width: 1200px) {
+    
+    .cabecalho-principal {
+        padding: 15px 15px; 
+    }
+
+    .logo-container {
+        width: auto; 
+        margin-right: 10px;
+    }
+
+    .barra-busca {
+        flex: 1; 
+        max-width: 100%;
+        min-width: 200px;
+        margin: 0 15px;
+    }
+    
+    .menu-icones {
+        gap: 15px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .cabecalho-principal {
+        padding: 15px 15px;
+    }
+}
