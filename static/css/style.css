@@ -92,6 +92,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     color: #0c3757;
+    cursor: pointer;
 }
 
 /* Menu de Ícones */

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados para "{{ termo }}" - Arquivo Nostalgia</title>
+    <!-- Seu amigo adiciona o CSS aqui -->
+</head>
+<body>
+    <h1>Resultados para "{{ termo }}"</h1>
+    <p>{{ total }} resultados encontrados</p>
+
+    {% if filmes %}
+    <section>
+        <h2>Filmes</h2>
+        <div class="grid-resultados">
+            {% for filme in filmes %}
+            <div class="card-resultado">
+                <img src="{{ filme.poster }}" alt="{{ filme.titulo }}">
+                <h3>{{ filme.titulo }}</h3>
+                <span>{{ filme.ano }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if series %}
+    <section>
+        <h2>Séries</h2>
+        <div class="grid-resultados">
+            {% for serie in series %}
+            <div class="card-resultado">
+                <img src="{{ serie.poster }}" alt="{{ serie.titulo }}">
+                <h3>{{ serie.titulo }}</h3>
+                <span>{{ serie.ano }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% if jogos %}
+    <section>
+        <h2>Jogos</h2>
+        <div class="grid-resultados">
+            {% for jogo in jogos %}
+            <div class="card-resultado">
+                <img src="{{ jogo.poster }}" alt="{{ jogo.titulo }}">
+                <h3>{{ jogo.titulo }}</h3>
+                <span>{{ jogo.ano }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</body>
+</html>
