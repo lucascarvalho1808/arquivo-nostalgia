@@ -67,7 +67,7 @@
         </a>
         <a href="{{ url_for('login') }}" class="item-menu">
           <i class="fa-solid fa-circle-user"></i>
-          <span>Perfil</span>
+          <span>Login</span>
         </a>
 
         {% endif %}
@@ -155,47 +155,63 @@
       </section>
 
       <section class="categoria">
-      <a href="{{ url_for('jogos') }}" class="titulo-categoria">
-        Jogos <i class="fa-solid fa-arrow-right"></i>
-      </a>
-      <div class="center">
-        <div class="carrossel">
-          <div class="carrosselBox" id="slider-jogos">
-            {% for jogo in jogos %} {% if jogo.origem_imagem == 'steam' %}
-            <!-- ESTILO 1: STEAM (Capa Limpa Vertical - Igual Filmes) -->
-            <div class="item-poster poster-clean steam-card">
-              <a href="#">
-                <div class="poster-wrapper">
-                  <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="poster-jogos"
-                    onerror="this.onerror=null; this.src='{{ jogo.imagem_rawg }}';" />
-                  <div class="game-info-overlay">
-                    <h3 class="game-title">{{ jogo.titulo }}</h3>
+        <a href="{{ url_for('jogos') }}" class="titulo-categoria">
+          Jogos <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        <div class="center">
+          <div class="carrossel">
+            <div class="carrosselBox" id="slider-jogos">
+              {% for jogo in jogos %} {% if jogo.origem_imagem == 'steam' %}
+              <!-- ESTILO 1: STEAM (Capa Limpa Vertical - Igual Filmes) -->
+              <div class="item-poster poster-clean steam-card">
+                <a href="#">
+                  <div class="poster-wrapper">
+                    <img
+                      src="{{ jogo.poster_url }}"
+                      alt="{{ jogo.titulo }}"
+                      class="poster-jogos"
+                      onerror="this.onerror=null; this.src='{{ jogo.imagem_rawg }}';"
+                    />
+                    <div class="game-info-overlay">
+                      <h3 class="game-title">{{ jogo.titulo }}</h3>
+                    </div>
                   </div>
-                </div>
-              </a>
-            </div>
+                </a>
+              </div>
 
-            {% else %}
-            <!-- ESTILO 2: RAWG (O Estilo Clássico que você quer) -->
-            <div class="game-card">
-              <div class="item-poster poster-clean">
-                {% if jogo.poster_url %}
-                <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="poster-jogos" />
-                {% else %}
-                <div class="poster-placeholder">Sem Imagem</div>
-                {% endif %}
+              {% else %}
+              <!-- ESTILO 2: RAWG (O Estilo Clássico que você quer) -->
+              <div class="game-card">
+                <div class="item-poster poster-clean">
+                  {% if jogo.poster_url %}
+                  <img
+                    src="{{ jogo.poster_url }}"
+                    alt="{{ jogo.titulo }}"
+                    class="poster-jogos"
+                  />
+                  {% else %}
+                  <div class="poster-placeholder">Sem Imagem</div>
+                  {% endif %}
+                </div>
+                <div class="game-info-overlay">
+                  <h3 class="game-title">{{ jogo.titulo }}</h3>
+                </div>
               </div>
-              <div class="game-info-overlay">
-                <h3 class="game-title">{{ jogo.titulo }}</h3>
-              </div>
+              {% endif %} {% endfor %}
             </div>
-            {% endif %} {% endfor %}
+            <a
+              class="switchLeft sliderButton"
+              onclick="sliderScrollLeft('slider-jogos')"
+              >&#10094;</a
+            >
+            <a
+              class="switchRight sliderButton"
+              onclick="sliderScrollRight('slider-jogos')"
+              >&#10095;</a
+            >
           </div>
-          <a class="switchLeft sliderButton" onclick="sliderScrollLeft('slider-jogos')">&#10094;</a>
-          <a class="switchRight sliderButton" onclick="sliderScrollRight('slider-jogos')">&#10095;</a>
         </div>
-      </div>
-    </section>
+      </section>
 
       <!-- Funcionalidade Dinâmica do Arquivo Confidencial -->
       {% if curiosidade %}
