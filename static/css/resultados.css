@@ -15,6 +15,7 @@ body {
     overflow: hidden;
 }
 
+/* --- Header --- */
 .cabecalho-principal {
     display: flex;
     align-items: center;
@@ -31,6 +32,7 @@ body {
     z-index: 1000;
 }
 
+/* --- Logo --- */
 .logo-container {
     display: flex;
     flex-direction: column;
@@ -49,11 +51,13 @@ body {
     color: inherit;
 }
 
+/* --- Logo --- */
 .logo-pequena {
     max-width: 110px;
     margin-bottom: 5px;
 }
 
+/* --- Nome Logo --- */
 .nome-site-header {
     font-size: 12px;
     font-weight: 900;
@@ -62,6 +66,7 @@ body {
     letter-spacing: 1px;
 }
 
+/* Barra de Busca */
 .barra-busca {
     position: relative;
     width: 100%;
@@ -69,6 +74,7 @@ body {
     margin: 5px 0;
 }
 
+/* Barra de Digitando */
 .barra-busca input {
     width: 100%;
     padding: 10px 20px;
@@ -82,11 +88,13 @@ body {
     border: 3px solid #0c3757;
 }
 
+/* Barra de Busca com PlaceHolder */
 .barra-busca input::placeholder {
   color: #0c3757;
   opacity: 1; 
 }
 
+/* Ícones */
 .icone-busca {
     position: absolute;
     right: 15px;
@@ -96,6 +104,7 @@ body {
     cursor: pointer;
 }
 
+/* Menu de Ícones */
 .menu-icones {
     display: flex;
     gap: 20px;
@@ -103,6 +112,7 @@ body {
     flex-shrink: 0; 
 }
 
+/* Decoração dos Ícones */
 .item-menu {
     display: flex;
     flex-direction: column;
@@ -114,16 +124,19 @@ body {
     transition: opacity 0.2s;
 }
 
+/* Decoração dos Ícones com Hover */
 .item-menu:hover {
     opacity: 0.8;
     color: #0c3757;
 }
 
+/* Tamanho dos Ícones */
 .item-menu i {
     font-size: 20px;
     margin-bottom: 5px;
 }
 
+/* --- Container Principal joga os itens para a esquerda --- */
 .container-principal {
     flex: 1;
     display: flex;
@@ -133,6 +146,7 @@ body {
     overflow: hidden;
 }
 
+/* --- local onde aparece os pôsteres --- */
 .area-conteudo-central {
     width: 100%;
     max-width: 1400px;
@@ -151,6 +165,7 @@ body {
     border-radius: 4px;
 }
 
+/* --- Texto de resultado da busca --- */
 .texto-resultado {
     text-align: center;
     margin-bottom: 25px;
@@ -171,6 +186,7 @@ body {
     opacity: 0.8;
 }
 
+/* --- Filtro por estilo de obras ou todos juntos --- */
 .filtros-container {
     display: flex;
     gap: 10px;
@@ -179,6 +195,7 @@ body {
     justify-content: center;
 }
 
+/* --- Botão do filtro por estilo de obras ou todos juntos --- */
 .btn-filtro {
     background-color: #1a4b6e;
     color: white;
@@ -193,6 +210,7 @@ body {
     transition: all 0.2s;
 }
 
+/* --- Botão do filtro por estilo de obras ou todos juntos(HOVER) --- */
 .btn-filtro:hover, .btn-filtro.ativo {
     background-color: #0c3757;
     transform: scale(1.05);
@@ -215,16 +233,17 @@ body {
     box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Sombra interna leve */
 }
 
+/* --- Pôster Azul se ficar sem o certo --- */
 .tipo-filme {
     background-color: #0c3757; 
 }
 
-/* Verde suave para Séries */
+/* --- Pôster Azul se ficar sem o certo --- */
 .tipo-serie {
     background-color: #0c3757;
 }
 
-/* Roxo suave para Jogos */
+/* --- Pôster Azul se ficar sem o certo --- */
 .tipo-jogo {
     background-color: #0c3757;
 }
@@ -235,6 +254,93 @@ body {
     filter: brightness(1.1);
 }
 
+/* --- LAYOUT DA GRADE --- */
+.grade-posters {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.item-poster {
+    aspect-ratio: 2 / 3;
+    width: 100%;
+}
+
+/* --- Poster Jogos --- */
+.game-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 4px; 
+    background-color: #0c3757;
+    transition: box-shadow 0.3s ease;
+    transform: translateZ(0); 
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+.poster-jogos, 
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    border-radius: 0; /* REMOVIDO: Deixa o game-card cortar as pontas */
+}
+
+/* --- O Overlay (Escurecimento ao mostrar o nome do jogo) --- */
+.game-info-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 10%, rgba(12, 55, 87, 0.4) 50%,  rgba(12, 55, 87, 0.95) 100%);   
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; 
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* --- Nome do Jogo --- */
+.game-title {
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(12, 55, 87, 1);
+    padding: 0 10px;
+    width: 100%; /* Garante centralização */
+}
+
+/* --- HOVER EFEITOS --- */
+.game-card:hover .game-info-overlay,
+.game-card.ativo .game-info-overlay {      
+    opacity: 1;
+}
+
+.game-card:hover .poster-jogos,
+.game-card.ativo .poster-jogos {          
+    transform: scale(1.1);
+}
+
+.game-card:hover,
+.game-card.ativo {                        
+    box-shadow: 0 5px 20px rgba(12, 55, 87, 0.8); 
+    z-index: 5;
+}
+
+/* --- Botão VER MAIS --- */
 .container-botao-mais {
     margin-bottom: 30px;
 }
@@ -257,6 +363,7 @@ body {
     background-color: #0c3757;
 }
 
+/* --- Área Footer --- */
 .rodape-principal {
     width: 100%;
     background-color: #0c3757;

@@ -15,7 +15,8 @@
     <header class="cabecalho-principal">
         <div class="logo-container">
             <a href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena" />
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo"
+                    class="logo-pequena" />
             </a>
             <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
         </div>
@@ -97,19 +98,32 @@
                 {% endfor %}
 
                 {% for jogo in jogos %}
-                <div class="item-poster" data-tipo="jogo">
-                    <a href="#">
+                <div class="item-poster game-card" data-tipo="jogo">
+
+                    <a href="#" onclick="return false;" style="display: block; width: 100%; height: 100%;">
+
                         {% if jogo.poster %}
-                        <img src="{{ jogo.poster }}" alt="{{ jogo.titulo }}" loading="lazy">
+                        <img src="{{ jogo.poster }}" alt="{{ jogo.titulo }}" class="poster-jogos" loading="lazy"
+                            referrerpolicy="no-referrer">
+
+                        <div class="game-info-overlay">
+                            <h3 class="game-title">{{ jogo.titulo }}</h3>
+                        </div>
+
                         {% else %}
-                        <div class="poster-vazio tipo-jogo"></div>
+                        <div class="poster-placeholder" style="background-color: #0c3757;"></div>
+                        <div class="game-info-overlay">
+                            <h3 class="game-title">{{ jogo.titulo }}</h3>
+                        </div>
+
                         {% endif %}
+
                     </a>
                 </div>
                 {% endfor %}
-            </div>
 
-        </div>
+
+            </div>
     </main>
 
     <footer class="rodape-principal">
@@ -118,7 +132,8 @@
             <span class="separador">|</span>
             <a href="#">Política de Privacidade</a>
         </div>
-        <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
+        <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+        </p>
         <div class="texto-copyright">
             Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
         </div>
@@ -127,4 +142,5 @@
     <script src="{{ url_for('static', filename='js/resultados.js') }}"></script>
 
 </body>
+
 </html>
