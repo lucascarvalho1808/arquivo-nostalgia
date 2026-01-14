@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
+from flask_login import current_user
+from flask import session
 
 load_dotenv()
 
@@ -8,6 +10,28 @@ load_dotenv()
 SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+
+def _get_supabase_client():
+    """
+    Retorna um cliente Supabase com o token do usuário autenticado.
+    Isso garante que as políticas RLS funcionem corretamente.
+    """
+    try:
+        # Pega o access_token do usuário da sessão
+        access_token = session.get('access_token')
+        
+        if access_token:
+            # Cria um cliente com o token do usuário
+            client = create_client(SUPABASE_URL, SUPABASE_KEY)
+            client.auth.set_session(access_token, session.get('refresh_token'))
+            return client
+        else:
+            # Fallback para o cliente padrão
+            return supabase
+    except Exception as e:
+        print(f"Erro ao criar cliente Supabase: {e}")
+        return supabase
 
 
 def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
@@ -23,15 +47,6 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
     
     Returns:
         dict: Dados do item adicionado ou None em caso de erro
-    
-    Exemplo de uso:
-         adicionar_item_lista(
-             lista_id="uuid-da-lista",
-             api_id="550",
-             tipo="filme",
-             titulo="Clube da Luta",
-             poster_url="https://image.tmdb.org/t/p/w300/poster.jpg"
-         )
     """
     try:
         # Valida o tipo
@@ -48,8 +63,11 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
             "poster_url": poster_url
         }
         
+        # Usa o cliente com o token do usuário
+        client = _get_supabase_client()
+        
         # Insere o item na tabela itens_lista
-        response = supabase.table("itens_lista").insert(dados_item).execute()
+        response = client.table("itens_lista").insert(dados_item).execute()
         
         print(f"Item '{titulo}' adicionado à lista com sucesso!")
         return response.data[0] if response.data else None
@@ -75,7 +93,8 @@ def remover_item_lista(item_id):
         bool: True se removido com sucesso, False caso contrário
     """
     try:
-        response = supabase.table("itens_lista").delete().eq("id", item_id).execute()
+        client = _get_supabase_client()
+        response = client.table("itens_lista").delete().eq("id", item_id).execute()
         
         if response.data:
             print(f"Item removido da lista com sucesso!")
@@ -100,7 +119,8 @@ def buscar_itens_lista(lista_id):
         list: Lista de itens ou lista vazia em caso de erro
     """
     try:
-        response = supabase.table("itens_lista")\
+        client = _get_supabase_client()
+        response = client.table("itens_lista")\
             .select("*")\
             .eq("lista_id", lista_id)\
             .order("adicionado_em", desc=True)\
@@ -126,7 +146,8 @@ def verificar_item_na_lista(lista_id, api_id, tipo):
         bool: True se o item já existe, False caso contrário
     """
     try:
-        response = supabase.table("itens_lista")\
+        client = _get_supabase_client()
+        response = client.table("itens_lista")\
             .select("id")\
             .eq("lista_id", lista_id)\
             .eq("api_id", str(api_id))\
@@ -138,3 +159,14 @@ def verificar_item_na_lista(lista_id, api_id, tipo):
     except Exception as e:
         print(f"Erro ao verificar item na lista: {e}")
         return False
+
+
+# Função auxiliar para testes (opcional)
+if __name__ == "__main__":
+    # Exemplo de teste (quando suas tabelas estiverem prontas)
+    print("Módulo de gerenciamento de listas carregado!")
+    print("Funções disponíveis:")
+    print("  - adicionar_item_lista()")
+    print("  - remover_item_lista()")
+    print("  - buscar_itens_lista()")
+    print("  - verificar_item_na_lista()")
