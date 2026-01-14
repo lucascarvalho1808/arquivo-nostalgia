@@ -262,30 +262,56 @@ def buscar_jogos_por_genero(generos, pagina=1):
         return []
 
 
-def buscar_jogos(termo, pagina=1):
-    """Busca jogos pelo termo digitado"""
+def buscar_jogos(termo, max_resultados=200):
+    """Busca jogos pelo termo digitado com múltiplas páginas (até 200 resultados)"""
     try:
-        url = f"{BASE_URL}/games"
-        params = {
-            "key": RAWG_API_KEY,
-            "search": termo,
-            "page": pagina,
-            "page_size": 20
-        }
-        response = requests.get(url, params=params)
-        dados = response.json()
-        
         jogos = []
-        for jogo in dados.get("results", []):
-            jogos.append({
-                "id": jogo.get("id"),
-                "titulo": jogo.get("name"),
-                "poster": jogo.get("background_image"),
-                "ano": jogo.get("released", "")[:4] if jogo.get("released") else "",
-                "nota": jogo.get("rating"),
-                "tipo": "jogo"
-            })
+        pagina = 1
+        page_size = 20
+        
+        while len(jogos) < max_resultados:
+            url = f"{BASE_URL}/games"
+            params = {
+                "key": RAWG_API_KEY,
+                "search": termo,
+                "page": pagina,
+                "page_size": page_size
+            }
+            
+            response = requests.get(url, params=params, timeout=5)
+            dados = response.json()
+            
+            resultados_pagina = dados.get("results", [])
+            
+            # Se não há mais resultados, para o loop
+            if not resultados_pagina:
+                break
+            
+            for jogo in resultados_pagina:
+                if len(jogos) >= max_resultados:
+                    break
+                    
+                jogos.append({
+                    "id": jogo.get("id"),
+                    "titulo": jogo.get("name"),
+                    "poster": jogo.get("background_image"),
+                    "ano": jogo.get("released", "")[:4] if jogo.get("released") else "",
+                    "nota": jogo.get("rating"),
+                    "tipo": "jogo"
+                })
+            
+            # Se chegou ao limite, para
+            if len(jogos) >= max_resultados:
+                break
+            
+            # Se retornou menos que page_size, não há mais páginas
+            if len(resultados_pagina) < page_size:
+                break
+                
+            pagina += 1
+        
         return jogos
+        
     except Exception as e:
         print(f"Erro ao buscar jogos: {e}")
         return []
