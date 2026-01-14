@@ -292,58 +292,117 @@ def buscar_series_por_genero(generos, pagina=1):
         print(f"Erro ao buscar séries por gênero: {e}")
         return []
 
-def buscar_filmes(termo, pagina=1):
-    """Busca filmes pelo termo digitado"""
+def buscar_filmes(termo, max_resultados=200):
+    """Busca filmes pelo termo digitado com múltiplas páginas (até 200 resultados)"""
     try:
-        url = f"{BASE_URL}/search/movie"
-        params = {
-            "api_key": TMDB_API_KEY,
-            "language": "pt-BR",
-            "query": termo,
-            "page": pagina
-        }
-        response = requests.get(url, params=params)
-        dados = response.json()
-        
         filmes = []
-        for filme in dados.get("results", []):
-            filmes.append({
-                "id": filme.get("id"),
-                "titulo": filme.get("title"),
-                "poster": f"https://image.tmdb.org/t/p/w300{filme.get('poster_path')}" if filme.get("poster_path") else None,
-                "ano": filme.get("release_date", "")[:4] if filme.get("release_date") else "",
-                "nota": filme.get("vote_average"),
-                "tipo": "filme"
-            })
+        pagina = 1
+        
+        while len(filmes) < max_resultados:
+            url = f"{BASE_URL}/search/movie"
+            params = {
+                "api_key": TMDB_API_KEY,
+                "language": "pt-BR",
+                "query": termo,
+                "page": pagina
+            }
+            
+            response = requests.get(url, params=params, timeout=5)
+            dados = response.json()
+            
+            resultados_pagina = dados.get("results", [])
+            
+            # Se não há mais resultados, para o loop
+            if not resultados_pagina:
+                break
+            
+            for filme in resultados_pagina:
+                if len(filmes) >= max_resultados:
+                    break
+                    
+                filmes.append({
+                    "id": filme.get("id"),
+                    "titulo": filme.get("title"),
+                    "poster": f"https://image.tmdb.org/t/p/w300{filme.get('poster_path')}" if filme.get("poster_path") else None,
+                    "ano": filme.get("release_date", "")[:4] if filme.get("release_date") else "",
+                    "nota": filme.get("vote_average"),
+                    "tipo": "filme"
+                })
+            
+            # Se chegou ao limite, para
+            if len(filmes) >= max_resultados:
+                break
+            
+            # Se retornou menos que 20, não há mais páginas
+            if len(resultados_pagina) < 20:
+                break
+            
+            # TMDB tem limite de 500 páginas
+            if pagina >= 500:
+                break
+                
+            pagina += 1
+        
         return filmes
+        
     except Exception as e:
         print(f"Erro ao buscar filmes: {e}")
         return []
 
-def buscar_series(termo, pagina=1):
-    """Busca séries pelo termo digitado"""
+
+def buscar_series(termo, max_resultados=200):
+    """Busca séries pelo termo digitado com múltiplas páginas (até 200 resultados)"""
     try:
-        url = f"{BASE_URL}/search/tv"
-        params = {
-            "api_key": TMDB_API_KEY,
-            "language": "pt-BR",
-            "query": termo,
-            "page": pagina
-        }
-        response = requests.get(url, params=params)
-        dados = response.json()
-        
         series = []
-        for serie in dados.get("results", []):
-            series.append({
-                "id": serie.get("id"),
-                "titulo": serie.get("name"),
-                "poster": f"https://image.tmdb.org/t/p/w300{serie.get('poster_path')}" if serie.get("poster_path") else None,
-                "ano": serie.get("first_air_date", "")[:4] if serie.get("first_air_date") else "",
-                "nota": serie.get("vote_average"),
-                "tipo": "serie"
-            })
+        pagina = 1
+        
+        while len(series) < max_resultados:
+            url = f"{BASE_URL}/search/tv"
+            params = {
+                "api_key": TMDB_API_KEY,
+                "language": "pt-BR",
+                "query": termo,
+                "page": pagina
+            }
+            
+            response = requests.get(url, params=params, timeout=5)
+            dados = response.json()
+            
+            resultados_pagina = dados.get("results", [])
+            
+            # Se não há mais resultados, para o loop
+            if not resultados_pagina:
+                break
+            
+            for serie in resultados_pagina:
+                if len(series) >= max_resultados:
+                    break
+                    
+                series.append({
+                    "id": serie.get("id"),
+                    "titulo": serie.get("name"),
+                    "poster": f"https://image.tmdb.org/t/p/w300{serie.get('poster_path')}" if serie.get("poster_path") else None,
+                    "ano": serie.get("first_air_date", "")[:4] if serie.get("first_air_date") else "",
+                    "nota": serie.get("vote_average"),
+                    "tipo": "serie"
+                })
+            
+            # Se chegou ao limite, para
+            if len(series) >= max_resultados:
+                break
+            
+            # Se retornou menos que 20, não há mais páginas
+            if len(resultados_pagina) < 20:
+                break
+            
+            # TMDB tem limite de 500 páginas
+            if pagina >= 500:
+                break
+                
+            pagina += 1
+        
         return series
+        
     except Exception as e:
         print(f"Erro ao buscar séries: {e}")
         return []

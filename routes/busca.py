@@ -12,10 +12,10 @@ def busca_geral():
     if not termo:
         return render_template('busca/sem_resultados.html', termo=termo)
     
-    # Busca em todas as APIs
-    filmes = buscar_filmes(termo)
-    series = buscar_series(termo)
-    jogos = buscar_jogos(termo)
+    # Busca em todas as APIs (com até 200 resultados cada = 600 total)
+    filmes = buscar_filmes(termo, max_resultados=200)
+    series = buscar_series(termo, max_resultados=200)
+    jogos = buscar_jogos(termo, max_resultados=200)
     
     # Verifica se encontrou algo
     total_resultados = len(filmes) + len(series) + len(jogos)
@@ -40,7 +40,7 @@ def api_busca_filmes():
     if not termo:
         return jsonify([])
     
-    filmes = buscar_filmes(termo)
+    filmes = buscar_filmes(termo, max_resultados=200)
     return jsonify(filmes)
 
 # API de busca de séries (para a página de séries)
@@ -51,7 +51,7 @@ def api_busca_series():
     if not termo:
         return jsonify([])
     
-    series = buscar_series(termo)
+    series = buscar_series(termo, max_resultados=200)
     return jsonify(series)
 
 # API de busca de jogos (para a página de jogos)
@@ -62,5 +62,5 @@ def api_busca_jogos():
     if not termo:
         return jsonify([])
     
-    jogos = buscar_jogos(termo)
+    jogos = buscar_jogos(termo, max_resultados=200)
     return jsonify(jogos)
