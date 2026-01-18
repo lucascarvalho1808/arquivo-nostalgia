@@ -1,13 +1,105 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
 from services.listas import (
+    criar_lista,
     adicionar_item_lista,
     remover_item_lista,
     buscar_itens_lista,
-    verificar_item_na_lista
+    verificar_item_na_lista,
+    obter_cores_disponiveis,
+    CORES_DISPONIVEIS
 )
 
 listas_bp = Blueprint('listas', __name__)
+
+
+@listas_bp.route('/cores-disponiveis', methods=['GET'])
+def cores_disponiveis():
+    """
+    Retorna as cores disponíveis para personalização das listas.
+    
+    Retorna:
+    {
+        "success": true,
+        "cores": ["#6366f1", "#ec4899", ...]
+    }
+    """
+    return jsonify({
+        "success": True,
+        "cores": obter_cores_disponiveis()
+    }), 200
+
+
+@listas_bp.route('/criar-lista', methods=['POST'])
+@login_required
+def criar_lista_route():
+    """
+    Rota para criar uma nova lista.
+    """
+    try:
+        # Recebe os dados do request
+        dados = request.get_json()
+        
+        # Validação do campo obrigatório
+        nome = dados.get('nome', '').strip()
+        if not nome:
+            return jsonify({
+                "success": False,
+                "erro": "O nome da lista é obrigatório."
+            }), 400
+        
+        # Validação do tamanho do nome
+        if len(nome) < 3:
+            return jsonify({
+                "success": False,
+                "erro": "O nome da lista deve ter pelo menos 3 caracteres."
+            }), 400
+        
+        if len(nome) > 100:
+            return jsonify({
+                "success": False,
+                "erro": "O nome da lista deve ter no máximo 100 caracteres."
+            }), 400
+        
+        # Descrição é opcional
+        descricao = dados.get('descricao', '').strip()
+        
+        # Cor é opcional
+        cor = dados.get('cor')
+        if cor and cor not in CORES_DISPONIVEIS:
+            return jsonify({
+                "success": False,
+                "erro": "Cor inválida. Use uma das cores disponíveis.",
+                "cores_disponiveis": CORES_DISPONIVEIS
+            }), 400
+        
+        # Cria a lista
+        resultado = criar_lista(nome=nome, descricao=descricao, cor=cor)
+        
+        if resultado and not resultado.get('erro'):
+            return jsonify({
+                "success": True,
+                "mensagem": f"Lista '{nome}' criada com sucesso!",
+                "lista": resultado
+            }), 201  # 201 Created
+        elif resultado and resultado.get('erro') == 'cor_invalida':
+            return jsonify({
+                "success": False,
+                "erro": resultado.get('mensagem'),
+                "cores_disponiveis": CORES_DISPONIVEIS
+            }), 400
+        else:
+            return jsonify({
+                "success": False,
+                "erro": "Erro ao criar lista."
+            }), 500
+            
+    except Exception as e:
+        print(f"Erro na rota /criar-lista: {e}")
+        return jsonify({
+            "success": False,
+            "erro": "Erro interno do servidor."
+        }), 500
 
 
 @listas_bp.route('/adicionar-item', methods=['POST'])
@@ -207,3 +299,5 @@ def verificar_item():
             "success": False,
             "erro": "Erro interno do servidor."
         }), 500
+
+
