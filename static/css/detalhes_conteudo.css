@@ -41,6 +41,14 @@ body {
 }
 
 /* --- Logo --- */
+.logo-container a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+/* --- Logo --- */
 .logo-pequena {
     max-width: 110px;
     margin-bottom: 5px;
@@ -449,6 +457,21 @@ body {
     background-color: #22658f;
 }
 
+/* Placeholder quando não tem foto do ator */
+.sem-foto-ator {
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(135deg, #1a4d6f, #0c3757);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sem-foto-ator i {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
 .nome-ator {
     font-size: 0.9rem;
     font-weight: bold;
@@ -503,39 +526,6 @@ body {
 
 .next-btn {
     right: -25px;
-
-}
-
-/* --- botão de Tradução ---  */
-.btn-traduzir {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 6px;
-    padding: 6px 12px;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn-traduzir:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-.btn-traduzir i {
-    font-size: 1rem;
-}
-
-.btn-traduzir.traduzindo {
-    background: rgba(76, 175, 80, 0.3);
-    border-color: rgba(76, 175, 80, 0.6);
-    cursor: wait;
 }
 
 /* --- Footer --- */
@@ -550,9 +540,6 @@ body {
     letter-spacing: 0.5px;
     margin-top: auto;
     flex-shrink: 0;
-}
-
-.rodape-principal {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -609,6 +596,74 @@ body {
 .credito-api a:hover {
     color: #fff;
     text-decoration: underline;
+}
+
+/* --- Botão de Tradução --- */
+.btn-traduzir {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 6px 12px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-traduzir:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.btn-traduzir i {
+    font-size: 1rem;
+}
+
+.btn-traduzir:disabled {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* === TOAST DE TRADUÇÃO === */
+.toast-traducao {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 10000;
+    transition: transform 0.3s ease;
+    max-width: 90%;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.toast-traducao.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast-traducao.toast-success {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+}
+
+.toast-traducao.toast-error {
+    background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+}
+
+.toast-traducao i {
+    font-size: 1.3rem;
 }
 
 /* --- MEDIA QUERIES --- */
@@ -692,7 +747,6 @@ body {
     }
 }
 
-
 @media (max-width: 500px) {
     .equipe-grid {
         grid-template-columns: 1fr;
@@ -700,39 +754,64 @@ body {
     }
 }
 
+/* --- Cards do Elenco --- */
+.card-elenco {
+    min-width: 138px;
+    max-width: 138px;  
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.card-elenco:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-elenco img {
+    width: 100%;
+    height: 175px;  
+    object-fit: cover;
+    display: block;
+}
+
+/* Placeholder quando não tem foto */
 .sem-foto-ator {
     width: 100%;
-    height: 250px;
+    height: 175px;  
     background: linear-gradient(135deg, #1a4d6f, #0c3757);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 10px 10px 0 0;
 }
 
 .sem-foto-ator i {
-    font-size: 4rem;
+    font-size: 3rem;
     color: rgba(255, 255, 255, 0.3);
 }
 
-.poster-placeholder {
-    width: 100%;
-    height: 450px;
-    background: linear-gradient(135deg, #1a4d6f, #0c3757);
+.nome-ator {
+    padding: 10px 8px 5px 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #fff;
+    text-align: center;
+    min-height: 45px;   
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
-    gap: 15px;
 }
 
-.poster-placeholder i {
-    font-size: 5rem;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.poster-placeholder p {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.9rem;
+.papel-ator {
+    padding: 0 8px 10px 8px;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.888);
+    text-align: center;
+    min-height: 40px;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

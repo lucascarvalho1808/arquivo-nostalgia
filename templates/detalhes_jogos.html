@@ -1,307 +1,391 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ jogo.name }} - Arquivo Nostalgia</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalhes_conteudo.css') }}">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/detalhes_conteudo.css') }}"
+    />
+  </head>
+  <body>
     <header class="cabecalho-principal">
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
-            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
-        </div>
-        <div class="barra-busca">
-            <input type="text" placeholder="Buscar Jogos:">
+      <div class="logo-container">
+        <a href="{{ url_for('main.index') }}">
+          <img
+            src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+            alt="Logo"
+            class="logo-pequena"
+          />
+          <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </a>
+      </div>
+
+      <div class="barra-busca">
+        <form
+          action="{{ url_for('busca.busca_geral') }}"
+          method="GET"
+          style="display: flex; width: 100%; position: relative"
+        >
+          <input
+            type="text"
+            name="q"
+            placeholder="Buscar Filmes, Séries e Jogos:"
+            required
+          />
+          <button
+            type="submit"
+            style="
+              background: none;
+              border: none;
+              position: absolute;
+              right: 15px;
+              top: 50%;
+              transform: translateY(-50%);
+              cursor: pointer;
+            "
+          >
             <i class="fa-solid fa-magnifying-glass icone-busca"></i>
-        </div>
-        <nav class="menu-icones">
-            <a href="{{ url_for('filmes.api_filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
-            <a href="{{ url_for('series.api_series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
-            <a href="{{ url_for('jogos.api_jogos') }}" class="item-menu ativo"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
-            <a href="{{ url_for('listas.criar_lista_route') }}" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
-            <a href="{{ url_for('main.perfil') }}" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
-        </nav>
+          </button>
+        </form>
+      </div>
+
+      <nav class="menu-icones">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>Filmes</span>
+        </a>
+        <a href="{{ url_for('series.index') }}" class="item-menu">
+          <i class="fa-solid fa-tv"></i>
+          <span>Séries</span>
+        </a>
+        <a href="{{ url_for('jogos.index') }}" class="item-menu ativo">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Jogos</span>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <!-- MENU PARA QUEM ESTÁ LOGADO -->
+        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('main.perfil') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Perfil</span>
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="item-menu">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sair</span>
+        </a>
+        {% else %}
+        <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Login</span>
+        </a>
+        {% endif %}
+      </nav>
     </header>
 
     <div class="container-principal">
-        <div class="painel-detalhes" 
-             style="background-image: linear-gradient(to right, rgba(22, 78, 120, 1) 30%, rgba(22, 78, 120, 0.6) 100%), url('{{ jogo.background_image }}');">
-
-            <div class="secao-superior">
-                <div class="area-poster">
-                    {% if jogo.background_image %}
-                    <img src="{{ jogo.background_image }}" 
-                         alt="Capa {{ jogo.name }}" 
-                         class="poster-grande">
-                    {% else %}
-                    <div class="poster-placeholder">
-                        <i class="fa-solid fa-gamepad"></i>
-                        <p>Imagem não disponível</p>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="area-info">
-                    <div class="titulo-container">
-                        <h1 class="titulo-obra">
-                            {{ jogo.name }} 
-                            <span class="ano-titulo">({{ jogo.released[:4] if jogo.released else 'N/A' }})</span>
-                        </h1>
-                    </div>
-
-                    <div class="meta-dados">
-                        <span class="classificacao">{{ jogo.classificacao_br }}</span>
-                        
-                        {% if jogo.released %}
-                        <span>{{ jogo.released|formato_data }}</span>
-                        {% else %}
-                        <span>Data não disponível</span>
-                        {% endif %}
-                        
-                        <i class="fa-solid fa-circle ponto-separador"></i>
-                        <span>{{ generos }}</span>
-                    </div>
-
-                    <div class="acoes-usuario">
-                        <button class="btn-acao-tmdb" onclick="adicionarLista({{ jogo.id }}, 'jogo')">
-                            <div class="icone-circulo"><i class="fa-solid fa-folder-plus"></i></div>
-                            <span>Guardar Memória</span>
-                        </button>
-
-                        {% if jogo.clip and jogo.clip.clip %}
-                        <button class="btn-acao-tmdb" onclick="window.open('{{ jogo.clip.clip }}', '_blank')">
-                            <div class="icone-circulo"><i class="fa-solid fa-play"></i></div>
-                            <span>Ver Trailer</span>
-                        </button>
-                        {% endif %}
-                    </div>
-
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <span class="label-secao">Sinopse</span>
-                            <button class="btn-traduzir" onclick="traduzirSinopse()" title="Traduzir sinopse">
-                                <i class="fa-solid fa-language"></i>
-                                <span>Traduzir</span>
-                            </button>
-                        </div>
-                        <p class="texto-sinopse" id="sinopse-texto">
-                            {{ jogo.description_clean }}
-                        </p>
-                    </div>
-
-                    <div class="equipe-grid">
-                        {% if plataformas %}
-                        <div class="membro-equipe">
-                            <strong>Plataformas</strong>
-                            <span>{{ plataformas }}</span>
-                        </div>
-                        {% endif %}
-                        
-                        {% if jogo.developers %}
-                        <div class="membro-equipe">
-                            <strong>Desenvolvedora</strong>
-                            <span>{{ jogo.developers[0].name }}</span>
-                        </div>
-                        {% endif %}
-                        
-                        {% if jogo.publishers %}
-                        <div class="membro-equipe">
-                            <strong>Distribuidora</strong>
-                            <span>{{ jogo.publishers[0].name }}</span>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            {% if jogo.screenshots and jogo.screenshots|length > 0 %}
-            <div class="secao-carrossel">
-                <h3 class="titulo-carrossel">Galeria do Jogo ({{ jogo.screenshots|length }} fotos)</h3>
-
-                <div class="wrapper-carrossel">
-                    <button class="nav-btn prev-btn" onclick="moverCarrosselJogos(-300)">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-
-                    <div class="lista-posters carrossel-jogos" id="carrosselJogos">
-                        {% for screenshot in jogo.screenshots %}
-                        <div class="card-screenshot">
-                            <img src="{{ screenshot.image }}" alt="Screenshot {{ loop.index }}" loading="lazy">
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <button class="nav-btn next-btn" onclick="moverCarrosselJogos(300)">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
+      <div
+        class="painel-detalhes"
+        style="background-image: linear-gradient(to right, rgba(22, 78, 120, 1) 30%, rgba(22, 78, 120, 0.6) 100%), url('{{ jogo.background_image }}');"
+      >
+        <div class="secao-superior">
+          <div class="area-poster">
+            {% if jogo.background_image %}
+            <img
+              src="{{ jogo.background_image }}"
+              alt="Capa {{ jogo.name }}"
+              class="poster-grande"
+            />
             {% else %}
-            <div class="secao-carrossel">
-                <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">
-                    Galeria de imagens não disponível para este jogo.
-                </p>
+            <div class="poster-placeholder">
+              <i class="fa-solid fa-gamepad"></i>
+              <p>Imagem não disponível</p>
             </div>
             {% endif %}
+          </div>
 
+          <div class="area-info">
+            <div class="titulo-container">
+              <h1 class="titulo-obra">
+                {{ jogo.name }}
+                <span class="ano-titulo"
+                  >({{ jogo.released[:4] if jogo.released else 'N/A' }})</span
+                >
+              </h1>
+            </div>
+
+            <div class="meta-dados">
+              <span class="classificacao">{{ jogo.classificacao_br }}</span>
+
+              {% if jogo.released %}
+              <span>{{ jogo.released|formato_data }}</span>
+              {% else %}
+              <span>Data não disponível</span>
+              {% endif %}
+
+              <i class="fa-solid fa-circle ponto-separador"></i>
+              <span>{{ generos }}</span>
+            </div>
+
+            <div class="acoes-usuario">
+              <button
+                class="btn-acao-tmdb"
+                onclick="adicionarLista({{ jogo.id }}, 'jogo')"
+              >
+                <div class="icone-circulo">
+                  <i class="fa-solid fa-folder-plus"></i>
+                </div>
+                <span>Guardar Memória</span>
+              </button>
+
+              {% if jogo.clip and jogo.clip.clip %}
+              <button
+                class="btn-acao-tmdb"
+                onclick="window.open('{{ jogo.clip.clip }}', '_blank')"
+              >
+                <div class="icone-circulo">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+                <span>Ver Trailer</span>
+              </button>
+              {% endif %}
+            </div>
+
+            <div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 10px;
+                "
+              >
+                <span class="label-secao">Sinopse</span>
+                <button
+                  class="btn-traduzir"
+                  onclick="traduzirSinopse()"
+                  title="Traduzir sinopse"
+                >
+                  <i class="fa-solid fa-language"></i>
+                  <span>Traduzir</span>
+                </button>
+              </div>
+              <p class="texto-sinopse" id="sinopse-texto">
+                {{ jogo.description_clean }}
+              </p>
+            </div>
+
+            <div class="equipe-grid">
+              {% if plataformas %}
+              <div class="membro-equipe">
+                <strong>Plataformas</strong>
+                <span>{{ plataformas }}</span>
+              </div>
+              {% endif %} {% if jogo.developers %}
+              <div class="membro-equipe">
+                <strong>Desenvolvedora</strong>
+                <span>{{ jogo.developers[0].name }}</span>
+              </div>
+              {% endif %} {% if jogo.publishers %}
+              <div class="membro-equipe">
+                <strong>Distribuidora</strong>
+                <span>{{ jogo.publishers[0].name }}</span>
+              </div>
+              {% endif %}
+            </div>
+          </div>
         </div>
+
+        {% if jogo.screenshots and jogo.screenshots|length > 0 %}
+        <div class="secao-carrossel">
+          <h3 class="titulo-carrossel">
+            Galeria do Jogo ({{ jogo.screenshots|length }} fotos)
+          </h3>
+
+          <div class="wrapper-carrossel">
+            <button
+              class="nav-btn prev-btn"
+              onclick="moverCarrosselJogos(-300)"
+            >
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="lista-posters carrossel-jogos" id="carrosselJogos">
+              {% for screenshot in jogo.screenshots %}
+              <div class="card-screenshot">
+                <img
+                  src="{{ screenshot.image }}"
+                  alt="Screenshot {{ loop.index }}"
+                  loading="lazy"
+                />
+              </div>
+              {% endfor %}
+            </div>
+
+            <button class="nav-btn next-btn" onclick="moverCarrosselJogos(300)">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        {% else %}
+        <div class="secao-carrossel">
+          <p
+            style="
+              color: rgba(255, 255, 255, 0.5);
+              text-align: center;
+              padding: 20px;
+            "
+          >
+            Galeria de imagens não disponível para este jogo.
+          </p>
+        </div>
+        {% endif %}
+      </div>
     </div>
 
     <footer class="rodape-principal">
-        <div class="links-rodape">
-            <a href="#">Termos de Uso</a>
-            <span class="separador">|</span>
-            <a href="#">Política de Privacidade</a>
-        </div>
+      <div class="links-rodape">
+        <a href="#">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="#">Política de Privacidade</a>
+      </div>
 
-        <!-- Texto de Copyright -->
-        <div class="texto-copyright">
-            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
-        </div>
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
 
-        <!-- Crédito da API RAWG -->
-        <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
+      <!-- Crédito da API RAWG -->
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
     </footer>
 
     <script>
-        function moverCarrosselJogos(distancia) {
-            const container = document.getElementById('carrosselJogos');
-            container.scrollBy({ left: distancia, behavior: 'smooth' });
+      function moverCarrosselJogos(distancia) {
+        const container = document.getElementById("carrosselJogos");
+        container.scrollBy({ left: distancia, behavior: "smooth" });
+      }
+
+      function adicionarLista(id, tipo) {
+        alert(`Adicionar ${tipo} ID ${id} à lista`);
+      }
+
+      async function traduzirSinopse() {
+        const sinopse = document.getElementById("sinopse-texto");
+        const btn = document.querySelector(".btn-traduzir");
+        const textoOriginal = sinopse.textContent.trim();
+
+        // Verifica se já está traduzido
+        if (btn.dataset.traduzido === "true") {
+          // Volta ao original
+          sinopse.textContent = btn.dataset.original;
+          btn.innerHTML =
+            '<i class="fa-solid fa-language"></i><span>Traduzir</span>';
+          btn.dataset.traduzido = "false";
+          return;
         }
 
-        function adicionarLista(id, tipo) {
-            alert(`Adicionar ${tipo} ID ${id} à lista`);
-        }
+        // Salva o texto original
+        btn.dataset.original = textoOriginal;
 
-        async function traduzirSinopse() {
-            const sinopse = document.getElementById('sinopse-texto');
-            const btn = document.querySelector('.btn-traduzir');
-            const textoOriginal = sinopse.textContent.trim();
-            
-            // Verifica se já está traduzido
-            if (btn.dataset.traduzido === 'true') {
-                // Volta ao original
-                sinopse.textContent = btn.dataset.original;
-                btn.innerHTML = '<i class="fa-solid fa-language"></i><span>Traduzir</span>';
-                btn.dataset.traduzido = 'false';
-                return;
+        // Mostra loading
+        btn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i><span>Traduzindo...</span>';
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
+
+        try {
+          // Divide o texto em partes menores (API tem limite de caracteres)
+          const maxLength = 500;
+          let textoTraduzido = "";
+
+          for (let i = 0; i < textoOriginal.length; i += maxLength) {
+            const parte = textoOriginal.substring(i, i + maxLength);
+
+            // Chama a API MyMemory (gratuita, sem necessidade de chave)
+            const response = await fetch(
+              `https://api.mymemory.translated.net/get?q=${encodeURIComponent(
+                parte
+              )}&langpair=en|pt-br`
+            );
+
+            const data = await response.json();
+
+            if (data.responseStatus === 200) {
+              textoTraduzido += data.responseData.translatedText + " ";
+            } else {
+              throw new Error("Erro na tradução");
             }
-            
-            // Salva o texto original
-            btn.dataset.original = textoOriginal;
-            
-            // Mostra loading
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>Traduzindo...</span>';
-            btn.disabled = true;
-            btn.style.opacity = '0.7';
-            
-            try {
-                // Divide o texto em partes menores (API tem limite de caracteres)
-                const maxLength = 500;
-                let textoTraduzido = '';
-                
-                for (let i = 0; i < textoOriginal.length; i += maxLength) {
-                    const parte = textoOriginal.substring(i, i + maxLength);
-                    
-                    // Chama a API MyMemory (gratuita, sem necessidade de chave)
-                    const response = await fetch(
-                        `https://api.mymemory.translated.net/get?q=${encodeURIComponent(parte)}&langpair=en|pt-br`
-                    );
-                    
-                    const data = await response.json();
-                    
-                    if (data.responseStatus === 200) {
-                        textoTraduzido += data.responseData.translatedText + ' ';
-                    } else {
-                        throw new Error('Erro na tradução');
-                    }
-                    
-                    // Pequeno delay para não sobrecarregar a API
-                    if (i + maxLength < textoOriginal.length) {
-                        await new Promise(resolve => setTimeout(resolve, 300));
-                    }
-                }
-                
-                // Atualiza o texto na página
-                sinopse.textContent = textoTraduzido.trim();
-                
-                // Atualiza o botão
-                btn.innerHTML = '<i class="fa-solid fa-globe"></i><span>Ver Original</span>';
-                btn.dataset.traduzido = 'true';
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                
-                // Mostra toast de sucesso
-                mostrarToast('✅ Sinopse traduzida com sucesso!', 'success');
-                
-            } catch (error) {
-                console.error('Erro ao traduzir:', error);
-                
-                // Restaura o botão
-                btn.innerHTML = '<i class="fa-solid fa-language"></i><span>Traduzir</span>';
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                
-                // Mostra toast de erro
-                mostrarToast('❌ Erro ao traduzir. Tente novamente mais tarde.', 'error');
+
+            // Pequeno delay para não sobrecarregar a API
+            if (i + maxLength < textoOriginal.length) {
+              await new Promise((resolve) => setTimeout(resolve, 300));
             }
+          }
+
+          // Atualiza o texto na página
+          sinopse.textContent = textoTraduzido.trim();
+
+          // Atualiza o botão
+          btn.innerHTML =
+            '<i class="fa-solid fa-globe"></i><span>Ver Original</span>';
+          btn.dataset.traduzido = "true";
+          btn.disabled = false;
+          btn.style.opacity = "1";
+
+          // Mostra toast de sucesso
+          mostrarToast("✅ Sinopse traduzida com sucesso!", "success");
+        } catch (error) {
+          console.error("Erro ao traduzir:", error);
+
+          // Restaura o botão
+          btn.innerHTML =
+            '<i class="fa-solid fa-language"></i><span>Traduzir</span>';
+          btn.disabled = false;
+          btn.style.opacity = "1";
+
+          // Mostra toast de erro
+          mostrarToast(
+            "❌ Erro ao traduzir. Tente novamente mais tarde.",
+            "error"
+          );
         }
-        
-        function mostrarToast(mensagem, tipo = 'info') {
-            // Remove toast anterior se existir
-            const toastAntigo = document.querySelector('.toast-traducao');
-            if (toastAntigo) toastAntigo.remove();
-            
-            // Cria novo toast
-            const toast = document.createElement('div');
-            toast.className = `toast-traducao toast-${tipo}`;
-            toast.innerHTML = `<span>${mensagem}</span>`;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 100);
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
+      }
+
+      function mostrarToast(mensagem, tipo = "info") {
+        // Remove toast anterior se existir
+        const toastAntigo = document.querySelector(".toast-traducao");
+        if (toastAntigo) toastAntigo.remove();
+
+        // Cria novo toast
+        const toast = document.createElement("div");
+        toast.className = `toast-traducao toast-${tipo}`;
+        toast.innerHTML = `<span>${mensagem}</span>`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add("show"), 100);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
     </script>
-    
-    <style>
-        .toast-traducao {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 10000;
-            transition: transform 0.3s ease;
-            max-width: 90%;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        
-        .toast-traducao.show {
-            transform: translateX(-50%) translateY(0);
-        }
-        
-        .toast-traducao.toast-success {
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-        }
-        
-        .toast-traducao.toast-error {
-            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-        }
-    </style>
-</body>
+  </body>
 </html>
