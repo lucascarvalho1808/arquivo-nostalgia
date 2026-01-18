@@ -14,6 +14,7 @@ from .api_rawg import (
 )
 
 from .ia_gemini import gerar_arquivo_confidencial
+from .api_steam import obter_trailer_steam  # ← NOVO
 
 from .listas import (
     criar_lista,
