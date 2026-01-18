@@ -11,6 +11,22 @@ SUPABASE_URL = os.environ.get('SUPABASE_URL')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+# Cores pré-definidas disponíveis para as listas
+CORES_DISPONIVEIS = [
+    '#6366f1',  # Indigo (padrão)
+    '#ec4899',  # Pink
+    '#f59e0b',  # Amber
+    '#10b981',  # Emerald
+    '#3b82f6',  # Blue
+    '#8b5cf6',  # Violet
+    '#ef4444',  # Red
+    '#06b6d4',  # Cyan
+    '#f97316',  # Orange
+    '#14b8a6',  # Teal
+    '#a855f7',  # Purple
+    '#84cc16',  # Lime
+]
+
 
 def _get_supabase_client():
     """
@@ -161,6 +177,67 @@ def verificar_item_na_lista(lista_id, api_id, tipo):
         return False
 
 
+def criar_lista(nome, descricao="", cor=None):
+    """
+    Cria uma nova lista para o usuário autenticado.
+    
+    Args:
+        nome (str): Nome da lista
+        descricao (str): Descrição opcional da lista
+        cor (str): Cor hexadecimal da lista (opcional, padrão: #6366f1)
+    
+    Returns:
+        dict: Dados da lista criada ou None em caso de erro
+    """
+    try:
+        if not current_user.is_authenticated:
+            print("Erro: Usuário não autenticado.")
+            return None
+        
+        # Valida a cor se foi fornecida
+        if cor and cor not in CORES_DISPONIVEIS:
+            print(f"Erro: Cor '{cor}' não está na lista de cores disponíveis.")
+            return {"erro": "cor_invalida", "mensagem": "Cor não disponível. Escolha uma das cores pré-definidas."}
+        
+        # Define cor padrão se não foi fornecida
+        cor_selecionada = cor if cor else CORES_DISPONIVEIS[0]
+        
+        # Dados da lista a ser criada
+        dados_lista = {
+            "usuario_id": current_user.id,
+            "nome": nome,
+            "descricao": descricao,
+            "cor": cor_selecionada
+        }
+        
+        # Usa o cliente com o token do usuário
+        client = _get_supabase_client()
+        
+        # Insere a lista na tabela listas
+        response = client.table("listas").insert(dados_lista).execute()
+        
+        if response.data:
+            print(f"Lista '{nome}' criada com sucesso!")
+            return response.data[0]
+        else:
+            print("Erro ao criar lista.")
+            return None
+        
+    except Exception as e:
+        print(f"Erro ao criar lista: {e}")
+        return None
+
+
+def obter_cores_disponiveis():
+    """
+    Retorna a lista de cores disponíveis para personalização.
+    
+    Returns:
+        list: Lista de códigos hexadecimais das cores disponíveis
+    """
+    return CORES_DISPONIVEIS.copy()
+
+
 # Função auxiliar para testes (opcional)
 if __name__ == "__main__":
     # Exemplo de teste (quando suas tabelas estiverem prontas)
@@ -170,3 +247,4 @@ if __name__ == "__main__":
     print("  - remover_item_lista()")
     print("  - buscar_itens_lista()")
     print("  - verificar_item_na_lista()")
+    print("  - criar_lista()")

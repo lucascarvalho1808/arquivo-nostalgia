@@ -14,3 +14,13 @@ from .api_rawg import (
 )
 
 from .ia_gemini import gerar_arquivo_confidencial
+
+from .listas import (
+    criar_lista,
+    adicionar_item_lista,
+    remover_item_lista,
+    buscar_itens_lista,
+    verificar_item_na_lista,
+    obter_cores_disponiveis,
+    CORES_DISPONIVEIS
+)
