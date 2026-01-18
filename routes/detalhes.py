@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, abort
 from services.api_tmdb import buscar_detalhes_filme, buscar_detalhes_serie
 from services.api_rawg import buscar_detalhes_jogo
+from services.api_steam import obter_trailer_steam  
 from datetime import datetime
 
 detalhes_bp = Blueprint('detalhes', __name__)
@@ -144,14 +145,14 @@ def jogo(jogo_id):
         if not jogo:
             abort(404)
         
-        # Traduz classificação indicativa para padrão brasileiro
+        # Traduz classificação indicativa
         if jogo.get('esrb_rating') and jogo['esrb_rating'].get('name'):
             classificacao_esrb = jogo['esrb_rating']['name']
             jogo['classificacao_br'] = CLASSIFICACAO_TRADUCAO.get(classificacao_esrb, 'N/A')
         else:
             jogo['classificacao_br'] = 'N/A'
         
-        # Processa e traduz gêneros
+        # Processa gêneros
         generos_lista = jogo.get('genres', [])
         if generos_lista:
             generos_traduzidos = [GENEROS_TRADUCAO.get(g['name'], g['name']) for g in generos_lista]
@@ -166,14 +167,27 @@ def jogo(jogo_id):
         else:
             plataformas = 'N/A'
         
-        # Limpar sinopse (pegar só a primeira parte em inglês)
+        # Limpar sinopse
         descricao_raw = jogo.get('description_raw', '')
         if descricao_raw:
-            # Divide por "###" ou linhas vazias duplas e pega só a primeira parte
             descricao_limpa = descricao_raw.split('###')[0].split('\n\n')[0].strip()
             jogo['description_clean'] = descricao_limpa
         else:
             jogo['description_clean'] = 'Descrição não disponível.'
+        
+        trailer_url = None
+        
+        # 1. Tenta usar o clip do RAWG
+        if jogo.get('clip') and jogo['clip'].get('clip'):
+            trailer_url = jogo['clip']['clip']
+            print(f"Usando trailer do RAWG")
+        else:
+            # 2. Se não tiver, busca na Steam API
+            print(f"RAWG sem trailer. Buscando na Steam...")
+            trailer_url = obter_trailer_steam(jogo.get('name'))
+        
+        jogo['trailer_url'] = trailer_url
+        # ===========================================================
         
         return render_template('detalhes_jogos.html',
                              jogo=jogo,

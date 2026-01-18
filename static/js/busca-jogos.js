@@ -2,10 +2,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const inputBusca = document.querySelector('.barra-topo input');
     const iconeBusca = document.querySelector('.barra-topo .icone-lupa');
     const gridPosters = document.querySelector('.grade-posters');
-    // Removi a seleção do botão pois não vamos mais mexer nele
     
     // Guarda o conteúdo original para restaurar se limpar a busca
     let conteudoOriginal = gridPosters ? gridPosters.innerHTML : '';
+    
+    // Função de navegação (mesma do jogos.js)
+    function navegarParaDetalhes(id, tipo) {
+        const url = `/detalhes/${tipo}/${id}`;
+        window.location.href = url;
+    }
+
+    // Detecta mobile
+    function isMobile() {
+        return window.innerWidth <= 768 || 
+               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    // Adiciona eventos de clique ao card
+    function adicionarEventoCard(card) {
+        card.style.cursor = 'pointer';
+        
+        if (isMobile()) {
+            // Mobile: duplo clique
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (!this.classList.contains('ativo')) {
+                    document.querySelectorAll('[data-tipo="jogo"]').forEach(c => c.classList.remove('ativo'));
+                    this.classList.add('ativo');
+                } else {
+                    const id = this.getAttribute('data-id');
+                    navegarParaDetalhes(id, 'jogo');
+                }
+            });
+        } else {
+            // Desktop: clique único
+            card.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.getAttribute('data-id');
+                navegarParaDetalhes(id, 'jogo');
+            });
+        }
+    }
     
     async function buscarJogos(termo) {
         if (!termo.trim()) {
@@ -21,8 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             
-            // REMOVIDO: O código que escondia o botão "Ver Mais"
-            
             const response = await fetch(`/api/busca/jogos?q=${encodeURIComponent(termo)}`);
             const jogos = await response.json();
             
@@ -37,30 +73,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            gridPosters.innerHTML = jogos.map(jogo => {
+            gridPosters.innerHTML = '';
+            
+            jogos.forEach(jogo => {
                 const imagemSrc = jogo.poster || jogo.poster_url || 'https://via.placeholder.com/300x450?text=Sem+Imagem';
                 
-                return `
-                <div class="game-card" style="height: 100%;">
+                const divCard = document.createElement('div');
+                divCard.className = 'game-card';
+                divCard.style.height = '100%';
+                divCard.setAttribute('data-id', jogo.id);
+                divCard.setAttribute('data-tipo', 'jogo');
+                
+                divCard.innerHTML = `
                     <div class="item-poster poster-clean" style="height: 100%; width: 100%;">
+                        <img src="${imagemSrc}" 
+                             alt="${jogo.titulo}" 
+                             class="poster-jogos" 
+                             loading="lazy"
+                             style="height: 100%; width: 100%; object-fit: cover; object-position: center top; display: block;">
                         
-                        <a href="#" onclick="return false;" style="display: block; height: 100%; width: 100%; position: relative; cursor: default;">
-                            
-                            <img src="${imagemSrc}" 
-                                 alt="${jogo.titulo}" 
-                                 class="poster-jogos" 
-                                 loading="lazy"
-                                 style="height: 100%; width: 100%; object-fit: cover; object-position: center top; display: block;">
-                            
-                            <div class="game-info-overlay">
-                                <h3 class="game-title">${jogo.titulo}</h3>
-                            </div>
-                            
-                        </a>
+                        <div class="game-info-overlay">
+                            <h3 class="game-title">${jogo.titulo}</h3>
+                        </div>
                     </div>
-                </div>
                 `;
-            }).join('');
+                
+                gridPosters.appendChild(divCard);
+                adicionarEventoCard(divCard);
+            });
             
         } catch (error) {
             console.error('Erro na busca:', error);
@@ -70,7 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function restaurarOriginal() {
         gridPosters.innerHTML = conteudoOriginal;
-        // Não precisa mais restaurar o botão, pois ele nunca sumiu
+        
+        // Adiciona eventos nos cards originais
+        const cardsOriginais = gridPosters.querySelectorAll('[data-tipo="jogo"]');
+        cardsOriginais.forEach(card => adicionarEventoCard(card));
     }
 
     if (iconeBusca) {

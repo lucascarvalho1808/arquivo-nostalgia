@@ -7,85 +7,113 @@ const gradePosters = document.querySelector('.grade-posters');
 const btnBuscarFiltro = document.getElementById('btn-buscar-filtro');
 const formFiltros = document.getElementById('form-filtros');
 
-/**
- * Cria o HTML de um poster e adiciona na grade.
- * Jogos da Steam: capa vertical (poster)
- * Jogos sem Steam: imagem horizontal do RAWG (card com título)
- */
+// Função de navegação (importada do script.js)
+function navegarParaDetalhes(id, tipo) {
+    const url = `/detalhes/${tipo}/${id}`;
+    window.location.href = url;
+}
+
+// Detecta mobile (importada do script.js)
+function isMobile() {
+    return window.innerWidth <= 768 || 
+           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+// Adiciona eventos de clique ao card criado dinamicamente
+function adicionarEventoCard(card) {
+    card.style.cursor = 'pointer';
+    
+    if (isMobile()) {
+        // Mobile: duplo clique
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (!this.classList.contains('ativo')) {
+                document.querySelectorAll('[data-tipo="jogo"]').forEach(c => c.classList.remove('ativo'));
+                this.classList.add('ativo');
+            } else {
+                const id = this.getAttribute('data-id');
+                navegarParaDetalhes(id, 'jogo');
+            }
+        });
+    } else {
+        // Desktop: clique único
+        card.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.getAttribute('data-id');
+            navegarParaDetalhes(id, 'jogo');
+        });
+    }
+}
+
+// Cria o HTML de um poster e adiciona na grade
 function criarPoster(jogo) {
     if (!jogo.poster_url) return;
     
     const divPoster = document.createElement('div');
     
     if (jogo.origem_imagem === 'steam') {
-        // --- ESTILO 1: STEAM (Vertical) ---
+        // Steam: capa vertical
         divPoster.className = 'item-poster poster-clean steam-card';
+        divPoster.setAttribute('data-id', jogo.id);
+        divPoster.setAttribute('data-tipo', 'jogo');
         
         const fallbackAttr = jogo.imagem_fallback 
             ? `onerror="this.onerror=null; this.src='${jogo.imagem_fallback}';"` 
             : '';
             
         divPoster.innerHTML = `
-            <a href="#" style="display: block; position: relative; height: 100%;">
-                <div class="poster-wrapper" style="height: 100%; width: 100%;">
-                    <img src="${jogo.poster_url}" 
-                         alt="${jogo.titulo}" 
-                         class="poster-jogos" 
-                         loading="lazy"
-                         style="height: 100%; width: 100%; object-fit: cover;"
-                         ${fallbackAttr}>
-                    
-                    <div class="game-info-overlay">
-                        <h3 class="game-title">${jogo.titulo}</h3>
-                    </div>
+            <div class="poster-wrapper" style="height: 100%; width: 100%;">
+                <img src="${jogo.poster_url}" 
+                     alt="${jogo.titulo}" 
+                     class="poster-jogos" 
+                     loading="lazy"
+                     style="height: 100%; width: 100%; object-fit: cover;"
+                     ${fallbackAttr}>
+                
+                <div class="game-info-overlay">
+                    <h3 class="game-title">${jogo.titulo}</h3>
                 </div>
-            </a>
+            </div>
         `;
     } else {
-        // --- ESTILO 2: RAWG (Horizontal forçado a preencher) ---
-        // Aqui está o segredo: adicionei os styles inline igual fizemos no HTML
-        divPoster.className = 'game-card';
-        divPoster.style.height = '100%'; // Garante altura total
+        // RAWG: capa vertical (igual Steam)
+        divPoster.className = 'item-poster poster-clean steam-card';
+        divPoster.setAttribute('data-id', jogo.id);
+        divPoster.setAttribute('data-tipo', 'jogo');
 
         divPoster.innerHTML = `
-            <div class="item-poster poster-clean" style="height: 100%; width: 100%;">
-                <a href="#" style="display: block; height: 100%; width: 100%; position: relative;">
-                    <img src="${jogo.poster_url}" 
-                         alt="${jogo.titulo}" 
-                         class="poster-jogos" 
-                         loading="lazy"
-                         style="height: 100%; width: 100%; object-fit: cover; object-position: center top; display: block;">
-                    
-                    <div class="game-info-overlay">
-                        <h3 class="game-title">${jogo.titulo}</h3>
-                    </div>
-                </a>
+            <div class="poster-wrapper" style="height: 100%; width: 100%;">
+                <img src="${jogo.poster_url}" 
+                     alt="${jogo.titulo}" 
+                     class="poster-jogos" 
+                     loading="lazy"
+                     style="height: 100%; width: 100%; object-fit: cover;">
+                
+                <div class="game-info-overlay">
+                    <h3 class="game-title">${jogo.titulo}</h3>
+                </div>
             </div>
         `;
     }
     
     gradePosters.appendChild(divPoster);
+    adicionarEventoCard(divPoster);
 }
 
-/**
- * Limpa a grade de posters
- */
+// Limpa a grade de posters
 function limparGrade() {
     gradePosters.innerHTML = '';
 }
 
-/**
- * Coleta os IDs dos gêneros selecionados nos checkboxes
- */
+// Coleta os IDs dos gêneros selecionados nos checkboxes
 function coletarGenerosSelecionados() {
     const checkboxes = formFiltros.querySelectorAll('input[name="genero"]:checked');
     const ids = Array.from(checkboxes).map(cb => cb.value);
     return ids.join(',');
 }
 
-/**
- * Busca jogos (com ou sem filtro) e atualiza a grade
- */
+// Busca jogos (com ou sem filtro) e atualiza a grade
 async function buscarJogos(pagina, generos, substituir = false) {
     try {
         let url = `/api/jogos/filtrar?pagina=${pagina}`;
@@ -121,7 +149,7 @@ async function buscarJogos(pagina, generos, substituir = false) {
     }
 }
 
-
+// Botão "Ver mais"
 if (botaoVerMais) {
     botaoVerMais.addEventListener('click', async function() {
         botaoVerMais.disabled = true;
@@ -132,6 +160,7 @@ if (botaoVerMais) {
     });
 }
 
+// Botão de filtro
 if (btnBuscarFiltro) {
     btnBuscarFiltro.addEventListener('click', async function() {
         paginaAtual = 1;
@@ -147,41 +176,23 @@ if (btnBuscarFiltro) {
     });
 }
 
+// Inicializa eventos nos cards já carregados
 document.addEventListener("DOMContentLoaded", function() {
-    // Seleciona todos os wrappers de jogos (Steam e RAWG)
-    const cards = document.querySelectorAll('.poster-wrapper, .game-card');
-
+    const cards = document.querySelectorAll('[data-tipo="jogo"]');
+    
     cards.forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Verifica se é um dispositivo touch ou tela pequena (opcional, mas recomendado)
-            // Se quiser que funcione assim no PC também, pode remover o 'if'
-            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        adicionarEventoCard(card);
+    });
 
-            if (isTouch) {
-                // Se o card JÁ tem a classe ativo...
-                if (card.classList.contains('ativo')) {
-                    // ...Deixa o navegador seguir o link normalmente (2º clique)
-                    return true; 
-                } else {
-                    // ...Se NÃO tem a classe ativo (1º clique)
-                    e.preventDefault(); // Impede de entrar no link
-                    
-                    // Remove a classe 'ativo' de todos os outros jogos abertos
-                    cards.forEach(c => c.classList.remove('ativo'));
-                    
-                    // Adiciona a classe 'ativo' neste jogo
-                    card.classList.add('ativo');
-                }
+    // Remove 'ativo' ao clicar fora (mobile)
+    if (isMobile()) {
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('[data-tipo="jogo"]')) {
+                document.querySelectorAll('[data-tipo="jogo"]').forEach(c => c.classList.remove('ativo'));
             }
         });
-    });
+    }
 
-    // Lógica para "Limpar a tela" ao clicar fora
-    document.addEventListener('click', function(e) {
-        // Se o clique NÃO foi dentro de nenhum card de jogo
-        if (!e.target.closest('.poster-wrapper') && !e.target.closest('.game-card')) {
-            // Remove o ativo de todo mundo
-            cards.forEach(c => c.classList.remove('ativo'));
-        }
-    });
+    console.log('Eventos de navegação (jogos) carregados!');
+    console.log(`Modo: ${isMobile() ? 'Mobile' : 'Desktop'}`);
 });

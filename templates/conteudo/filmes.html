@@ -266,7 +266,7 @@
         <div class="grade-posters">
           {% for filme in filmes %} {% if filme.poster_url %}
           <!-- Item do Filme -->
-          <div class="item-poster">
+          <div class="item-poster" data-id="{{ filme.id }}" data-tipo="filme">
             <a href="#">
               <img
                 src="{{ filme.poster_url }}"

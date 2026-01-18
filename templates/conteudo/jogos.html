@@ -248,8 +248,8 @@
         {% if jogo.poster_url %}
 
         {% if jogo.origem_imagem == 'steam' %}
-
-        <div class="item-poster poster-clean steam-card">
+        <!-- Steam: capa vertical -->
+        <div class="item-poster poster-clean steam-card" data-id="{{ jogo.id }}" data-tipo="jogo">
           <a href="#" style="display: block; position: relative; height: 100%;">
             <div class="poster-wrapper" style="height: 100%; width: 100%;">
               <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="poster-jogos" loading="lazy"
@@ -264,8 +264,8 @@
         </div>
 
         {% else %}
-
-        <div class="game-card" style="height: 100%;">
+        <!-- RAWG: capa horizontal -->
+        <div class="game-card" style="height: 100%;" data-id="{{ jogo.id }}" data-tipo="jogo">
           <div class="item-poster poster-clean" style="height: 100%; width: 100%;">
             <a href="#" style="display: block; height: 100%; width: 100%; position: relative;">
               <img src="{{ jogo.poster_url }}" alt="{{ jogo.titulo }}" class="poster-jogos" loading="lazy"

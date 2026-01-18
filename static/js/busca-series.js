@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             gridPosters.innerHTML = series.map(serie => `
-                <div class="item-poster">
+                <div class="item-poster" data-id="${serie.id}" data-tipo="serie">
                     <a href="#">
                         ${serie.poster 
                             ? `<img src="${serie.poster}" alt="${serie.titulo}" loading="lazy">`
@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     </a>
                 </div>
             `).join('');
+            
+            // Adicionar listeners de clique
+            adicionarEventListenersBusca();
             
         } catch (error) {
             console.error('Erro ao buscar séries:', error);
@@ -76,5 +79,25 @@ document.addEventListener('DOMContentLoaded', function() {
     window.limparBusca = function() {
         if (inputBusca) inputBusca.value = '';
         gridPosters.innerHTML = conteudoOriginal;
+        adicionarEventListenersBusca();
     };
+    
+    // Função para adicionar event listeners
+    function adicionarEventListenersBusca() {
+        document.querySelectorAll('.item-poster').forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+                const tipo = this.dataset.tipo;
+                
+                if (id && tipo) {
+                    window.location.href = `/detalhes/${tipo}/${id}`;
+                }
+            });
+        });
+    }
+    
+    // Chamar no carregamento inicial
+    adicionarEventListenersBusca();
 });

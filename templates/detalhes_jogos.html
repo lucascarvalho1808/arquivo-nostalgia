@@ -152,10 +152,11 @@
                 <span>Guardar Memória</span>
               </button>
 
-              {% if jogo.clip and jogo.clip.clip %}
+              <!-- Funciona com RAWG ou Steam -->
+              {% if jogo.trailer_url %}
               <button
                 class="btn-acao-tmdb"
-                onclick="window.open('{{ jogo.clip.clip }}', '_blank')"
+                onclick="window.open('{{ jogo.trailer_url }}', '_blank')"
               >
                 <div class="icone-circulo">
                   <i class="fa-solid fa-play"></i>

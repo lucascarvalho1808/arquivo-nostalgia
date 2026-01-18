@@ -74,7 +74,7 @@
 
             <div class="grade-posters">
                 {% for filme in filmes %}
-                <div class="item-poster" data-tipo="filme">
+                <div class="item-poster" data-tipo="filme" data-id="{{ filme.id }}">
                     <a href="#">
                         {% if filme.poster %}
                         <img src="{{ filme.poster }}" alt="{{ filme.titulo }}" loading="lazy">
@@ -86,7 +86,7 @@
                 {% endfor %}
 
                 {% for serie in series %}
-                <div class="item-poster" data-tipo="serie">
+                <div class="item-poster" data-tipo="serie" data-id="{{ serie.id }}">
                     <a href="#">
                         {% if serie.poster %}
                         <img src="{{ serie.poster }}" alt="{{ serie.titulo }}" loading="lazy">
@@ -98,31 +98,23 @@
                 {% endfor %}
 
                 {% for jogo in jogos %}
-                <div class="item-poster game-card" data-tipo="jogo">
-
+                <div class="item-poster game-card" data-tipo="jogo" data-id="{{ jogo.id }}">
                     <a href="#" onclick="return false;" style="display: block; width: 100%; height: 100%;">
-
                         {% if jogo.poster %}
                         <img src="{{ jogo.poster }}" alt="{{ jogo.titulo }}" class="poster-jogos" loading="lazy"
                             referrerpolicy="no-referrer">
-
                         <div class="game-info-overlay">
                             <h3 class="game-title">{{ jogo.titulo }}</h3>
                         </div>
-
                         {% else %}
                         <div class="poster-placeholder" style="background-color: #0c3757;"></div>
                         <div class="game-info-overlay">
                             <h3 class="game-title">{{ jogo.titulo }}</h3>
                         </div>
-
                         {% endif %}
-
                     </a>
                 </div>
                 {% endfor %}
-
-
             </div>
     </main>
 

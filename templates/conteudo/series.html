@@ -241,7 +241,7 @@
 
         <div class="grade-posters">
           {% for serie in series %} {% if serie.poster_url %}
-          <div class="item-poster">
+          <div class="item-poster" data-id="{{ serie.id }}" data-tipo="serie">
             <a href="#">
               <img
                 src="{{ serie.poster_url }}"

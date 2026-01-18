@@ -15,6 +15,8 @@ function criarPoster(filme) {
     if (filme.poster_url) {
         const divPoster = document.createElement('div');
         divPoster.className = 'item-poster';
+        divPoster.dataset.id = filme.id;
+        divPoster.dataset.tipo = 'filme';
         divPoster.innerHTML = `
             <a href="#">
                 <img src="${filme.poster_url}" alt="${filme.titulo}" loading="lazy">
@@ -70,6 +72,8 @@ async function buscarFilmes(pagina, generos, substituir = false) {
         // Adiciona os filmes na grade
         filmes.forEach(filme => criarPoster(filme));
 
+        adicionarEventListenersFilmes();
+
         // Reativa o botão
         botaoVerMais.disabled = false;
         botaoVerMais.textContent = 'Ver mais';
@@ -79,6 +83,31 @@ async function buscarFilmes(pagina, generos, substituir = false) {
         botaoVerMais.textContent = 'Erro - Tentar novamente';
         botaoVerMais.disabled = false;
     }
+}
+
+/**
+ * Adiciona event listeners de clique aos filmes
+ */
+function adicionarEventListenersFilmes() {
+    document.querySelectorAll('.item-poster').forEach(item => {
+        // Remove listeners duplicados clonando o elemento
+        const novoItem = item.cloneNode(true);
+        item.parentNode.replaceChild(novoItem, item);
+    });
+    
+    // Adiciona os listeners aos elementos limpos
+    document.querySelectorAll('.item-poster').forEach(item => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const tipo = this.dataset.tipo;
+            
+            if (id && tipo) {
+                window.location.href = `/detalhes/${tipo}/${id}`;
+            }
+        });
+    });
 }
 
 // --- EVENT LISTENERS ---
@@ -113,3 +142,6 @@ if (btnBuscarFiltro) {
         btnBuscarFiltro.disabled = false;
     });
 }
+
+// Chamar no carregamento inicial
+document.addEventListener('DOMContentLoaded', adicionarEventListenersFilmes);
