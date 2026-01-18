@@ -18,11 +18,11 @@
             <i class="fa-solid fa-magnifying-glass icone-busca"></i>
         </div>
         <nav class="menu-icones">
-            <a href="{{ url_for('main.filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
-            <a href="{{ url_for('main.series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
-            <a href="{{ url_for('main.jogos') }}" class="item-menu"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
-            <a href="#" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
-            <a href="#" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
+            <a href="{{ url_for('filmes.api_filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
+            <a href="{{ url_for('series.api_series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
+            <a href="{{ url_for('jogos.api_jogos') }}" class="item-menu"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
+            <a href="{{ url_for('listas.criar_lista_route') }}" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
+            <a href="{{ url_for('main.perfil') }}" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
         </nav>
     </header>
 
@@ -109,7 +109,9 @@
                             {% if ator.profile_path %}
                             <img src="https://image.tmdb.org/t/p/w200{{ ator.profile_path }}" alt="{{ ator.name }}">
                             {% else %}
-                            <img src="{{ url_for('static', filename='img/sem-foto.png') }}" alt="{{ ator.name }}">
+                            <div class="sem-foto-ator">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
                             {% endif %}
                             <div class="nome-ator">{{ ator.name }}</div>
                             <div class="papel-ator">{{ ator.character }}</div>
@@ -145,7 +147,6 @@
         }
 
         function adicionarLista(id, tipo) {
-            // Implementar depois com modal de seleção de lista
             alert(`Adicionar ${tipo} ID ${id} à lista`);
         }
     </script>

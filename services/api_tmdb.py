@@ -114,34 +114,35 @@ def pesquisar_midia(query, pagina=1):
 
 def buscar_detalhes_filme(filme_id):
     """
-    Busca os detalhes completos de um filme específico pelo ID.
+    Busca detalhes completos de um filme específico no TMDB.
+    
+    Args:
+        filme_id (int): ID do filme no TMDB
+    
+    Returns:
+        dict: Dados completos do filme incluindo credits e videos
     """
-    endpoint = f"{BASE_URL}/movie/{filme_id}"
-    params = {
-        'api_key': TMDB_API_KEY,
-        'language': 'pt-BR'
-    }
-
     try:
-        response = requests.get(endpoint, params=params)
-        response.raise_for_status()
-        filme = response.json()
-
-        # Formata os dados para um dicionário simples
-        return {
-            'id': filme['id'],
-            'titulo': filme['title'],
-            'sinopse': filme.get('overview', 'Sinopse indisponível.'),
-            'data_lancamento': filme.get('release_date'),
-            'poster_url': f"{IMAGE_BASE_URL}{filme['poster_path']}" if filme.get('poster_path') else None,
-            'backdrop_url': f"{IMAGE_BASE_URL}{filme['backdrop_path']}" if filme.get('backdrop_path') else None,
-            'nota': filme.get('vote_average'),
-            'generos': [g['name'] for g in filme.get('genres', [])], # Lista de nomes dos gêneros
-            'duracao': filme.get('runtime'), # Duração em minutos
-            'tipo': 'movie'
+        url = f"{BASE_URL}/movie/{filme_id}"
+        params = {
+            'api_key': TMDB_API_KEY,  # ← CORRIGIDO (estava API_KEY)
+            'language': 'pt-BR',
+            'append_to_response': 'credits,videos'
         }
-
-    except requests.exceptions.RequestException as e:
+        
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        return response.json()
+    
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 404:
+            print(f"Filme com ID {filme_id} não encontrado.")
+        else:
+            print(f"Erro HTTP ao buscar filme {filme_id}: {http_err}")
+        return None
+    
+    except Exception as e:
         print(f"Erro ao buscar detalhes do filme {filme_id}: {e}")
         return None
 
@@ -406,6 +407,40 @@ def buscar_series(termo, max_resultados=200):
     except Exception as e:
         print(f"Erro ao buscar séries: {e}")
         return []
+
+def buscar_detalhes_serie(serie_id):
+    """
+    Busca detalhes completos de uma série específica no TMDB.
+    
+    Args:
+        serie_id (int): ID da série no TMDB
+    
+    Returns:
+        dict: Dados completos da série incluindo credits e videos
+    """
+    try:
+        url = f"{BASE_URL}/tv/{serie_id}"
+        params = {
+            'api_key': TMDB_API_KEY,
+            'language': 'pt-BR',
+            'append_to_response': 'credits,videos'  # Inclui elenco e trailers
+        }
+        
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        return response.json()
+    
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 404:
+            print(f"Série com ID {serie_id} não encontrada.")
+        else:
+            print(f"Erro HTTP ao buscar série {serie_id}: {http_err}")
+        return None
+    
+    except Exception as e:
+        print(f"Erro ao buscar detalhes da série {serie_id}: {e}")
+        return None
 
 # Teste rápido das funções
 if __name__ == "__main__":

@@ -18,11 +18,11 @@
             <i class="fa-solid fa-magnifying-glass icone-busca"></i>
         </div>
         <nav class="menu-icones">
-            <a href="{{ url_for('main.filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
-            <a href="{{ url_for('main.series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
-            <a href="{{ url_for('main.jogos') }}" class="item-menu ativo"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
-            <a href="#" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
-            <a href="#" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
+            <a href="{{ url_for('filmes.api_filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
+            <a href="{{ url_for('series.api_series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
+            <a href="{{ url_for('jogos.api_jogos') }}" class="item-menu ativo"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
+            <a href="{{ url_for('listas.criar_lista_route') }}" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
+            <a href="{{ url_for('main.perfil') }}" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
         </nav>
     </header>
 
@@ -32,9 +32,16 @@
 
             <div class="secao-superior">
                 <div class="area-poster">
+                    {% if jogo.background_image %}
                     <img src="{{ jogo.background_image }}" 
                          alt="Capa {{ jogo.name }}" 
                          class="poster-grande">
+                    {% else %}
+                    <div class="poster-placeholder">
+                        <i class="fa-solid fa-gamepad"></i>
+                        <p>Imagem não disponível</p>
+                    </div>
+                    {% endif %}
                 </div>
 
                 <div class="area-info">
@@ -46,8 +53,14 @@
                     </div>
 
                     <div class="meta-dados">
-                        <span class="classificacao">{{ jogo.esrb_rating.name if jogo.esrb_rating else 'N/A' }}</span>
-                        <span>{{ jogo.released|formato_data if jogo.released else 'N/A' }}</span>
+                        <span class="classificacao">{{ jogo.classificacao_br }}</span>
+                        
+                        {% if jogo.released %}
+                        <span>{{ jogo.released|formato_data }}</span>
+                        {% else %}
+                        <span>Data não disponível</span>
+                        {% endif %}
+                        
                         <i class="fa-solid fa-circle ponto-separador"></i>
                         <span>{{ generos }}</span>
                     </div>
@@ -58,7 +71,7 @@
                             <span>Guardar Memória</span>
                         </button>
 
-                        {% if jogo.clip %}
+                        {% if jogo.clip and jogo.clip.clip %}
                         <button class="btn-acao-tmdb" onclick="window.open('{{ jogo.clip.clip }}', '_blank')">
                             <div class="icone-circulo"><i class="fa-solid fa-play"></i></div>
                             <span>Ver Trailer</span>
@@ -69,7 +82,7 @@
                     <div>
                         <span class="label-secao">Sinopse</span>
                         <p class="texto-sinopse">
-                            {{ jogo.description_raw if jogo.description_raw else 'Descrição não disponível.' }}
+                            {{ jogo.description_clean }}
                         </p>
                     </div>
 
@@ -98,9 +111,9 @@
                 </div>
             </div>
 
-            {% if jogo.short_screenshots %}
+            {% if jogo.screenshots and jogo.screenshots|length > 0 %}
             <div class="secao-carrossel">
-                <h3 class="titulo-carrossel">Galeria do Jogo</h3>
+                <h3 class="titulo-carrossel">Galeria do Jogo ({{ jogo.screenshots|length }} fotos)</h3>
 
                 <div class="wrapper-carrossel">
                     <button class="nav-btn prev-btn" onclick="moverCarrosselJogos(-300)">
@@ -108,9 +121,9 @@
                     </button>
 
                     <div class="lista-posters carrossel-jogos" id="carrosselJogos">
-                        {% for screenshot in jogo.short_screenshots %}
+                        {% for screenshot in jogo.screenshots %}
                         <div class="card-screenshot">
-                            <img src="{{ screenshot.image }}" alt="Screenshot">
+                            <img src="{{ screenshot.image }}" alt="Screenshot {{ loop.index }}" loading="lazy">
                         </div>
                         {% endfor %}
                     </div>
@@ -119,6 +132,12 @@
                         <i class="fa-solid fa-chevron-right"></i>
                     </button>
                 </div>
+            </div>
+            {% else %}
+            <div class="secao-carrossel">
+                <p style="color: rgba(255,255,255,0.5); text-align: center; padding: 20px;">
+                    Galeria de imagens não disponível para este jogo.
+                </p>
             </div>
             {% endif %}
 
@@ -131,9 +150,14 @@
             <span class="separador">|</span>
             <a href="#">Política de Privacidade</a>
         </div>
+
+        <!-- Texto de Copyright -->
         <div class="texto-copyright">
             Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
         </div>
+
+        <!-- Crédito da API RAWG -->
+        <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
     </footer>
 
     <script>
