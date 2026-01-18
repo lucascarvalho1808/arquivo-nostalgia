@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ jogo.name }} - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalhes_conteudo.css') }}">
+</head>
+<body>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
+            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </div>
+        <div class="barra-busca">
+            <input type="text" placeholder="Buscar Jogos:">
+            <i class="fa-solid fa-magnifying-glass icone-busca"></i>
+        </div>
+        <nav class="menu-icones">
+            <a href="{{ url_for('main.filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
+            <a href="{{ url_for('main.series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
+            <a href="{{ url_for('main.jogos') }}" class="item-menu ativo"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
+            <a href="#" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
+            <a href="#" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
+        </nav>
+    </header>
+
+    <div class="container-principal">
+        <div class="painel-detalhes" 
+             style="background-image: linear-gradient(to right, rgba(22, 78, 120, 1) 30%, rgba(22, 78, 120, 0.6) 100%), url('{{ jogo.background_image }}');">
+
+            <div class="secao-superior">
+                <div class="area-poster">
+                    <img src="{{ jogo.background_image }}" 
+                         alt="Capa {{ jogo.name }}" 
+                         class="poster-grande">
+                </div>
+
+                <div class="area-info">
+                    <div class="titulo-container">
+                        <h1 class="titulo-obra">
+                            {{ jogo.name }} 
+                            <span class="ano-titulo">({{ jogo.released[:4] if jogo.released else 'N/A' }})</span>
+                        </h1>
+                    </div>
+
+                    <div class="meta-dados">
+                        <span class="classificacao">{{ jogo.esrb_rating.name if jogo.esrb_rating else 'N/A' }}</span>
+                        <span>{{ jogo.released|formato_data if jogo.released else 'N/A' }}</span>
+                        <i class="fa-solid fa-circle ponto-separador"></i>
+                        <span>{{ generos }}</span>
+                    </div>
+
+                    <div class="acoes-usuario">
+                        <button class="btn-acao-tmdb" onclick="adicionarLista({{ jogo.id }}, 'jogo')">
+                            <div class="icone-circulo"><i class="fa-solid fa-folder-plus"></i></div>
+                            <span>Guardar Memória</span>
+                        </button>
+
+                        {% if jogo.clip %}
+                        <button class="btn-acao-tmdb" onclick="window.open('{{ jogo.clip.clip }}', '_blank')">
+                            <div class="icone-circulo"><i class="fa-solid fa-play"></i></div>
+                            <span>Ver Trailer</span>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <span class="label-secao">Sinopse</span>
+                        <p class="texto-sinopse">
+                            {{ jogo.description_raw if jogo.description_raw else 'Descrição não disponível.' }}
+                        </p>
+                    </div>
+
+                    <div class="equipe-grid">
+                        {% if plataformas %}
+                        <div class="membro-equipe">
+                            <strong>Plataformas</strong>
+                            <span>{{ plataformas }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if jogo.developers %}
+                        <div class="membro-equipe">
+                            <strong>Desenvolvedora</strong>
+                            <span>{{ jogo.developers[0].name }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if jogo.publishers %}
+                        <div class="membro-equipe">
+                            <strong>Distribuidora</strong>
+                            <span>{{ jogo.publishers[0].name }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if jogo.short_screenshots %}
+            <div class="secao-carrossel">
+                <h3 class="titulo-carrossel">Galeria do Jogo</h3>
+
+                <div class="wrapper-carrossel">
+                    <button class="nav-btn prev-btn" onclick="moverCarrosselJogos(-300)">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+
+                    <div class="lista-posters carrossel-jogos" id="carrosselJogos">
+                        {% for screenshot in jogo.short_screenshots %}
+                        <div class="card-screenshot">
+                            <img src="{{ screenshot.image }}" alt="Screenshot">
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <button class="nav-btn next-btn" onclick="moverCarrosselJogos(300)">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <footer class="rodape-principal">
+        <div class="links-rodape">
+            <a href="#">Termos de Uso</a>
+            <span class="separador">|</span>
+            <a href="#">Política de Privacidade</a>
+        </div>
+        <div class="texto-copyright">
+            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+        </div>
+    </footer>
+
+    <script>
+        function moverCarrosselJogos(distancia) {
+            const container = document.getElementById('carrosselJogos');
+            container.scrollBy({ left: distancia, behavior: 'smooth' });
+        }
+
+        function adicionarLista(id, tipo) {
+            alert(`Adicionar ${tipo} ID ${id} à lista`);
+        }
+    </script>
+</body>
+</html>
