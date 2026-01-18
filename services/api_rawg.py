@@ -146,52 +146,62 @@ def pesquisar_jogos(query):
         return []
 
 
-def buscar_detalhes_jogo(game_id_ou_slug):
-    """Busca detalhada HÍBRIDA."""
-    url_rawg = f"{BASE_URL}/games/{game_id_ou_slug}?key={RAWG_API_KEY}"
+def buscar_detalhes_jogo(jogo_id):
+    """
+    Busca detalhes completos de um jogo específico no RAWG.
     
+    Args:
+        jogo_id (int): ID do jogo no RAWG
+    
+    Returns:
+        dict: Dados completos do jogo incluindo screenshots
+    """
     try:
-        response = requests.get(url_rawg)
-        dados_rawg = response.json()
-        
-        descricao_limpa = re.sub('<[^<]+?>', '', dados_rawg.get('description', ''))
-        
-        jogo_final = {
-            'id': dados_rawg['id'],
-            'titulo': dados_rawg['name'],
-            'sinopse': descricao_limpa,
-            'data_lancamento': dados_rawg.get('released'),
-            'poster_url': dados_rawg.get('background_image'),
-            'nota': dados_rawg.get('metacritic'),
-            'generos': [g['name'] for g in dados_rawg.get('genres', [])],
-            'plataformas': [p['platform']['name'] for p in dados_rawg.get('platforms', [])],
-            'preco': 'Não informado',
-            'requisitos': None,
-            'tipo': 'game'
+        # Busca dados principais do jogo
+        url = f"{BASE_URL}/games/{jogo_id}"
+        params = {
+            'key': RAWG_API_KEY
         }
-
-        steam_id = _extrair_steam_id(dados_rawg.get('stores', []), dados_rawg.get('name'))
         
-        if steam_id:
-            capa_steam = _gerar_capa_steam(steam_id)
-            if capa_steam:
-                jogo_final['poster_url'] = capa_steam
-
-            dados_steam = _buscar_dados_steam_detalhes(steam_id)
-            if dados_steam:
-                if 'short_description' in dados_steam:
-                    jogo_final['sinopse'] = dados_steam['short_description']
-                if 'price_overview' in dados_steam:
-                    jogo_final['preco'] = dados_steam['price_overview'].get('final_formatted', 'Grátis')
-                elif dados_steam.get('is_free'):
-                    jogo_final['preco'] = 'Gratuito'
-                if 'pc_requirements' in dados_steam and 'minimum' in dados_steam['pc_requirements']:
-                    jogo_final['requisitos'] = dados_steam['pc_requirements']['minimum']
-            
-        return jogo_final
-
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        jogo = response.json()
+        
+        # Busca screenshots separadamente
+        screenshots_url = f"{BASE_URL}/games/{jogo_id}/screenshots"
+        screenshots_response = requests.get(screenshots_url, params=params)
+        
+        if screenshots_response.status_code == 200:
+            screenshots_data = screenshots_response.json()
+            jogo['screenshots'] = screenshots_data.get('results', [])
+            print(f"Screenshots encontrados: {len(jogo['screenshots'])}")
+        else:
+            jogo['screenshots'] = []
+            print("Nenhum screenshot encontrado")
+        
+        # DEBUG
+        print(f"\n=== DEBUG JOGO {jogo_id} ===")
+        print(f"Nome: {jogo.get('name')}")
+        print(f"Clip disponível: {jogo.get('clip')}")
+        print(f"Screenshots carregados: {len(jogo.get('screenshots', []))}")
+        if jogo.get('screenshots'):
+            print(f"Primeiro screenshot: {jogo['screenshots'][0].get('image')}")
+        print(f"=========================\n")
+        
+        return jogo
+    
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 404:
+            print(f"Jogo com ID {jogo_id} não encontrado.")
+        else:
+            print(f"Erro HTTP ao buscar jogo {jogo_id}: {http_err}")
+        return None
+    
     except Exception as e:
-        print(f"Erro ao buscar detalhes do jogo {game_id_ou_slug}: {e}")
+        print(f"Erro ao buscar detalhes do jogo {jogo_id}: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 

@@ -1,153 +1,249 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ conteudo.title }} - Arquivo Nostalgia</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/detalhes_conteudo.css') }}">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/detalhes_conteudo.css') }}"
+    />
+  </head>
+  <body>
     <header class="cabecalho-principal">
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena">
-            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
-        </div>
-        <div class="barra-busca">
-            <input type="text" placeholder="Buscar Filmes e Séries:">
+      <div class="logo-container">
+        <a href="{{ url_for('main.index') }}">
+          <img
+            src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+            alt="Logo"
+            class="logo-pequena"
+          />
+          <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </a>
+      </div>
+
+      <div class="barra-busca">
+        <form
+          action="{{ url_for('busca.busca_geral') }}"
+          method="GET"
+          style="display: flex; width: 100%; position: relative"
+        >
+          <input
+            type="text"
+            name="q"
+            placeholder="Buscar Filmes, Séries e Jogos:"
+            required
+          />
+          <button
+            type="submit"
+            style="
+              background: none;
+              border: none;
+              position: absolute;
+              right: 15px;
+              top: 50%;
+              transform: translateY(-50%);
+              cursor: pointer;
+            "
+          >
             <i class="fa-solid fa-magnifying-glass icone-busca"></i>
-        </div>
-        <nav class="menu-icones">
-            <a href="{{ url_for('main.filmes') }}" class="item-menu"><i class="fa-solid fa-clapperboard"></i><span>Filmes</span></a>
-            <a href="{{ url_for('main.series') }}" class="item-menu"><i class="fa-solid fa-tv"></i><span>Séries</span></a>
-            <a href="{{ url_for('main.jogos') }}" class="item-menu"><i class="fa-solid fa-gamepad"></i><span>Jogos</span></a>
-            <a href="#" class="item-menu"><i class="fa-regular fa-folder-open"></i><span>Arquivos</span></a>
-            <a href="#" class="item-menu"><i class="fa-solid fa-circle-user"></i><span>Perfil</span></a>
-        </nav>
+          </button>
+        </form>
+      </div>
+
+      <nav class="menu-icones">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>Filmes</span>
+        </a>
+        <a href="{{ url_for('series.index') }}" class="item-menu">
+          <i class="fa-solid fa-tv"></i>
+          <span>Séries</span>
+        </a>
+        <a href="{{ url_for('jogos.index') }}" class="item-menu">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Jogos</span>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <!-- MENU PARA QUEM ESTÁ LOGADO -->
+        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('main.perfil') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Perfil</span>
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="item-menu">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sair</span>
+        </a>
+        {% else %}
+        <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Login</span>
+        </a>
+        {% endif %}
+      </nav>
     </header>
 
     <div class="container-principal">
-        <div class="painel-detalhes" 
-             style="background-image: linear-gradient(to right, rgba(22, 78, 120, 1) 30%, rgba(22, 78, 120, 0.6) 100%), url('https://image.tmdb.org/t/p/original{{ conteudo.backdrop_path }}');">
+      <div
+        class="painel-detalhes"
+        style="background-image: linear-gradient(to right, rgba(22, 78, 120, 1) 30%, rgba(22, 78, 120, 0.6) 100%), url('https://image.tmdb.org/t/p/original{{ conteudo.backdrop_path }}');"
+      >
+        <div class="secao-superior">
+          <div class="area-poster">
+            <img
+              src="https://image.tmdb.org/t/p/w500{{ conteudo.poster_path }}"
+              alt="{{ conteudo.title }} Poster"
+              class="poster-grande"
+            />
+          </div>
 
-            <div class="secao-superior">
-                <div class="area-poster">
-                    <img src="https://image.tmdb.org/t/p/w500{{ conteudo.poster_path }}" 
-                         alt="{{ conteudo.title }} Poster" 
-                         class="poster-grande">
-                </div>
-
-                <div class="area-info">
-                    <div class="titulo-container">
-                        <h1 class="titulo-obra">
-                            {{ conteudo.title }} 
-                            <span class="ano-titulo">({{ conteudo.release_date[:4] if conteudo.release_date else 'N/A' }})</span>
-                        </h1>
-                    </div>
-
-                    <div class="meta-dados">
-                        <span class="classificacao">{{ conteudo.vote_average|round(1) }}</span>
-                        <span>{{ conteudo.release_date|formato_data if conteudo.release_date else 'N/A' }}</span>
-                        <i class="fa-solid fa-circle ponto-separador"></i>
-                        <span>{{ generos }}</span>
-                        {% if conteudo.runtime %}
-                        <i class="fa-solid fa-circle ponto-separador"></i>
-                        <span>{{ conteudo.runtime|formato_duracao }}</span>
-                        {% endif %}
-                    </div>
-
-                    <div class="acoes-usuario">
-                        <button class="btn-acao-tmdb" onclick="adicionarLista({{ conteudo.id }}, 'filme')">
-                            <div class="icone-circulo"><i class="fa-solid fa-folder-plus"></i></div>
-                            <span>Guardar Memória</span>
-                        </button>
-
-                        {% if trailer_url %}
-                        <button class="btn-acao-tmdb" onclick="window.open('{{ trailer_url }}', '_blank')">
-                            <div class="icone-circulo"><i class="fa-solid fa-play"></i></div>
-                            <span>Ver Trailer</span>
-                        </button>
-                        {% endif %}
-                    </div>
-
-                    {% if conteudo.tagline %}
-                    <p class="frase-efeito">"{{ conteudo.tagline }}"</p>
-                    {% endif %}
-
-                    <div>
-                        <span class="label-secao">Sinopse</span>
-                        <p class="texto-sinopse">
-                            {{ conteudo.overview if conteudo.overview else 'Sinopse não disponível.' }}
-                        </p>
-                    </div>
-
-                    {% if equipe %}
-                    <div class="equipe-grid">
-                        {% for pessoa in equipe[:3] %}
-                        <div class="membro-equipe">
-                            <strong>{{ pessoa.name }}</strong>
-                            <span>{{ pessoa.job }}</span>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
+          <div class="area-info">
+            <div class="titulo-container">
+              <h1 class="titulo-obra">
+                {{ conteudo.title }}
+                <span class="ano-titulo"
+                  >({{ conteudo.release_date[:4] if conteudo.release_date else
+                  'N/A' }})</span
+                >
+              </h1>
             </div>
 
-            {% if elenco %}
-            <div class="secao-carrossel">
-                <h3 class="titulo-carrossel">Elenco Principal</h3>
-
-                <div class="wrapper-carrossel">
-                    <button class="nav-btn prev-btn" onclick="moverCarrossel(-200)">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-
-                    <div class="lista-posters" id="carrosselElenco">
-                        {% for ator in elenco[:12] %}
-                        <div class="card-elenco">
-                            {% if ator.profile_path %}
-                            <img src="https://image.tmdb.org/t/p/w200{{ ator.profile_path }}" alt="{{ ator.name }}">
-                            {% else %}
-                            <img src="{{ url_for('static', filename='img/sem-foto.png') }}" alt="{{ ator.name }}">
-                            {% endif %}
-                            <div class="nome-ator">{{ ator.name }}</div>
-                            <div class="papel-ator">{{ ator.character }}</div>
-                        </div>
-                        {% endfor %}
-                    </div>
-
-                    <button class="nav-btn next-btn" onclick="moverCarrossel(200)">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
+            <div class="meta-dados">
+              <span class="classificacao"
+                >{{ conteudo.vote_average|round(1) }}</span
+              >
+              <span
+                >{{ conteudo.release_date|formato_data if conteudo.release_date
+                else 'N/A' }}</span
+              >
+              <i class="fa-solid fa-circle ponto-separador"></i>
+              <span>{{ generos }}</span>
+              {% if conteudo.runtime %}
+              <i class="fa-solid fa-circle ponto-separador"></i>
+              <span>{{ conteudo.runtime|formato_duracao }}</span>
+              {% endif %}
             </div>
+
+            <div class="acoes-usuario">
+              <button
+                class="btn-acao-tmdb"
+                onclick="adicionarLista({{ conteudo.id }}, 'filme')"
+              >
+                <div class="icone-circulo">
+                  <i class="fa-solid fa-folder-plus"></i>
+                </div>
+                <span>Guardar Memória</span>
+              </button>
+
+              {% if trailer_url %}
+              <button
+                class="btn-acao-tmdb"
+                onclick="window.open('{{ trailer_url }}', '_blank')"
+              >
+                <div class="icone-circulo">
+                  <i class="fa-solid fa-play"></i>
+                </div>
+                <span>Ver Trailer</span>
+              </button>
+              {% endif %}
+            </div>
+
+            {% if conteudo.tagline %}
+            <p class="frase-efeito">"{{ conteudo.tagline }}"</p>
             {% endif %}
 
+            <div>
+              <span class="label-secao">Sinopse</span>
+              <p class="texto-sinopse">
+                {{ conteudo.overview if conteudo.overview else 'Sinopse não
+                disponível.' }}
+              </p>
+            </div>
+
+            {% if equipe %}
+            <div class="equipe-grid">
+              {% for pessoa in equipe[:3] %}
+              <div class="membro-equipe">
+                <strong>{{ pessoa.name }}</strong>
+                <span>{{ pessoa.job }}</span>
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
         </div>
+
+        {% if elenco %}
+        <div class="secao-carrossel">
+          <h3 class="titulo-carrossel">Elenco Principal</h3>
+
+          <div class="wrapper-carrossel">
+            <button class="nav-btn prev-btn" onclick="moverCarrossel(-200)">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="lista-posters" id="carrosselElenco">
+              {% for ator in elenco[:12] %}
+              <div class="card-elenco">
+                {% if ator.profile_path %}
+                <img
+                  src="https://image.tmdb.org/t/p/w200{{ ator.profile_path }}"
+                  alt="{{ ator.name }}"
+                />
+                {% else %}
+                <div class="sem-foto-ator">
+                  <i class="fa-solid fa-user"></i>
+                </div>
+                {% endif %}
+                <div class="nome-ator">{{ ator.name }}</div>
+                <div class="papel-ator">{{ ator.character }}</div>
+              </div>
+              {% endfor %}
+            </div>
+
+            <button class="nav-btn next-btn" onclick="moverCarrossel(200)">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
     </div>
 
     <footer class="rodape-principal">
-        <div class="links-rodape">
-            <a href="#">Termos de Uso</a>
-            <span class="separador">|</span>
-            <a href="#">Política de Privacidade</a>
-        </div>
-        <div class="texto-copyright">
-            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
-        </div>
+      <div class="links-rodape">
+        <a href="#">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="#">Política de Privacidade</a>
+      </div>
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
     </footer>
 
     <script>
-        function moverCarrossel(distancia) {
-            const container = document.getElementById('carrosselElenco');
-            container.scrollBy({ left: distancia, behavior: 'smooth' });
-        }
+      function moverCarrossel(distancia) {
+        const container = document.getElementById("carrosselElenco");
+        container.scrollBy({ left: distancia, behavior: "smooth" });
+      }
 
-        function adicionarLista(id, tipo) {
-            // Implementar depois com modal de seleção de lista
-            alert(`Adicionar ${tipo} ID ${id} à lista`);
-        }
+      function adicionarLista(id, tipo) {
+        alert(`Adicionar ${tipo} ID ${id} à lista`);
+      }
     </script>
-</body>
+  </body>
 </html>
