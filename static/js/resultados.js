@@ -8,6 +8,22 @@ document.addEventListener('DOMContentLoaded', function() {
         iconeBusca.style.cursor = 'pointer';
     }
     
+    // Event listeners de clique nos posters
+    function adicionarEventListenersResultados() {
+        document.querySelectorAll('.item-poster').forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const id = this.dataset.id;
+                const tipo = this.dataset.tipo;
+                
+                if (id && tipo) {
+                    window.location.href = `/detalhes/${tipo}/${id}`;
+                }
+            });
+        });
+    }
+    
     // Filtros
     btnsFiltro.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -31,6 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+    
+    // Chamar no carregamento inicial
+    adicionarEventListenersResultados();
 });
 
 function criarPoster(jogo) {

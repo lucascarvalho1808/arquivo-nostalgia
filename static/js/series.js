@@ -15,6 +15,8 @@ function criarPoster(serie) {
     if (serie.poster_url) {
         const divPoster = document.createElement('div');
         divPoster.className = 'item-poster';
+        divPoster.dataset.id = serie.id;
+        divPoster.dataset.tipo = 'serie';
         divPoster.innerHTML = `
             <a href="#">
                 <img src="${serie.poster_url}" alt="${serie.titulo}" loading="lazy">
@@ -62,15 +64,15 @@ async function buscarSeries(pagina, generos, substituir = false) {
             return;
         }
 
-        // Se for uma nova busca (filtro), limpa a grade primeiro
         if (substituir) {
             limparGrade();
         }
 
-        // Adiciona as séries na grade
         series.forEach(serie => criarPoster(serie));
 
-        // Reativa o botão
+        // ADICIONAR LISTENERS AOS NOVOS ELEMENTOS CRIADOS
+        adicionarEventListenersSeries();
+
         botaoVerMais.disabled = false;
         botaoVerMais.textContent = 'Ver mais';
 
@@ -79,6 +81,31 @@ async function buscarSeries(pagina, generos, substituir = false) {
         botaoVerMais.textContent = 'Erro - Tentar novamente';
         botaoVerMais.disabled = false;
     }
+}
+
+/**
+ * Adiciona event listeners de clique às séries
+ */
+function adicionarEventListenersSeries() {
+    document.querySelectorAll('.item-poster').forEach(item => {
+        // Remove listeners duplicados clonando o elemento
+        const novoItem = item.cloneNode(true);
+        item.parentNode.replaceChild(novoItem, item);
+    });
+    
+    // Adiciona os listeners aos elementos limpos
+    document.querySelectorAll('.item-poster').forEach(item => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const tipo = this.dataset.tipo;
+            
+            if (id && tipo) {
+                window.location.href = `/detalhes/${tipo}/${id}`;
+            }
+        });
+    });
 }
 
 // --- EVENT LISTENERS ---
@@ -109,3 +136,6 @@ if (btnBuscarFiltro) {
         btnBuscarFiltro.disabled = false;
     });
 }
+
+// Chamar no carregamento inicial
+document.addEventListener('DOMContentLoaded', adicionarEventListenersSeries);

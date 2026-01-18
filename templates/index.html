@@ -85,6 +85,7 @@
         <a href="#" class="botao_descricao">Começar meu Arquivo</a>
       </section>
 
+      <!-- FILMES POPULARES -->
       <section class="categoria">
         <a href="{{ url_for('filmes.index') }}" class="titulo-categoria">
           Filmes <i class="fa-solid fa-arrow-right"></i>
@@ -93,7 +94,7 @@
           <div class="carrossel">
             <div class="carrosselBox" id="slider-filmes">
               {% for filme in filmes %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ filme.id }}" data-tipo="filme">
                 {% if filme.poster_url %}
                 <img
                   src="{{ filme.poster_url }}"
@@ -120,6 +121,7 @@
         </div>
       </section>
 
+      <!-- SÉRIES POPULARES -->
       <section class="categoria">
         <a href="{{ url_for('series.index') }}" class="titulo-categoria">
           Séries <i class="fa-solid fa-arrow-right"></i>
@@ -128,7 +130,7 @@
           <div class="carrossel">
             <div class="carrosselBox" id="slider-series">
               {% for serie in series %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ serie.id }}" data-tipo="serie">
                 {% if serie.poster_url %}
                 <img
                   src="{{ serie.poster_url }}"
@@ -155,6 +157,7 @@
         </div>
       </section>
 
+      <!-- JOGOS POPULARES -->
       <section class="categoria">
         <a href="{{ url_for('jogos.index') }}" class="titulo-categoria">
           Jogos <i class="fa-solid fa-arrow-right"></i>
@@ -162,27 +165,27 @@
         <div class="center">
           <div class="carrossel">
             <div class="carrosselBox" id="slider-jogos">
-              {% for jogo in jogos %} {% if jogo.origem_imagem == 'steam' %}
-              <!-- ESTILO 1: STEAM (Capa Limpa Vertical - Igual Filmes) -->
-              <div class="item-poster poster-clean steam-card">
-                <a href="#">
-                  <div class="poster-wrapper">
-                    <img
-                      src="{{ jogo.poster_url }}"
-                      alt="{{ jogo.titulo }}"
-                      class="poster-jogos"
-                      onerror="this.onerror=null; this.src='{{ jogo.imagem_rawg }}';"
-                    />
-                    <div class="game-info-overlay">
-                      <h3 class="game-title">{{ jogo.titulo }}</h3>
-                    </div>
+              {% for jogo in jogos %}
+              
+              {% if jogo.origem_imagem == 'steam' %}
+              <!-- ESTILO 1: STEAM -->
+              <div class="item-poster poster-clean steam-card" data-id="{{ jogo.id }}" data-tipo="jogo">
+                <div class="poster-wrapper">
+                  <img
+                    src="{{ jogo.poster_url }}"
+                    alt="{{ jogo.titulo }}"
+                    class="poster-jogos"
+                    onerror="this.onerror=null; this.src='{{ jogo.imagem_rawg }}';"
+                  />
+                  <div class="game-info-overlay">
+                    <h3 class="game-title">{{ jogo.titulo }}</h3>
                   </div>
-                </a>
+                </div>
               </div>
 
               {% else %}
-              <!-- ESTILO 2: RAWG (O Estilo Clássico que você quer) -->
-              <div class="game-card">
+              <!-- ESTILO 2: RAWG -->
+              <div class="game-card" data-id="{{ jogo.id }}" data-tipo="jogo">
                 <div class="item-poster poster-clean">
                   {% if jogo.poster_url %}
                   <img
@@ -198,7 +201,9 @@
                   <h3 class="game-title">{{ jogo.titulo }}</h3>
                 </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endif %}
+              
+              {% endfor %}
             </div>
             <a
               class="switchLeft sliderButton"
@@ -258,7 +263,7 @@
       </section>
       {% endif %}
 
-      <!-- FILMES EXTRAS -->
+      <!-- FILMES CLÁSSICOS -->
       <section class="categoria">
         <div class="titulo-categoria">
           Clássicos do Cinema <i class="fa-solid fa-star"></i>
@@ -267,7 +272,7 @@
           <div class="carrossel">
             <div class="carrosselBox" id="slider-filmes-destaque">
               {% for filme in filmes_destaque %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ filme.id }}" data-tipo="filme">
                 {% if filme.poster_url %}
                 <img
                   src="{{ filme.poster_url }}"
@@ -294,7 +299,7 @@
         </div>
       </section>
 
-      <!-- SÉRIES EXTRAS -->
+      <!-- SÉRIES NOSTALGIA -->
       <section class="categoria">
         <div class="titulo-categoria">
           Séries que Marcaram Época
@@ -304,7 +309,7 @@
           <div class="carrossel">
             <div class="carrosselBox" id="slider-series-nostalgia">
               {% for serie in series_nostalgia %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ serie.id }}" data-tipo="serie">
                 {% if serie.poster_url %}
                 <img
                   src="{{ serie.poster_url }}"
