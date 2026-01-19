@@ -34,6 +34,18 @@ def filme(filme_id):
         if not conteudo:
             abort(404)
         
+        # --- Lógica de Classificação Indicativa ---
+        classificacao = 'N/A'
+        release_dates = conteudo.get('release_dates', {}).get('results', [])
+        # Filtra para o Brasil (ISO 'BR')
+        br_release = next((item for item in release_dates if item['iso_3166_1'] == 'BR'), None)
+        
+        if br_release:
+            for release in br_release['release_dates']:
+                if release.get('certification'):
+                    classificacao = release['certification']
+                    break
+
         # Processa gêneros
         generos = ', '.join([g['name'] for g in conteudo.get('genres', [])])
         
@@ -53,12 +65,12 @@ def filme(filme_id):
                              generos=generos,
                              elenco=elenco,
                              equipe=equipe,
+                             classificacao=classificacao, 
                              trailer_url=trailer_url)
     
     except Exception as e:
         print(f"Erro ao buscar detalhes do filme: {e}")
         abort(500)
-
 
 @detalhes_bp.route('/serie/<int:serie_id>')
 def serie(serie_id):
@@ -69,25 +81,58 @@ def serie(serie_id):
         if not conteudo:
             abort(404)
         
-        # Adapta dados da série para template de filme
+        # Adapta dados da série
         conteudo['title'] = conteudo.get('name', 'Título não disponível')
         conteudo['release_date'] = conteudo.get('first_air_date')
         
+        # Classificação Indicativa 
+        classificacao = 'N/A'
+        content_ratings = conteudo.get('content_ratings', {}).get('results', [])
+        br_rating = next((item for item in content_ratings if item['iso_3166_1'] == 'BR'), None)
+        if br_rating:
+            classificacao = br_rating.get('rating', 'N/A')
+
         generos = ', '.join([g['name'] for g in conteudo.get('genres', [])])
         
         credits = conteudo.get('credits', {})
         elenco = credits.get('cast', [])[:12]
-        equipe = [p for p in credits.get('crew', []) 
-                  if p['job'] in ['Director', 'Producer', 'Writer']]
         
-        # Busca trailer (tenta PT-BR primeiro, depois EN)
+        # --- Lógica da Equipe Técnica para Séries ---
+        equipe = []
+        crew = credits.get('crew', [])
+        
+        # 1. Adiciona Criadores (Author)
+        created_by = conteudo.get('created_by', [])
+        for creator in created_by:
+            equipe.append({
+                'name': creator['name'],
+                'job': 'Criador(a)'
+            })
+
+        # 2. Adiciona Produtores Executivos
+        episodic_producers = [p for p in crew if p['job'] == 'Executive Producer']
+        # Evita duplicatas se a mesma pessoa for criadora
+        for prod in episodic_producers:
+            if len(equipe) >= 3: break
+            if not any(e['name'] == prod['name'] for e in equipe):
+                equipe.append({'name': prod['name'], 'job': 'Prod. Executivo'})
+
+        # 3. Adiciona Música (Composer) se ainda houver espaço
+        if len(equipe) < 3:
+            musicians = [p for p in crew if 'Music' in p['job'] or p['job'] == 'Original Music Composer']
+            for musico in musicians:
+                if len(equipe) >= 3: break
+                if not any(e['name'] == musico['name'] for e in equipe):
+                    equipe.append({'name': musico['name'], 'job': 'Música'})
+        
+        # Garante o limite visual de 3 cards
+        equipe = equipe[:3]
+        
+        # Busca trailer
         videos = conteudo.get('videos', {}).get('results', [])
         trailer = next((v for v in videos if v['type'] == 'Trailer' and v['site'] == 'YouTube'), None)
-        
-        # Se não encontrou em PT-BR, tenta qualquer idioma
         if not trailer:
-            trailer = next((v for v in videos if v['site'] == 'YouTube' and 'Trailer' in v['type']), None)
-        
+             trailer = next((v for v in videos if v['site'] == 'YouTube' and 'Trailer' in v['type']), None)
         trailer_url = f"https://www.youtube.com/watch?v={trailer['key']}" if trailer else None
         
         return render_template('detalhes_fimes_series.html',
@@ -95,6 +140,7 @@ def serie(serie_id):
                              generos=generos,
                              elenco=elenco,
                              equipe=equipe,
+                             classificacao=classificacao,
                              trailer_url=trailer_url)
     
     except Exception as e:
@@ -187,7 +233,7 @@ def jogo(jogo_id):
             trailer_url = obter_trailer_steam(jogo.get('name'))
         
         jogo['trailer_url'] = trailer_url
-        # ===========================================================
+        
         
         return render_template('detalhes_jogos.html',
                              jogo=jogo,
