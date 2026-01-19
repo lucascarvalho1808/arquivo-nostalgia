@@ -25,12 +25,12 @@
         <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
       </div>
 
-      <div class="barra-busca">
-        <form action="{{ url_for('busca.busca_geral') }}" method="GET" class="barra-busca">
-        <input type="text" name="q" placeholder="Buscar Memórias:" required />
-        <i class="fa-solid fa-magnifying-glass icone-busca" onclick="this.closest('form').submit()"></i>
-        </form>
-      </div>
+      <form action="{{ url_for('busca.busca_geral') }}" method="GET" class="barra-busca">
+          <input type="text" name="q" placeholder="Buscar Memórias:" required />
+          <i class="fa-solid fa-magnifying-glass icone-busca" onclick="this.closest('form').submit()"
+              style="cursor: pointer;">
+           </i>
+       </form>
 
       <nav class="menu-icones">
         <a href="{{ url_for('filmes.index') }}" class="item-menu">

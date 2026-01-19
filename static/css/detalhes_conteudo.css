@@ -794,24 +794,38 @@ body {
 }
 
 .nome-ator {
-    padding: 10px 8px 5px 8px;
+    /* Layout para funcionar o corte */
+    display: block; 
+    width: 100%;
+    
+    /* A mágica dos 3 pontinhos (...) */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* Estilização Visual */
+    padding: 12px 5px 0 5px; /* Ajustei o padding para centralizar verticalmente */
     font-weight: bold;
     font-size: 0.9rem;
     color: #fff;
     text-align: center;
-    min-height: 45px;   
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 35px; /* Altura fixa para manter padrão */
 }
 
 .papel-ator {
-    padding: 0 8px 10px 8px;
-    font-size: 1rem;
+    /* Layout para funcionar o corte */
+    display: block;
+    width: 100%;
+
+    /* A mágica dos 3 pontinhos (...) */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* Estilização Visual */
+    padding: 2px 5px 12px 5px;
+    font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.888);
     text-align: center;
-    min-height: 40px;  
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 30px; /* Altura fixa para manter padrão */
 }
