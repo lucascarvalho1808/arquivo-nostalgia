@@ -95,7 +95,7 @@ def pesquisar_midia(query, pagina=1):
     """
     Pesquisa por filmes e séries com base em um texto (query).
     """
-    endpoint = f"{BASE_URL}/search/multi" # 'multi' busca filmes e séries ao mesmo tempo
+    endpoint = f"{BASE_URL}/search/multi" 
     params = {
         'api_key': TMDB_API_KEY, 
         'language': 'pt-BR', 
@@ -125,9 +125,9 @@ def buscar_detalhes_filme(filme_id):
     try:
         url = f"{BASE_URL}/movie/{filme_id}"
         params = {
-            'api_key': TMDB_API_KEY,  # ← CORRIGIDO (estava API_KEY)
+            'api_key': TMDB_API_KEY,  
             'language': 'pt-BR',
-            'append_to_response': 'credits,videos'
+            'append_to_response': 'credits,videos,release_dates' 
         }
         
         response = requests.get(url, params=params)
@@ -176,7 +176,7 @@ def buscar_series_nostalgia(pagina=1):
     params = {
         'api_key': TMDB_API_KEY,
         'language': 'pt-BR',
-        'sort_by': 'vote_count.desc', # Ordena por quantidade de votos (geralmente indica clássicos populares)
+        'sort_by': 'vote_count.desc', 
         'first_air_date.lte': '2014-12-31', # Apenas séries lançadas antes de 2014
         'first_air_date.gte': '1990-01-01', # A partir de 1990
         'page': pagina
@@ -252,7 +252,7 @@ def buscar_filmes_por_genero(generos, pagina=1):
         'language': 'pt-BR',
         'page': pagina,
         'sort_by': 'popularity.desc',
-        'with_genres': generos  # Ex: "28,35" = Ação E Comédia
+        'with_genres': generos 
     }
     
     try:
@@ -423,7 +423,7 @@ def buscar_detalhes_serie(serie_id):
         params = {
             'api_key': TMDB_API_KEY,
             'language': 'pt-BR',
-            'append_to_response': 'credits,videos'  # Inclui elenco e trailers
+            'append_to_response': 'credits,videos,content_ratings'  
         }
         
         response = requests.get(url, params=params)

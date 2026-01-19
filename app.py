@@ -5,7 +5,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from models import User
 from routes.extensions import supabase  
 
-# Importando os Blueprints
+# Blueprints
 from routes.auth import auth_bp
 from routes.main import main_bp
 from routes.filmes import filmes_bp
@@ -23,7 +23,6 @@ app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 # Configuração do LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
-# IMPORTANTE: Note que agora referenciamos 'auth.login' em vez de apenas 'login'
 login_manager.login_view = 'auth.login' 
 login_manager.login_message = "Faça login para continuar." 
 login_manager.login_message_category = "info" 

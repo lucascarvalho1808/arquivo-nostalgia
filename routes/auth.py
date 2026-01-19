@@ -1,78 +1,64 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from models import User
 from routes.extensions import supabase
-from forms import LoginForm, CadastroForm
+from forms import LoginForm, CadastroForm, EsqueceuSenhaForm, RedefinirSenhaForm 
 
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()  # Criar o formulário
-    
+    form = LoginForm()
     if form.validate_on_submit():
-        email = form.email.data
-        senha = form.senha.data
-        
         try:
-            # Tenta fazer login com Supabase
-            auth_response = supabase.auth.sign_in_with_password({
-                "email": email,
-                "password": senha
+            # 1. Tenta autenticar no Supabase
+            res = supabase.auth.sign_in_with_password({
+                "email": form.email.data,
+                "password": form.senha.data
             })
             
-            if auth_response and auth_response.user:
-                user_data = auth_response.user
-                username = user_data.user_metadata.get('username', 'Usuário')
-                user = User(id=user_data.id, email=user_data.email, username=username)
-                login_user(user)
-                
-                # Salvar o access_token na sessão para RLS
-                session['access_token'] = auth_response.session.access_token
-                session['refresh_token'] = auth_response.session.refresh_token
-                
-                flash('Login realizado com sucesso!', 'success')
-                return redirect(url_for('main.index'))
-            else:
-                flash('Email ou senha incorretos.', 'danger')
+            # 2. Se chegou aqui, o login funcionou
+            user_data = res.user
+            username = user_data.user_metadata.get('username', 'Usuário')
+            user = User(id=user_data.id, email=user_data.email, username=username)
+            
+            # 3. Loga o usuário no Flask
+            login_user(user)
+            
+            flash('Login realizado com sucesso!', 'success')
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('main.index')) 
+            
         except Exception as e:
-            print(f"Erro no login: {e}")
-            flash('Erro ao fazer login. Tente novamente.', 'danger')
+            error_message = str(e)
+            if 'Invalid login credentials' in error_message:
+                flash('E-mail ou senha inválidos.', 'danger')
+            else:
+                flash(f'Erro ao fazer login. Tente novamente.', 'danger')
     
-    return render_template('auth/login.html', form=form)  # Passar o form aqui
+    return render_template('auth/login.html', form=form)
 
 
 @auth_bp.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
-    form = CadastroForm()  # Criar o formulário
-    
+    form = CadastroForm()
     if form.validate_on_submit():
-        email = form.email.data
-        senha = form.senha.data
-        username = form.username.data
-        
         try:
-            # Registra no Supabase
-            auth_response = supabase.auth.sign_up({
-                "email": email,
-                "password": senha,
+            user = supabase.auth.sign_up({
+                "email": form.email.data,
+                "password": form.senha.data,
                 "options": {
                     "data": {
-                        "username": username
+                        "username": form.nome.data
                     }
                 }
             })
-            
-            if auth_response.user:
-                flash('Cadastro realizado! Verifique seu email para confirmar.', 'success')
-                return redirect(url_for('auth.login'))
-            else:
-                flash('Erro ao cadastrar. Tente novamente.', 'danger')
+            flash('Registro realizado com sucesso. Verifique seu e-mail para confirmar a conta.', 'success')
+            return redirect(url_for('auth.login'))
         except Exception as e:
-            print(f"Erro no cadastro: {e}")
-            flash('Erro ao cadastrar. Email já pode estar em uso.', 'danger')
+            flash(f'Erro no registro: {str(e)}', 'danger')
     
-    return render_template('auth/cadastro.html', form=form)  # Passar o form aqui
+    return render_template('auth/cadastro.html', form=form)
 
 
 @auth_bp.route('/logout')
@@ -80,42 +66,73 @@ def cadastro():
 def logout():
     try:
         supabase.auth.sign_out()
-        session.clear()  # Limpa a sessão incluindo os tokens
+        session.clear()
     except Exception as e:
         print(f"Erro no logout: {e}")
     
     logout_user()
-    flash('Logout realizado com sucesso!', 'info')
+    flash('Você saiu com sucesso.', 'info')
     return redirect(url_for('main.index'))
 
 
 @auth_bp.route('/esqueceu-senha', methods=['GET', 'POST'])
 def esqueceu_senha():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        
+    form = EsqueceuSenhaForm()
+    
+    if form.validate_on_submit():
         try:
-            supabase.auth.reset_password_email(email)
-            flash('Email de recuperação enviado! Verifique sua caixa de entrada.', 'success')
+            # URL completa de redirecionamento
+            url_redirecionamento = url_for('auth.redefinir_senha', _external=True)
+            
+            supabase.auth.reset_password_email(
+                form.email.data,
+                options={
+                    "redirect_to": url_redirecionamento
+                }
+            )
+            
+            flash('Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha. Verifique sua caixa de entrada.', 'info')
             return redirect(url_for('auth.login'))
         except Exception as e:
-            print(f"Erro ao enviar email de recuperação: {e}")
-            flash('Erro ao enviar email de recuperação.', 'danger')
+            # Não revela se o e-mail existe ou não 
+            flash('Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.', 'info')
+            return redirect(url_for('auth.login'))
     
-    return render_template('auth/esqueceu_senha.html')
+    return render_template('auth/esqueceu_senha.html', form=form)
 
 
 @auth_bp.route('/redefinir-senha', methods=['GET', 'POST'])
 def redefinir_senha():
-    if request.method == 'POST':
-        nova_senha = request.form.get('nova_senha')
-        
-        try:
-            supabase.auth.update_user({"password": nova_senha})
-            flash('Senha redefinida com sucesso!', 'success')
-            return redirect(url_for('auth.login'))
-        except Exception as e:
-            print(f"Erro ao redefinir senha: {e}")
-            flash('Erro ao redefinir senha.', 'danger')
+    """
+    Esta rota é acessada quando o usuário clica no link do e-mail.
+    O Supabase envia tokens via fragment (#) na URL.
+    """
+    form = RedefinirSenhaForm()
     
-    return render_template('auth/redefinir_senha.html')
+    if form.validate_on_submit():
+        try:
+            # Captura o token de acesso enviado via JavaScript do template
+            access_token = request.form.get('access_token')
+            
+            if not access_token:
+                flash('Token de autenticação não encontrado. Solicite um novo link.', 'danger')
+                return redirect(url_for('auth.esqueceu_senha'))
+            
+            # Define a sessão do usuário usando o token
+            supabase.auth.set_session(access_token, request.form.get('refresh_token', ''))
+            
+            # Atualiza a senha
+            supabase.auth.update_user({
+                "password": form.senha.data
+            })
+            
+            # Faz logout para segurança
+            supabase.auth.sign_out()
+            
+            flash('Sua senha foi alterada com sucesso! Faça login com a nova senha.', 'success')
+            return redirect(url_for('auth.login'))
+            
+        except Exception as e:
+            flash(f'Erro ao atualizar senha: {str(e)}', 'danger')
+            
+    return render_template('auth/redefinir_senha.html', form=form)
