@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
@@ -32,12 +32,7 @@
           method="GET"
           style="display: flex; width: 100%; position: relative"
         >
-          <input
-            type="text"
-            name="q"
-            placeholder="Buscar Memórias:"
-            required
-          />
+          <input type="text" name="q" placeholder="Buscar Memórias:" required />
           <button
             type="submit"
             style="
@@ -123,9 +118,7 @@
             </div>
 
             <div class="meta-dados">
-              <span class="classificacao"
-                >{{ conteudo.vote_average|round(1) }}</span
-              >
+              <span class="classificacao">{{ classificacao }}</span>
               <span
                 >{{ conteudo.release_date|formato_data if conteudo.release_date
                 else 'N/A' }}</span
