@@ -10,9 +10,9 @@ body {
     font-family: sans-serif;
     min-height: 100vh;
     display: flex;
-    flex-direction: column; 
-    padding-bottom: 0; 
-    padding-top: 140px; 
+    flex-direction: column;
+    padding-bottom: 0;
+    padding-top: 140px;
 }
 
 /* --- Header --- */
@@ -28,7 +28,7 @@ body {
     left: 0;
     width: 100%;
     background-color: #22658f;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
 
@@ -39,7 +39,7 @@ body {
     align-items: center;
     text-align: center;
     z-index: 1001;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 /* --- Logo --- */
@@ -81,8 +81,8 @@ body {
 
 /* Barra de Busca com PlaceHolder */
 .barra-busca input::placeholder {
-  color: #0c3757;
-  opacity: 1; 
+    color: #0c3757;
+    opacity: 1;
 }
 
 /* Ícones */
@@ -100,7 +100,7 @@ body {
     display: flex;
     gap: 20px;
     align-items: center;
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 /* Decoração dos Ícones */
@@ -133,7 +133,7 @@ body {
     max-width: 98%;
     margin: 0 auto;
     padding: 20px;
-    flex: 1; 
+    flex: 1;
 }
 
 /* --- Seção Descrição--- */
@@ -143,9 +143,9 @@ body {
     color: white;
     background-color: #22658f;
     border-radius: 50px;
-    width: 95%; 
-    max-width: 1100px; 
-    margin: 0 auto 40px auto; 
+    width: 95%;
+    max-width: 1100px;
+    margin: 0 auto 40px auto;
     box-shadow: 10px 10px 1px #0c3757;
 }
 
@@ -156,8 +156,8 @@ body {
     text-transform: uppercase;
     line-height: 1.1;
     margin-bottom: 20px;
-    text-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    word-wrap: break-word; 
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    word-wrap: break-word;
     overflow-wrap: break-word;
     max-width: 100%;
 }
@@ -182,16 +182,16 @@ body {
     font-weight: bold;
     font-size: 18px;
     border: 2px solid #0c3757;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    background-color:#042946;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background-color: #042946;
     transition: background 1.3s;
 }
 
 /* --- Botão Criar Arquivo com Hover--- */
-.botao_descricao:hover{
-    background-color: #084063; 
+.botao_descricao:hover {
+    background-color: #084063;
     transform: translateY(-3px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* --- Listas / Carrosséis --- */
@@ -201,7 +201,7 @@ body {
 
 /* ---  Título Carrosséis --- */
 .titulo-categoria {
-    display: inline-flex; 
+    display: inline-flex;
     align-items: center;
     background-color: #22658f;
     color: white;
@@ -209,113 +209,113 @@ body {
     border-radius: 30px;
     font-weight: 800;
     font-size: 20px;
-    margin-bottom: 15px;   
+    margin-bottom: 15px;
     /* Animação */
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-    position: relative;  
-    z-index: 100;        
+    position: relative;
+    z-index: 100;
     display: inline-block;
 }
 
 /* ---  Efeito Hover  --- */
 .titulo-categoria:hover {
-    background-color: #042946; 
-    color: #4a90e2; 
-    transform: translateX(10px); 
+    background-color: #042946;
+    color: #4a90e2;
+    transform: translateX(10px);
 }
 
 /* ---  Ícone dentro do título --- */
-.titulo-categoria i { 
-    margin-left: 10px; 
+.titulo-categoria i {
+    margin-left: 10px;
     transition: color 0.3s ease;
 }
 
 /* ---  Ícone fica branco no hover --- */
 .titulo-categoria:hover i {
-    color: #fff; 
+    color: #fff;
 }
 
 /* ---  Setas dos Título dos Carrosséis --- */
-.titulo-categoria i { 
-    margin-left: 10px; 
+.titulo-categoria i {
+    margin-left: 10px;
 }
 
 /* --- ESTILOS DO CARROSSEL --- */
 
 /* Container para centralizar o Carrossel */
 .center {
-  max-width: 98%; 
-  margin: 0 auto;
-  padding: 0 5px;
+    max-width: 98%;
+    margin: 0 auto;
+    padding: 0 5px;
 }
 
 /* Setas Carrossel */
 .carrossel {
-  height: 250px;
-  position: relative;
-  margin-bottom: 50px;
+    height: 250px;
+    position: relative;
+    margin-bottom: 50px;
 }
 
 /* Área onde os filmes correm */
 .carrosselBox {
-  height: 350px;
-  width: 100%;
-  
-  /* Habilita o scroll nativo (essencial para o touch funcionar) */
-  overflow-x: auto; 
-  overflow-y: hidden;
-  
-  /* Configuração do Layout */
-  white-space: nowrap;
-  padding-bottom: 70px;
-  display: flex;
-  align-items: center;
-  
-  /* Esconde a barra de rolagem visualmente */
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  
-  /* Efeito suave nos botões */
-  scroll-behavior: smooth;
+    height: 350px;
+    width: 100%;
 
-  /* Isso obriga a rolagem a parar sempre no início de uma imagem, não no meio */
-  scroll-snap-type: x mandatory; 
-  -webkit-overflow-scrolling: touch;
+    /* Habilita o scroll nativo (essencial para o touch funcionar) */
+    overflow-x: auto;
+    overflow-y: hidden;
 
-  /* Efeito de transparência */
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-          mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    /* Configuração do Layout */
+    white-space: nowrap;
+    padding-bottom: 70px;
+    display: flex;
+    align-items: center;
+
+    /* Esconde a barra de rolagem visualmente */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    /* Efeito suave nos botões */
+    scroll-behavior: smooth;
+
+    /* Isso obriga a rolagem a parar sempre no início de uma imagem, não no meio */
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    /* Efeito de transparência */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
 /* Esconde botão de rolagem*/
 .carrosselBox::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 
 /* Estilo das Imagens (Posters) */
 .carrosselBox img {
-  min-width: 147px;
-  max-width: 147px;
-  height: 210px;
-  background-size: cover;
-  background-color: #0c3757;
-  margin: 5px 10px;
-  cursor: pointer;
-  transition: 0.5s ease;
-  z-index: 2;
-  border-radius: 4px;
+    min-width: 147px;
+    max-width: 147px;
+    height: 210px;
+    background-size: cover;
+    background-color: #0c3757;
+    margin: 5px 10px;
+    cursor: pointer;
+    transition: 0.5s ease;
+    z-index: 2;
+    border-radius: 4px;
 }
 
 /* Estilo das Imagens (Posters) com hover */
 .carrosselBox img:hover {
-  transform: scale(1.1);
-  z-index: 5;
-  box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    transform: scale(1.1);
+    z-index: 5;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
 }
 
 /* --- Poster Jogos --- */
-.poster-jogos, 
+.poster-jogos,
 .poster-placeholder {
     width: 100%;
     height: 100%;
@@ -328,7 +328,7 @@ body {
 .poster-wrapper,
 .game-card {
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
     border-radius: 4px;
     transition: box-shadow 0.3s ease;
 }
@@ -340,10 +340,10 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, transparent 10%, rgba(12, 55, 87, 0.4) 50%,  rgba(12, 55, 87, 0.95) 100%);   
+    background: linear-gradient(to bottom, transparent 10%, rgba(12, 55, 87, 0.4) 50%, rgba(12, 55, 87, 0.95) 100%);
     display: flex;
     justify-content: center;
-    align-items: flex-end; 
+    align-items: flex-end;
     padding-bottom: 20px;
     box-sizing: border-box;
     opacity: 0;
@@ -370,68 +370,68 @@ body {
 /* 1. Mostra o Texto */
 .poster-wrapper:hover .game-info-overlay,
 .game-card:hover .game-info-overlay,
-.poster-wrapper.ativo .game-info-overlay, 
-.game-card.ativo .game-info-overlay {      
+.poster-wrapper.ativo .game-info-overlay,
+.game-card.ativo .game-info-overlay {
     opacity: 1;
 }
 
 /* 2. Zoom na Imagem */
 .poster-wrapper:hover .poster-jogos,
 .game-card:hover .poster-jogos,
-.poster-wrapper.ativo .poster-jogos,      
-.game-card.ativo .poster-jogos {          
+.poster-wrapper.ativo .poster-jogos,
+.game-card.ativo .poster-jogos {
     transform: scale(1.1);
 }
 
 /* 3. Sombra Externa */
 .poster-wrapper:hover,
 .game-card:hover,
-.poster-wrapper.ativo,                    
-.game-card.ativo {                        
-    box-shadow: 0 5px 20px rgba(12, 55, 87, 0.8); 
+.poster-wrapper.ativo,
+.game-card.ativo {
+    box-shadow: 0 5px 20px rgba(12, 55, 87, 0.8);
     z-index: 5;
 }
 
 /* --- Botões de Navegação (Setas) --- */
 .carrossel .switchLeft,
 .carrossel .switchRight {
-  background-color: #0c3757;
-  color: white;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  font-size: 24px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
-  user-select: none;
+    background-color: #0c3757;
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    user-select: none;
 }
 
 /* --- Botões de Navegação (Setas) --- */
 .carrossel .switchLeft:hover,
 .carrossel .switchRight:hover {
-  background-color: #22658f;
-  color: #0c3757;
-  border-color: #042946;
-  transform: translateY(-50%) scale(1.1);
+    background-color: #22658f;
+    color: #0c3757;
+    border-color: #042946;
+    transform: translateY(-50%) scale(1.1);
 }
 
 /* Puxa um pouco para fora do alinhamento no botão esquerdo */
 .carrossel .switchLeft {
-  left: -25px;
+    left: -25px;
 }
 
 /* Puxa um pouco para fora do alinhamento no botão direito */
 .carrossel .switchRight {
-  right: -25px; 
+    right: -25px;
 }
 
 /* ---  Deixa os carrosséis na horizontal --- */
@@ -444,8 +444,8 @@ body {
 }
 
 /* ---  Retira a barra de rolagem do carrossel --- */
-.carrosel-horizontal::-webkit-scrollbar { 
-    display: none; 
+.carrosel-horizontal::-webkit-scrollbar {
+    display: none;
 }
 
 /* ---  Define os locais dos pôsteres e estilo --- */
@@ -462,7 +462,7 @@ body {
 /* ---  Pôsteres com hover --- */
 .item-poster:hover {
     transform: scale(1.05);
-    background-color:#042946;
+    background-color: #042946;
     transition: background 1.3s;
 }
 
@@ -487,19 +487,19 @@ body {
     font-size: 20px;
     margin-bottom: -20px;
     z-index: 2;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* --- Define bloco Arquivo Confidencial --- */
 .cartao-destaque {
     background-color: #22658f;
     width: 100%;
-    max-width: 70%; 
+    max-width: 70%;
     margin: 0 auto;
     border-radius: 20px;
     padding: 50px 40px;
     color: white;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     display: flex;
     justify-content: center;
     box-shadow: 10px 10px 1px #0c3757;
@@ -516,7 +516,7 @@ body {
 /* --- Cabeçalho Arquivo Confidencial --- */
 .cabecalho_arquivo_confidencial {
     margin-bottom: 25px;
-    text-align: center; 
+    text-align: center;
 }
 
 /* --- Título da Obra Arquivo Confidencial --- */
@@ -529,7 +529,7 @@ body {
 /* --- Data de lançamento Arquivo Confidencial --- */
 .data-lancamento {
     font-size: 14px;
-    color: #0c3757; 
+    color: #0c3757;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -538,8 +538,8 @@ body {
 .corpo-destaque {
     display: flex;
     gap: 30px;
-    align-items: center; 
-    text-align: left; 
+    align-items: center;
+    text-align: left;
 }
 
 /* --- Capa Filme Arquivo Confidencial --- */
@@ -601,7 +601,7 @@ body {
 /* Container da Imagem do Jogo */
 .game-img-container {
     width: 100%;
-    height: 190px; 
+    height: 190px;
     overflow: hidden;
     border-radius: 10px;
 }
@@ -610,7 +610,7 @@ body {
 .game-img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
     object-position: center;
 }
 
@@ -634,9 +634,9 @@ body {
 /* Título do Jogo */
 .game-title {
     color: #fff;
-    font-size: 0.85rem; 
+    font-size: 0.85rem;
     text-align: center;
-    margin-top: 6px; 
+    margin-top: 6px;
     margin-bottom: 0;
     line-height: 1.2;
     font-weight: 600;
@@ -649,14 +649,14 @@ body {
 /* --- Footer --- */
 .rodape-principal {
     width: 100%;
-    background-color: #0c3757; 
-    color: #d1d1d1; 
+    background-color: #0c3757;
+    color: #d1d1d1;
     text-align: center;
     padding: 40px 10px;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.5px;
-    margin-top: auto; 
+    margin-top: auto;
     flex-shrink: 0;
 }
 
@@ -668,8 +668,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px; 
-    padding: 20px 0; 
+    gap: 10px;
+    padding: 20px 0;
 }
 
 .links-rodape {
@@ -679,7 +679,7 @@ body {
 }
 
 .links-rodape a {
-    color: #a0a0a0; 
+    color: #a0a0a0;
     text-decoration: none;
     font-size: 0.85rem;
     font-family: 'Segoe UI', sans-serif;
@@ -687,12 +687,12 @@ body {
 }
 
 .links-rodape a:hover {
-    color: #ffffff; 
+    color: #ffffff;
     text-decoration: underline;
 }
 
 .separador {
-    color: #555; 
+    color: #555;
     font-size: 0.8rem;
 }
 
@@ -715,12 +715,12 @@ body {
 
 @media (max-width: 1100px) {
     .cabecalho-principal {
-        justify-content: space-around; 
+        justify-content: space-around;
         padding: 15px;
     }
-    
+
     .barra-busca {
-        order: 3; 
+        order: 3;
         width: 100%;
         max-width: 80%;
         margin-top: 15px;
@@ -735,7 +735,7 @@ body {
     body {
         padding-top: 200px;
     }
-    
+
     .cartao-destaque {
         max-width: 90%;
     }
@@ -744,7 +744,7 @@ body {
 @media (max-width: 600px) {
 
     body {
-        padding-top: 230px; 
+        padding-top: 210px;
     }
 
     .menu-icones {
@@ -757,15 +757,35 @@ body {
         margin-top: 2px;
     }
 
+    .barra-busca input {
+        padding: 6px 15px;
+        height: 35px;
+        font-size: 13px;
+    }
+
+    .icone-busca {
+        font-size: 14px;
+    }
+
     .logo-pequena {
-        max-width: 100px; 
+        max-width: 100px;
+        margin-bottom: 0;
+    }
+
+    .item-menu span {
+        font-size: 9px;
+        margin-top: 2px;
+    }
+
+    .item-menu i {
+        font-size: 16px;
         margin-bottom: 0;
     }
 
     .descricao_site {
         width: 92%;
         padding: 30px 15px;
-        border-radius: 30px; 
+        border-radius: 30px;
 
     }
 
@@ -787,14 +807,14 @@ body {
     }
 
     .corpo-destaque {
-        flex-direction: column; 
-        text-align: center; 
+        flex-direction: column;
+        text-align: center;
     }
-    
+
     .capa-filme-destaque {
         margin: 0 auto 20px auto;
     }
-    
+
     .texto-curiosidade {
         font-size: 15px;
     }
@@ -802,40 +822,37 @@ body {
     /*--- Carrossel Mobile ---*/
     .carrossel .switchLeft,
     .carrossel .switchRight {
-        display: none; /* Remove setas no mobile */
+        display: none;
+        /* Remove setas no mobile */
     }
 
     .center {
         padding: 0;
     }
-  
+
     .carrossel .switchLeft,
     .carrossel .switchRight {
-        width: 45px; 
+        width: 45px;
         height: 45px;
         font-size: 22px;
     }
 
     .carrossel .switchLeft {
-        left: -25px; 
+        left: -25px;
     }
 
     .carrossel .switchRight {
         right: -25px;
     }
-     
+
     .carrosselBox {
-        gap: 8px; 
+        gap: 8px;
     }
 
-    .item-poster, .carrosselBox img {
+    .item-poster,
+    .carrosselBox img {
         margin: 0;
     }
-}  
-
-@media (max-width: 768px) {
-  .carrossel .switchLeft { left: -40; }
-  .carrossel .switchRight { right: -40; }
 }
 
 /* Crédito API - Rodapé */

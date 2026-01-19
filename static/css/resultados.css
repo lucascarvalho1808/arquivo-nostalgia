@@ -9,10 +9,11 @@
 body {
     background-color: #417eaa;
     color: white;
-    height: 100vh;
+    min-height: 100vh; /* Permite crescer além da tela */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden; /* Remove barra horizontal apenas */
+    /* Removemos o overflow: hidden e height fixo daqui */
 }
 
 /* --- Header --- */
@@ -141,9 +142,9 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
-    padding-top: 130px;
+    padding-top: 130px; /* Espaço para o header desktop */
     width: 100%;
-    overflow: hidden;
+    /* Removemos overflow: hidden daqui */
 }
 
 /* --- local onde aparece os pôsteres --- */
@@ -151,7 +152,7 @@ body {
     width: 100%;
     max-width: 1400px;
     padding: 20px 30px;
-    overflow-y: auto;
+    /* Removemos overflow-y: auto daqui para usar a rolagem da janela */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -278,6 +279,7 @@ body {
     transition: box-shadow 0.3s ease;
     transform: translateZ(0); 
     -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: radial-gradient(white, black);
 }
 
 .poster-jogos, 
@@ -472,6 +474,86 @@ body {
 @media (min-width: 1200px) {
     .cabecalho-principal {
         padding: 15px 15px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .container-principal {
+        padding-top: 180px;
+    }
+
+    .cabecalho-principal {
+        flex-direction: column;
+        padding: 10px 15px;
+        gap: 8px; 
+        height: auto;
+    }
+
+    .logo-container {
+        order: 1;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .menu-icones {
+        order: 2;
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 2px;
+        gap: 0;
+    }
+
+    .barra-busca {
+        order: 3;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .barra-busca input {
+        padding: 6px 15px;
+        height: 35px;      
+        font-size: 14px;
+    }
+    
+    .icone-busca {
+        font-size: 14px;
+        right: 12px;
+    }
+
+    .logo-pequena {
+        max-width: 90px; 
+        margin-bottom: 0;
+    }
+    
+    .nome-site-header {
+        font-size: 10px;
+    }
+
+    .item-menu span {
+        font-size: 9px;
+        margin-top: 2px;
+    }
+
+    .item-menu i {
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+
+    .grade-posters {
+        grid-template-columns: 1fr 1fr; 
+        gap: 15px;
+    }
+
+    .area-conteudo-central {
+        padding: 10px 15px;
+    }
+    
+    .rodape-principal {
+        padding: 20px 10px;
+        height: auto;
     }
 }
 
