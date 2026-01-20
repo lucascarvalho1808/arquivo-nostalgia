@@ -45,7 +45,10 @@ def perfil():
 def criar_arquivo():
     return "<h1>Criar Arquivo Nostalgia</h1><p>Aqui ficará o formulário de criação.</p>"
 
-@main_bp.route('/meus-arquivos')
-@login_required
-def meus_arquivos():
-    return "<h1>Meus Arquivos</h1><p>Lista dos arquivos que você criou.</p>"
+@main_bp.route('/termos')
+def termos():
+    return render_template('termos.html')
+
+@main_bp.route('/privacidade')
+def privacidade():
+    return render_template('privacidade.html')
