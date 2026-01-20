@@ -14,17 +14,18 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 # Cores pré-definidas disponíveis para as listas
 CORES_DISPONIVEIS = [
     '#6366f1',  # Indigo (padrão)
-    '#ec4899',  # Pink
-    '#f59e0b',  # Amber
-    '#10b981',  # Emerald
-    '#3b82f6',  # Blue
-    '#8b5cf6',  # Violet
-    '#ef4444',  # Red
-    '#06b6d4',  # Cyan
-    '#f97316',  # Orange
-    '#14b8a6',  # Teal
-    '#a855f7',  # Purple
-    '#84cc16',  # Lime
+    '#f06292',  # Pink
+    '#2d3436',  # black
+    '#636e72',  # gray
+    '#dfe6e9',  # white
+    '#82ccdd',  # blue-light
+    '#218c53',  # green-dark
+    '#b8e994',  # green-light
+    '#f1c40f',  # yellow
+    '#e67e22',  # orange
+    '#e74c3c',  # red
+    '#8d6e63',  # brown
+    '#9b59b6',  # purple
 ]
 
 

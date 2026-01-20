@@ -1,74 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{nome do arquivo} - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base_arquivo.css') }}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Séries - Arquivo Nostalgia</title> 
-    <link rel="stylesheet" href="dentro_pasta.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-
-<body>
-
+  <body>
     <header class="cabecalho-principal">
-        <div class="logo-container">
-            <img src="img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
-            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
-        </div>
+      <div class="logo-container">
+        <img
+          src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+          alt="Logo"
+          class="logo-pequena"
+        />
+        <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+      </div>
 
-        <div class="header-centro">
-            <div class="caixa-titulo">
-                <h1>Arquivo Nostalgia</h1>
-            </div>
+      <div class="header-centro">
+        <div class="caixa-titulo">
+          <h1>Arquivo Nostalgia</h1>
         </div>
+      </div>
 
-        <nav class="menu-icones">
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-clapperboard"></i>
-                <span>Filmes</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-tv"></i>
-                <span>Séries</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-gamepad"></i>
-                <span>Jogos</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-regular fa-folder-open"></i>
-                <span>Arquivos</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-circle-user"></i>
-                <span>Perfil</span>
-            </a>
-        </nav>
+      <nav class="menu-icones">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>Filmes</span>
+        </a>
+        <a href="{{ url_for('series.index') }}" class="item-menu">
+          <i class="fa-solid fa-tv"></i>
+          <span>Séries</span>
+        </a>
+        <a href="{{ url_for('jogos.index') }}" class="item-menu">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Jogos</span>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <!-- MENU PARA QUEM ESTÁ LOGADO -->
+        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('main.perfil') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Perfil</span>
+        </a>
+        <a href="{{ url_for('auth.logout') }}" class="item-menu">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Sair</span>
+        </a>
+        {% else %}
+        <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Login</span>
+        </a>
+
+        {% endif %}
+      </nav>
     </header>
 
     <main class="container-pasta">
-        
-        <section class="info-pasta">
-            <div class="info-conteudo-texto">
-                <h2 id="tituloPasta">Minha Pasta de Séries</h2>
-                <p id="descricaoPasta">Aqui estão guardadas todas as séries antigas que eu assistia na TV Globinho e no SBT.</p>
-            </div>
+      <section class="info-pasta">
+        <div class="info-conteudo-texto">
+          <h2 id="tituloPasta">Minha Pasta de Séries</h2>
+          <p id="descricaoPasta">
+            Aqui estão guardadas todas as séries antigas que eu assistia na TV
+            Globinho e no SBT.
+          </p>
+        </div>
 
-            <button class="btn-exportar">
-                <i class="fa-solid fa-file-export"></i> BAIXAR
-            </button>
-        </section>
+        <button class="btn-exportar">
+          <i class="fa-solid fa-file-export"></i> BAIXAR
+        </button>
+      </section>
 
-        <hr class="divisor-pasta">
-
+      <hr class="divisor-pasta" />
     </main>
 
     <footer class="rodape-principal">
       <div class="links-rodape">
-        <a href="#">Termos de Uso</a>
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
         <span class="separador">|</span>
-        <a href="#">Política de Privacidade</a>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
       </div>
 
       <!-- Texto de Copyright -->
@@ -77,7 +102,10 @@
       </div>
 
       <!-- Crédito da API RAWG -->
-      <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
     </footer>
-</body>
+  </body>
 </html>
