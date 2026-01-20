@@ -264,33 +264,41 @@
           </div>
 
           <div class="ranking-podium">
+            {% if ranking.filmes and ranking.filmes|length >= 2 %}
             <div class="rank-card silver">
               <div class="cover-wrapper glow-silver">
                 <img
-                  src="https://media.themoviedb.org/t/p/w300_and_h450_face/Pca1hVNgPAUcp6zVHldlboh80R.jpg"
-                  alt="Filme 2"
+                  src="{{ ranking.filmes[1].poster_url }}"
+                  alt="{{ ranking.filmes[1].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
+            {% endif %}
+            
+            {% if ranking.filmes and ranking.filmes|length >= 1 %}
             <div class="rank-card gold winner">
               <div class="cover-wrapper glow-gold">
                 <img
-                  src="https://media.themoviedb.org/t/p/w300_and_h450_face/9aYipPdXLJO2d7Aoa9gnLXHlQfz.jpg"
-                  alt="Filme 1"
+                  src="{{ ranking.filmes[0].poster_url }}"
+                  alt="{{ ranking.filmes[0].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
+            {% endif %}
+            
+            {% if ranking.filmes and ranking.filmes|length >= 3 %}
             <div class="rank-card bronze">
               <div class="cover-wrapper glow-bronze">
                 <img
-                  src="https://media.themoviedb.org/t/p/w300_and_h450_face/h264Wik2YY6mRoDMIVuGdbc7XYK.jpg"
-                  alt="Filme 3"
+                  src="{{ ranking.filmes[2].poster_url }}"
+                  alt="{{ ranking.filmes[2].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
             </div>
+            {% endif %}
           </div>
         </div>
 
@@ -303,33 +311,41 @@
           </div>
 
           <div class="ranking-podium">
+            {% if ranking.series and ranking.series|length >= 2 %}
             <div class="rank-card silver">
               <div class="cover-wrapper glow-silver">
                 <img
-                  src="https://media.themoviedb.org/t/p/w300_and_h450_face/h0AIjSt9u2yjSzgTBhuQZVCXwCv.jpg"
-                  alt="Serie 2"
+                  src="{{ ranking.series[1].poster_url }}"
+                  alt="{{ ranking.series[1].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
+            {% endif %}
+            
+            {% if ranking.series and ranking.series|length >= 1 %}
             <div class="rank-card gold winner">
               <div class="cover-wrapper glow-gold">
                 <img
-                  src="https://media.themoviedb.org/t/p/w300_and_h450_face/eK4gEBWNGJoxCD67KFKzaKfSzWU.jpg"
-                  alt="Serie 1"
+                  src="{{ ranking.series[0].poster_url }}"
+                  alt="{{ ranking.series[0].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
+            {% endif %}
+            
+            {% if ranking.series and ranking.series|length >= 3 %}
             <div class="rank-card bronze">
               <div class="cover-wrapper glow-bronze">
                 <img
-                  src="https://media.themoviedb.org/t/p/w300_and_h450_face/yCPGrd6fzbftuaH97OUS6tUdE4B.jpg"
-                  alt="Serie 3"
+                  src="{{ ranking.series[2].poster_url }}"
+                  alt="{{ ranking.series[2].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
             </div>
+            {% endif %}
           </div>
         </div>
 
@@ -343,33 +359,41 @@
           </div>
 
           <div class="ranking-podium">
+            {% if ranking.jogos and ranking.jogos|length >= 2 %}
             <div class="rank-card silver">
               <div class="cover-wrapper glow-silver">
                 <img
-                  src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1q1f.webp"
-                  alt="Jogo 2"
+                  src="{{ ranking.jogos[1].poster_url }}"
+                  alt="{{ ranking.jogos[1].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
+            {% endif %}
+            
+            {% if ranking.jogos and ranking.jogos|length >= 1 %}
             <div class="rank-card gold winner">
               <div class="cover-wrapper glow-gold">
                 <img
-                  src="https://images.igdb.com/igdb/image/upload/t_cover_big/coa77e.webp"
-                  alt="Jogo 1"
+                  src="{{ ranking.jogos[0].poster_url }}"
+                  alt="{{ ranking.jogos[0].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
+            {% endif %}
+            
+            {% if ranking.jogos and ranking.jogos|length >= 3 %}
             <div class="rank-card bronze">
               <div class="cover-wrapper glow-bronze">
                 <img
-                  src="https://images.igdb.com/igdb/image/upload/t_cover_big/coaiyq.webp"
-                  alt="Jogo 3"
+                  src="{{ ranking.jogos[2].poster_url }}"
+                  alt="{{ ranking.jogos[2].titulo }}"
                 />
               </div>
               <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
             </div>
+            {% endif %}
           </div>
         </div>
       </aside>
