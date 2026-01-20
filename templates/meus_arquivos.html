@@ -396,27 +396,50 @@
 
     <script>
       // Redireciona para a página do arquivo ao clicar na pasta
-      document.querySelectorAll(".folder").forEach((folder) => {
-        folder.addEventListener("click", () => {
-          const listaId = folder.getAttribute('data-lista-id');
-          if (listaId) {
-            window.location.href = `/arquivos/arquivo/${listaId}`;
-          }
-        });
+      document.querySelectorAll(".folder-wrapper").forEach((wrapper) => {
+        const folder = wrapper.querySelector(".folder");
+        
+        if (folder && folder.hasAttribute('data-lista-id')) {
+          wrapper.style.cursor = 'pointer';
+          
+          wrapper.addEventListener("click", (e) => {
+            // Ignora o clique se for no botão de adicionar
+            if (e.target.closest('.btn-add-folder')) {
+              return;
+            }
+            
+            const listaId = folder.getAttribute('data-lista-id');
+            if (listaId) {
+              window.location.href = `/arquivos/arquivo/${listaId}`;
+            }
+          });
+        }
       });
 
-      // Seleciona os elementos
+      // Seleciona os elementos do modal
       const btnAdicionar = document.querySelector(".btn-add-folder");
       const modal = document.getElementById("modal-nova-pasta");
+      const btnFechar = document.querySelector(".btn-close");
+      const btnCriar = document.querySelector(".btn-create");
 
       // Abre o modal ao clicar no botão "+"
-      btnAdicionar.addEventListener("click", () => {
+      btnAdicionar.addEventListener("click", (e) => {
+        e.stopPropagation();
         modal.classList.add("active");
       });
 
       // Função para fechar o modal
       function fecharModal() {
         modal.classList.remove("active");
+        document.getElementById("nomePasta").value = "";
+        document.getElementById("descPasta").value = "";
+        // Remove seleção de cores
+        document.querySelectorAll(".color-circle").forEach(c => c.classList.remove("selected"));
+      }
+
+      // Fecha ao clicar no X
+      if (btnFechar) {
+        btnFechar.addEventListener("click", fecharModal);
       }
 
       // Fecha se clicar fora da caixinha (no fundo escuro)
@@ -431,12 +454,57 @@
 
       cores.forEach((cor) => {
         cor.addEventListener("click", () => {
-          // 1. Remove a classe 'selected' de todas
+          // Remove a classe 'selected' de todas
           cores.forEach((c) => c.classList.remove("selected"));
 
-          // 2. Adiciona a classe 'selected' apenas na clicada
+          // Adiciona a classe 'selected' apenas na clicada
           cor.classList.add("selected");
         });
+      });
+
+      // Enviar formulário de criação de pasta
+      btnCriar.addEventListener("click", async () => {
+        const nome = document.getElementById("nomePasta").value.trim();
+        const descricao = document.getElementById("descPasta").value.trim();
+        const corSelecionada = document.querySelector(".color-circle.selected");
+        
+        if (!nome) {
+          alert("Por favor, digite um nome para o arquivo!");
+          return;
+        }
+
+        // Pega a cor selecionada ou usa a primeira cor como padrão
+        let cor = "#6366f1"; // cor padrão
+        if (corSelecionada) {
+          cor = corSelecionada.style.background || corSelecionada.style.backgroundColor;
+        }
+        
+        try {
+          const response = await fetch("/arquivos/criar-pasta", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nome: nome,
+              descricao: descricao,
+              cor: cor
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            alert("Arquivo criado com sucesso! ✅");
+            fecharModal();
+            window.location.reload();
+          } else {
+            alert("Erro ao criar arquivo: " + data.message);
+          }
+        } catch (error) {
+          console.error("Erro:", error);
+          alert("Erro ao criar arquivo. Tente novamente.");
+        }
       });
     </script>
   </body>

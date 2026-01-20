@@ -374,3 +374,161 @@ body {
         justify-content: center;
     }
 }
+
+/* =========================================
+           6. ESTILO DOS ITENS SALVOS
+   ========================================= */
+
+.grid-itens-salvos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.card-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.card-item:hover {
+  transform: translateY(-5px);
+}
+
+.link-item {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.poster-container {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+}
+
+.poster-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+}
+
+.card-item:hover .overlay-hover {
+  opacity: 1;
+}
+
+.overlay-hover i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-item {
+  padding: 1rem;
+}
+
+.titulo-item {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badges-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-filme {
+  background: #6366f1;
+  color: white;
+}
+
+.badge-serie {
+  background: #9b59b6;
+  color: white;
+}
+
+.badge-jogo {
+  background: #10b981;
+  color: white;
+}
+
+.btn-remover-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(220, 38, 38, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.card-item:hover .btn-remover-item {
+  opacity: 1;
+}
+
+.btn-remover-item:hover {
+  background: rgba(185, 28, 28, 1);
+}
+
+.mensagem-vazia {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mensagem-vazia i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.mensagem-vazia p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.texto-secundario {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}

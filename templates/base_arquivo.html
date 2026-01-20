@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{nome do arquivo} - Arquivo Nostalgia</title>
+    <title>{{ lista.nome if lista else 'Arquivo' }} - Arquivo Nostalgia</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base_arquivo.css') }}" />
     <link
       rel="stylesheet"
@@ -74,10 +74,9 @@
     <main class="container-pasta">
       <section class="info-pasta">
         <div class="info-conteudo-texto">
-          <h2 id="tituloPasta">Minha Pasta de Séries</h2>
+          <h2 id="tituloPasta">{{ lista.nome if lista else 'Minha Pasta' }}</h2>
           <p id="descricaoPasta">
-            Aqui estão guardadas todas as séries antigas que eu assistia na TV
-            Globinho e no SBT.
+            {{ lista.descricao if lista and lista.descricao else 'Sem descrição' }}
           </p>
         </div>
 
@@ -87,6 +86,56 @@
       </section>
 
       <hr class="divisor-pasta" />
+
+      <!-- Grid de Itens Salvos -->
+      <section class="grid-itens-salvos">
+        {% if itens %}
+          {% for item in itens %}
+          <div class="card-item">
+            <a href="{{ url_for('detalhes.detalhes_item', tipo=item.tipo, item_id=item.api_id) }}" class="link-item">
+              <div class="poster-container">
+                <img 
+                  src="{{ item.poster_url }}" 
+                  alt="{{ item.titulo }}"
+                  class="poster-item"
+                />
+                <div class="overlay-hover">
+                  <i class="fa-solid fa-eye"></i>
+                  <span>Ver Detalhes</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <h3 class="titulo-item">{{ item.titulo }}</h3>
+                <div class="badges-item">
+                  {% if item.tipo == 'filme' %}
+                    <span class="badge badge-filme">
+                      <i class="fa-solid fa-film"></i> Filme
+                    </span>
+                  {% elif item.tipo == 'serie' %}
+                    <span class="badge badge-serie">
+                      <i class="fa-solid fa-tv"></i> Série
+                    </span>
+                  {% elif item.tipo == 'jogo' %}
+                    <span class="badge badge-jogo">
+                      <i class="fa-solid fa-gamepad"></i> Jogo
+                    </span>
+                  {% endif %}
+                </div>
+              </div>
+            </a>
+            <button class="btn-remover-item" data-item-id="{{ item.id }}" title="Remover da lista">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="mensagem-vazia">
+            <i class="fa-regular fa-folder-open"></i>
+            <p>Esta pasta ainda não tem itens salvos.</p>
+            <p class="texto-secundario">Adicione filmes, séries ou jogos visitando suas páginas de detalhes!</p>
+          </div>
+        {% endif %}
+      </section>
     </main>
 
     <footer class="rodape-principal">

@@ -55,7 +55,7 @@
         
         {% if current_user.is_authenticated %}
         <!-- MENU PARA QUEM ESTÁ LOGADO -->
-        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
           <i class="fa-regular fa-folder-open"></i>
           <span>Arquivos</span>
         </a>
@@ -69,7 +69,7 @@
         </a>
         {% else %}
         <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
-        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
           <i class="fa-regular fa-folder-open"></i>
           <span>Arquivos</span>
         </a>

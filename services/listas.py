@@ -295,15 +295,21 @@ def criar_lista(usuario_id, nome, descricao, cor):
     """
     try:
         nova_lista = {
-            'usuario_id': usuario_id,
-            'nome': nome,
+            'user_id': usuario_id,
+            'nome_lista': nome,
             'descricao': descricao,
             'cor': cor
         }
+        print(f"Tentando criar lista: {nova_lista}")
         response = supabase.table('listas').insert(nova_lista).execute()
+        print(f"Resposta do Supabase: {response}")
+        print(f"Dados retornados: {response.data}")
         return response.data[0] if response.data else None
     except Exception as e:
-        print(f"Erro ao criar lista: {e}")
+        print(f"Erro detalhado ao criar lista: {e}")
+        print(f"Tipo do erro: {type(e)}")
+        import traceback
+        traceback.print_exc()
         return None
 
 
@@ -341,6 +347,18 @@ def deletar_lista(lista_id):
     except Exception as e:
         print(f"Erro ao deletar lista: {e}")
         return False
+
+
+def obter_itens_lista(lista_id):
+    """
+    Retorna todos os itens salvos em uma lista específica.
+    """
+    try:
+        response = supabase.table('itens_lista').select('*').eq('lista_id', lista_id).execute()
+        return response.data
+    except Exception as e:
+        print(f"Erro ao buscar itens da lista: {e}")
+        return []
 
 
 # Função auxiliar para testes (opcional)
