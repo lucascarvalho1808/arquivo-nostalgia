@@ -8,6 +8,7 @@ from services.listas import (
     deletar_lista
 )
 from services.ranking_csv import ler_ranking_comunidade
+from services.estatisticas_usuario import calcular_estatisticas_usuario
 
 arquivos_bp = Blueprint('arquivos', __name__, url_prefix='/arquivos')
 
@@ -18,7 +19,7 @@ arquivos_bp = Blueprint('arquivos', __name__, url_prefix='/arquivos')
 def meus_arquivos():
     """
     Página principal com todas as listas (pastas) do usuário.
-    Inclui o ranking da comunidade lido do CSV.
+    Inclui o ranking da comunidade lido do CSV e estatísticas pessoais.
     """
     try:
         # Busca todas as listas do usuário logado
@@ -27,17 +28,22 @@ def meus_arquivos():
         # Lê o ranking do CSV 
         ranking = ler_ranking_comunidade()
         
+        # Calcula estatísticas pessoais do usuário
+        estatisticas = calcular_estatisticas_usuario(current_user.id)
+        
         return render_template(
             'meus_arquivos.html',
             listas=listas,
-            ranking=ranking
+            ranking=ranking,
+            estatisticas=estatisticas
         )
     except Exception as e:
         print(f"Erro ao carregar meus arquivos: {e}")
         return render_template(
             'meus_arquivos.html', 
             listas=[],
-            ranking={'filmes': [], 'series': [], 'jogos': []}
+            ranking={'filmes': [], 'series': [], 'jogos': []},
+            estatisticas={'total': 0, 'filmes': {'quantidade': 0, 'porcentagem': 0}, 'series': {'quantidade': 0, 'porcentagem': 0}, 'jogos': {'quantidade': 0, 'porcentagem': 0}}
         )
 
 

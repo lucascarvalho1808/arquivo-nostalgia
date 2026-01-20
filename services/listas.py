@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from supabase import create_client, Client
 from flask_login import current_user
 from flask import session
+from routes.extensions import supabase
 
 load_dotenv()
 
@@ -27,6 +28,23 @@ CORES_DISPONIVEIS = [
     '#8d6e63',  # brown
     '#9b59b6',  # purple
 ]
+
+# Mapeamento de cores hexadecimais para classes CSS
+MAPEAMENTO_CORES = {
+    '#6366f1': 'indigo',
+    '#f06292': 'pink',
+    '#2d3436': 'black',
+    '#636e72': 'gray',
+    '#dfe6e9': 'white',
+    '#82ccdd': 'blue-light',
+    '#218c53': 'green-dark',
+    '#b8e994': 'green-light',
+    '#f1c40f': 'yellow',
+    '#e67e22': 'orange',
+    '#e74c3c': 'red',
+    '#8d6e63': 'brown',
+    '#9b59b6': 'purple'
+}
 
 
 def _get_supabase_client():
@@ -237,6 +255,92 @@ def obter_cores_disponiveis():
         list: Lista de códigos hexadecimais das cores disponíveis
     """
     return CORES_DISPONIVEIS.copy()
+
+
+def obter_listas_usuario(usuario_id):
+    """
+    Retorna todas as listas (pastas) de um usuário específico.
+    Inclui o mapeamento de cor hexadecimal para classe CSS.
+    """
+    try:
+        response = supabase.table('listas').select('*').eq('usuario_id', usuario_id).execute()
+        listas = response.data
+        
+        # Adiciona a classe CSS correspondente à cor
+        for lista in listas:
+            cor_hex = lista.get('cor', '#6366f1')
+            lista['cor_classe'] = MAPEAMENTO_CORES.get(cor_hex, 'indigo')
+        
+        return listas
+    except Exception as e:
+        print(f"Erro ao buscar listas do usuário: {e}")
+        return []
+
+
+def obter_lista_por_id(lista_id):
+    """
+    Retorna uma lista específica pelo ID.
+    """
+    try:
+        response = supabase.table('listas').select('*').eq('id', lista_id).single().execute()
+        return response.data
+    except Exception as e:
+        print(f"Erro ao buscar lista por ID: {e}")
+        return None
+
+
+def criar_lista(usuario_id, nome, descricao, cor):
+    """
+    Cria uma nova lista (pasta) para o usuário.
+    """
+    try:
+        nova_lista = {
+            'usuario_id': usuario_id,
+            'nome': nome,
+            'descricao': descricao,
+            'cor': cor
+        }
+        response = supabase.table('listas').insert(nova_lista).execute()
+        return response.data[0] if response.data else None
+    except Exception as e:
+        print(f"Erro ao criar lista: {e}")
+        return None
+
+
+def atualizar_lista(lista_id, nome=None, descricao=None, cor=None):
+    """
+    Atualiza os dados de uma lista existente.
+    """
+    try:
+        dados_atualizacao = {}
+        if nome:
+            dados_atualizacao['nome'] = nome
+        if descricao:
+            dados_atualizacao['descricao'] = descricao
+        if cor:
+            dados_atualizacao['cor'] = cor
+        
+        response = supabase.table('listas').update(dados_atualizacao).eq('id', lista_id).execute()
+        return response.data[0] if response.data else None
+    except Exception as e:
+        print(f"Erro ao atualizar lista: {e}")
+        return None
+
+
+def deletar_lista(lista_id):
+    """
+    Deleta uma lista (e todos os itens associados a ela).
+    """
+    try:
+        # Primeiro deleta os itens da lista
+        supabase.table('itens_lista').delete().eq('lista_id', lista_id).execute()
+        
+        # Depois deleta a lista
+        response = supabase.table('listas').delete().eq('id', lista_id).execute()
+        return True
+    except Exception as e:
+        print(f"Erro ao deletar lista: {e}")
+        return False
 
 
 # Função auxiliar para testes (opcional)

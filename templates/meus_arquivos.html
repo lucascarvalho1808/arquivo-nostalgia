@@ -73,135 +73,17 @@
 
     <main class="layout-container">
       <section class="grid-pastas">
+        {% for lista in listas %}
         <div class="folder-wrapper">
-          <div class="folder yellow">
+          <div class="folder {{ lista.cor_classe }}" data-lista-id="{{ lista.id }}">
             <div class="back"></div>
             <div class="paper"></div>
             <div class="paper"></div>
             <div class="front"></div>
           </div>
-          <div class="label">Amarelo</div>
+          <div class="label">{{ lista.nome }}</div>
         </div>
-
-        <div class="folder-wrapper">
-          <div class="folder black">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Preto</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder gray">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Cinza</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder white">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Branco</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder indigo">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Indigo</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder blue-light">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Azul Claro</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder green-dark">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Verde Escuro</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder green-light">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Verde Claro</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder orange">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Laranja</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder red">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Vermelho</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder brown">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Marrom</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder purple">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Roxo</div>
-        </div>
-
-        <div class="folder-wrapper">
-          <div class="folder pink">
-            <div class="back"></div>
-            <div class="paper"></div>
-            <div class="paper"></div>
-            <div class="front"></div>
-          </div>
-          <div class="label">Rosa</div>
-        </div>
+        {% endfor %}
 
         <div class="folder-wrapper">
           <button class="btn-add-folder">
@@ -235,19 +117,19 @@
             <div class="orbit-ring ring-series"></div>
             <div class="orbit-core">
               <span class="core-label">TOTAL</span>
-              <strong class="core-number">105</strong>
+              <strong class="core-number">{{ estatisticas.total }}</strong>
             </div>
           </div>
 
           <div class="orbit-legend">
             <div class="legend-pill blue">
-              <i class="fa-solid fa-film"></i> 45%
+              <i class="fa-solid fa-film"></i> {{ estatisticas.filmes.porcentagem }}%
             </div>
             <div class="legend-pill yellow">
-              <i class="fa-solid fa-gamepad"></i> 38%
+              <i class="fa-solid fa-gamepad"></i> {{ estatisticas.jogos.porcentagem }}%
             </div>
             <div class="legend-pill white">
-              <i class="fa-solid fa-tv"></i> 17%
+              <i class="fa-solid fa-tv"></i> {{ estatisticas.series.porcentagem }}%
             </div>
           </div>
         </div>
@@ -513,14 +395,13 @@
     </div>
 
     <script>
-      // JS Atualizado para pegar a classe .folder
+      // Redireciona para a página do arquivo ao clicar na pasta
       document.querySelectorAll(".folder").forEach((folder) => {
         folder.addEventListener("click", () => {
-          console.log("Abrindo pasta...");
-          folder.style.transform = "translateY(-5px) scale(0.95)";
-          setTimeout(() => {
-            folder.style.transform = "translateY(-5px) scale(1)";
-          }, 150);
+          const listaId = folder.getAttribute('data-lista-id');
+          if (listaId) {
+            window.location.href = `/arquivos/arquivo/${listaId}`;
+          }
         });
       });
 
