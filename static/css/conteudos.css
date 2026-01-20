@@ -870,6 +870,56 @@ body {
 
 }
 
+@media (max-width: 600px) {
+
+    .container-layout {
+        padding-top: 225px;
+    }
+
+    .logo-container {
+        order: 1;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .menu-icones {
+        order: 2;
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 2px;
+        gap: 0;
+    }
+
+    .logo-pequena {
+        max-width: 90px; 
+        margin-bottom: 0;
+    }
+    
+    .nome-site-header {
+        font-size: 10px;
+    }
+
+    .item-menu span {
+        font-size: 9px;
+        margin-top: 2px;
+    }
+
+    .item-menu i {
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+
+    .caixa-titulo {
+        padding: 8px 60px;
+        margin-bottom: 5px;
+    }
+    
+    .caixa-titulo h1 {
+        font-size: 16px;
+        margin: 0;
+    }
+}
+
 @media (max-width: 480px) {
 
     .container-layout {

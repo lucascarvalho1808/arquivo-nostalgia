@@ -1,0 +1,376 @@
+/* =========================================
+           1. RESET E VARIÁVEIS GERAIS
+   ========================================= */
+
+   :root {
+    --bg-body: #417eaa;
+    --header-bg: #22658f;
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* =========================================
+           2. CABEÇALHO FIXO
+   ========================================= */
+.cabecalho-principal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--header-bg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-height: 100px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}
+
+.logo-pequena {
+    max-width: 100px;
+    margin-bottom: 5px;
+}
+
+.nome-site-header {
+    font-size: 11px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header-centro {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.caixa-titulo {
+    background-color: #0c3757;
+    padding: 10px 40px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.caixa-titulo h1 {
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.menu-icones {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    width: 200px;
+}
+
+.item-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.item-menu:hover {
+    opacity: 0.8;
+    color: #0c3757;
+}
+
+.item-menu i {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* =========================================
+           3. NOVO LAYOUT DA PASTA (MIOLO)
+   ========================================= */
+.container-pasta {
+    margin-top: 130px; 
+    padding: 20px 40px;
+    flex: 1; 
+    width: 100%;
+    max-width: 1400px; 
+    align-self: center;
+}
+
+.info-pasta {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; 
+    gap: 30px;
+    flex-wrap: wrap; 
+}
+
+/* Wrapper do texto para ele não espalhar */
+.info-conteudo-texto {
+    flex: 1; 
+    max-width: 800px;
+}
+
+.info-pasta h2 {
+    font-size: 32px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.info-pasta p {
+    font-size: 18px;
+    color: #e2e8f0;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* --- ESTILO DO BOTÃO EXPORTAR --- */
+.btn-exportar {
+    background-color: #0c3757;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    height: fit-content; 
+}
+
+.btn-exportar:hover {
+    background-color: #145a8d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.btn-exportar i {
+    font-size: 18px;
+}
+
+.divisor-pasta {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+    margin-bottom: 30px;
+}
+
+/* =========================================
+           4. RODAPÉ
+   ========================================= */
+
+/* --- Footer --- */
+.rodape-principal {
+    width: 100%;
+    background-color: #0c3757;
+    color: #d1d1d1;
+    text-align: center;
+    padding: 40px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-top: auto;
+    flex-shrink: 0;
+}
+
+/* --- RODAPÉ: LINKS E COPYRIGHT --- */
+
+/* Garante que o rodapé organize os itens em coluna  */
+.rodape-principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.links-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.links-rodape a {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    transition: color 0.3s;
+}
+
+.links-rodape a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.separador {
+    color: #555;
+    font-size: 0.8rem;
+}
+
+.texto-copyright {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 10px;
+}
+
+
+/* Crédito API - Rodapé */
+.credito-api {
+    font-size: 0.70rem;
+    color: #888;
+    margin-top: 10px;
+}
+
+.credito-api a {
+    color: #aaa;
+    text-decoration: none;
+}
+
+.credito-api a:hover {
+    text-decoration: underline;
+}
+
+/* Crédito API - Abaixo da seção de jogos */
+.credito-api-jogos {
+    display: block;
+    text-align: right;
+    font-size: 0.65rem;
+    color: #666;
+    margin-top: 5px;
+    padding-right: 10px;
+}
+
+.credito-api-jogos a {
+    color: #888;
+}
+
+/* =========================================
+           5. RESPONSIVIDADE
+   ========================================= */
+
+@media (max-width: 1024px) {
+    .cabecalho-principal {
+        justify-content: space-between;
+    }
+
+    .menu-icones, .logo-container {
+        width: 180px; 
+    }
+    
+    .caixa-titulo h1 {
+        font-size: 22px;
+    }
+}
+
+
+@media (max-width: 950px) {
+    .cabecalho-principal {
+        position: relative; 
+        flex-direction: column;
+        height: auto;
+        padding: 15px 10px;
+        gap: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); 
+    }
+
+    .container-pasta {
+        margin-top: 30px; 
+        padding: 10px 20px;
+    }
+
+    .logo-container { order: 1; width: 100%; margin-bottom: 5px; }
+    .menu-icones { order: 2; width: 100%; justify-content: center; gap: 25px; }
+    .header-centro { order: 3; width: 100%; padding: 0 10px; }
+
+    .caixa-titulo { 
+        width: 100%; 
+        padding: 12px 10px;
+    }
+    
+    .caixa-titulo h1 { 
+        font-size: 20px;
+        white-space: normal;
+    }
+    
+    .item-menu span { display: block; }
+}
+
+@media (max-width: 600px) {
+    .menu-icones {
+        justify-content: space-around;
+        gap: 0;
+        width: 100%;
+    }
+
+    .logo-pequena { max-width: 90px; }
+    .nome-site-header { font-size: 10px; }
+    .item-menu span { font-size: 9px; }
+    .item-menu i { font-size: 16px; }
+
+    .caixa-titulo h1 { 
+        font-size: clamp(14px, 5vw, 18px); 
+        letter-spacing: 1px;
+    }
+
+    .info-pasta h2 { font-size: 24px; word-wrap: break-word; }
+    .info-pasta p { font-size: 14px; }
+
+    .info-pasta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .btn-exportar {
+        width: 100%;
+        justify-content: center;
+    }
+}
