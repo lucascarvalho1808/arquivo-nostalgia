@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Meus Arquivos - Arquivo Nostalgia</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/meus_arquivos.css') }}" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/meus_arquivos.css') }}"
+    />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -74,14 +77,28 @@
     <main class="layout-container">
       <section class="grid-pastas">
         {% for lista in listas %}
-        <div class="folder-wrapper">
-          <div class="folder {{ lista.cor_classe }}" data-lista-id="{{ lista.id }}" {% if lista.cor %} style="background: {{ lista.cor }};" {% endif %}>
+        <div class="folder-wrapper" id="folder-{{ lista.id }}">
+          <div
+            class="folder {{ lista.cor_classe }}"
+            data-lista-id="{{ lista.id }}"
+            {%
+            if
+            lista.cor
+            %}
+            style="background: {{ lista.cor }};"
+            {%
+            endif
+            %}
+          >
             <div class="back"></div>
             <div class="paper"></div>
             <div class="paper"></div>
             <div class="front"></div>
           </div>
-          <div class="label">{{ lista.nome }}</div>
+
+          <div class="label-row">
+            <div class="label">{{ lista.nome }}</div>
+          </div>
         </div>
         {% endfor %}
 
@@ -123,13 +140,16 @@
 
           <div class="orbit-legend">
             <div class="legend-pill blue">
-              <i class="fa-solid fa-film"></i> {{ estatisticas.filmes.porcentagem }}%
+              <i class="fa-solid fa-film"></i> {{
+              estatisticas.filmes.porcentagem }}%
             </div>
             <div class="legend-pill yellow">
-              <i class="fa-solid fa-gamepad"></i> {{ estatisticas.jogos.porcentagem }}%
+              <i class="fa-solid fa-gamepad"></i> {{
+              estatisticas.jogos.porcentagem }}%
             </div>
             <div class="legend-pill white">
-              <i class="fa-solid fa-tv"></i> {{ estatisticas.series.porcentagem }}%
+              <i class="fa-solid fa-tv"></i> {{ estatisticas.series.porcentagem
+              }}%
             </div>
           </div>
         </div>
@@ -156,9 +176,7 @@
               </div>
               <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
-            {% endif %}
-            
-            {% if ranking.filmes and ranking.filmes|length >= 1 %}
+            {% endif %} {% if ranking.filmes and ranking.filmes|length >= 1 %}
             <div class="rank-card gold winner">
               <div class="cover-wrapper glow-gold">
                 <img
@@ -168,9 +186,7 @@
               </div>
               <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
-            {% endif %}
-            
-            {% if ranking.filmes and ranking.filmes|length >= 3 %}
+            {% endif %} {% if ranking.filmes and ranking.filmes|length >= 3 %}
             <div class="rank-card bronze">
               <div class="cover-wrapper glow-bronze">
                 <img
@@ -203,9 +219,7 @@
               </div>
               <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
-            {% endif %}
-            
-            {% if ranking.series and ranking.series|length >= 1 %}
+            {% endif %} {% if ranking.series and ranking.series|length >= 1 %}
             <div class="rank-card gold winner">
               <div class="cover-wrapper glow-gold">
                 <img
@@ -215,9 +229,7 @@
               </div>
               <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
-            {% endif %}
-            
-            {% if ranking.series and ranking.series|length >= 3 %}
+            {% endif %} {% if ranking.series and ranking.series|length >= 3 %}
             <div class="rank-card bronze">
               <div class="cover-wrapper glow-bronze">
                 <img
@@ -251,9 +263,7 @@
               </div>
               <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
-            {% endif %}
-            
-            {% if ranking.jogos and ranking.jogos|length >= 1 %}
+            {% endif %} {% if ranking.jogos and ranking.jogos|length >= 1 %}
             <div class="rank-card gold winner">
               <div class="cover-wrapper glow-gold">
                 <img
@@ -263,9 +273,7 @@
               </div>
               <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
-            {% endif %}
-            
-            {% if ranking.jogos and ranking.jogos|length >= 3 %}
+            {% endif %} {% if ranking.jogos and ranking.jogos|length >= 3 %}
             <div class="rank-card bronze">
               <div class="cover-wrapper glow-bronze">
                 <img
@@ -397,30 +405,21 @@
     <!-- Toast container -->
     <div id="toast" aria-live="polite" aria-atomic="true"></div>
 
-    <style>
-      /* Toast básico */
-      #toast { position: fixed; right: 20px; bottom: 20px; z-index: 2000; display: flex; flex-direction: column; align-items: flex-end; }
-      .toast-message { min-width: 220px; margin-top: 8px; padding: 12px 16px; border-radius: 8px; color: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.18); opacity: 0; transform: translateY(10px); transition: opacity .22s ease, transform .22s ease; font-weight: 500; }
-      .toast-show { opacity: 1; transform: translateY(0); }
-      .toast-success { background: linear-gradient(90deg,#16a34a,#10b981); }
-      .toast-error { background: linear-gradient(90deg,#dc2626,#ef4444); }
-    </style>
-
     <script>
       // Redireciona para a página do arquivo ao clicar na pasta
       document.querySelectorAll(".folder-wrapper").forEach((wrapper) => {
         const folder = wrapper.querySelector(".folder");
-        
-        if (folder && folder.hasAttribute('data-lista-id')) {
-          wrapper.style.cursor = 'pointer';
-          
+
+        if (folder && folder.hasAttribute("data-lista-id")) {
+          wrapper.style.cursor = "pointer";
+
           wrapper.addEventListener("click", (e) => {
             // Ignora o clique se for no botão de adicionar
-            if (e.target.closest('.btn-add-folder')) {
+            if (e.target.closest(".btn-add-folder")) {
               return;
             }
-            
-            const listaId = folder.getAttribute('data-lista-id');
+
+            const listaId = folder.getAttribute("data-lista-id");
             if (listaId) {
               window.location.href = `/arquivos/arquivo/${listaId}`;
             }
@@ -446,7 +445,9 @@
         document.getElementById("nomePasta").value = "";
         document.getElementById("descPasta").value = "";
         // Remove seleção de cores
-        document.querySelectorAll(".color-circle").forEach(c => c.classList.remove("selected"));
+        document
+          .querySelectorAll(".color-circle")
+          .forEach((c) => c.classList.remove("selected"));
       }
 
       // Fecha ao clicar no X
@@ -474,20 +475,20 @@
         });
       });
 
-      // Toast helper
-      function showToast(message, type = 'success', duration = 3000) {
-        const container = document.getElementById('toast');
+      // apenas helpers de toast (mantidos para feedback)
+      function showToast(message, type = "success", duration = 3000) {
+        const container = document.getElementById("toast");
         if (!container) return;
-        const el = document.createElement('div');
+        const el = document.createElement("div");
         el.className = `toast-message toast-${type}`;
         el.textContent = message;
         container.appendChild(el);
-        // trigger animation
-        requestAnimationFrame(() => el.classList.add('toast-show'));
-        // remove after duration
+        requestAnimationFrame(() => el.classList.add("toast-show"));
         setTimeout(() => {
-          el.classList.remove('toast-show');
-          el.addEventListener('transitionend', () => el.remove(), { once: true });
+          el.classList.remove("toast-show");
+          el.addEventListener("transitionend", () => el.remove(), {
+            once: true,
+          });
         }, duration);
       }
 
@@ -504,7 +505,9 @@
 
         let cor = "#6366f1";
         if (corSelecionada) {
-          cor = corSelecionada.style.background || corSelecionada.style.backgroundColor;
+          cor =
+            corSelecionada.style.background ||
+            corSelecionada.style.backgroundColor;
         }
 
         try {
@@ -516,8 +519,8 @@
             body: JSON.stringify({
               nome: nome,
               descricao: descricao,
-              cor: cor
-            })
+              cor: cor,
+            }),
           });
 
           const data = await response.json();
@@ -527,7 +530,10 @@
             fecharModal();
             window.location.reload();
           } else {
-            showToast("Erro ao criar arquivo: " + (data.message || "tente novamente"), "error");
+            showToast(
+              "Erro ao criar arquivo: " + (data.message || "tente novamente"),
+              "error",
+            );
           }
         } catch (error) {
           console.error("Erro:", error);

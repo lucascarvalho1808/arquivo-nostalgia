@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from services.listas import (
     obter_listas_usuario,
@@ -157,3 +157,28 @@ def visualizar_arquivo(lista_id):
     except Exception as e:
         print(f"Erro ao visualizar arquivo: {e}")
         return "Erro ao carregar arquivo", 500
+
+
+@arquivos_bp.route('/deletar-pasta/<lista_id>', methods=['DELETE'])
+@login_required
+def deletar_pasta(lista_id):
+    """
+    Deleta uma lista (pasta) se pertencer ao usuário logado.
+    """
+    try:
+        lista = obter_lista_por_id(lista_id)
+        if not lista:
+            return jsonify({'success': False, 'message': 'Lista não encontrada'}), 404
+
+        # checar propriedade (coluna no DB é user_id)
+        if lista.get('user_id') and str(lista.get('user_id')) != str(current_user.id):
+            return jsonify({'success': False, 'message': 'Acesso negado'}), 403
+
+        resultado = deletar_lista(lista_id)
+        if resultado:
+            return jsonify({'success': True, 'message': 'Pasta deletada com sucesso'}), 200
+        else:
+            return jsonify({'success': False, 'message': 'Erro ao deletar pasta'}), 500
+    except Exception as e:
+        current_app.logger.exception("Erro ao processar deletar_pasta")
+        return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
