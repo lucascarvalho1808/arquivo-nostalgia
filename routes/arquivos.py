@@ -182,3 +182,24 @@ def deletar_pasta(lista_id):
     except Exception as e:
         current_app.logger.exception("Erro ao processar deletar_pasta")
         return jsonify({'success': False, 'message': 'Erro interno do servidor'}), 500
+
+
+@arquivos_bp.route('/minhas-pastas-json', methods=['GET'])
+@login_required
+def minhas_pastas_json():
+    """
+    Retorna todas as pastas/arquivos do usuário autenticado em formato JSON.
+    Útil para AJAX no pop-up de seleção.
+    """
+    try:
+        listas = obter_listas_usuario(current_user.id)
+        return jsonify({
+            "success": True,
+            "listas": listas
+        }), 200
+    except Exception as e:
+        print("Erro ao buscar listas do usuário (JSON):", e)
+        return jsonify({
+            "success": False,
+            "listas": []
+        }), 500
