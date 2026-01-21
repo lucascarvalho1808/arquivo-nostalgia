@@ -17,17 +17,47 @@ def login():
                 "password": form.senha.data
             })
             
-            # 2. Se chegou aqui, o login funcionou
-            user_data = res.user
-            username = user_data.user_metadata.get('username', 'Usuário')
-            user = User(id=user_data.id, email=user_data.email, username=username)
-            
-            # 3. Loga o usuário no Flask
-            login_user(user)
-            
-            flash('Login realizado com sucesso!', 'success')
-            next_page = request.args.get('next')
-            return redirect(next_page or url_for('main.index')) 
+            # 2. Extrai user e session/token (tratamento defensivo)
+            user_data = None
+            access_token = None
+            refresh_token = None
+
+            # se res tem atributos (objeto)
+            if hasattr(res, "user"):
+                user_data = res.user
+            elif isinstance(res, dict):
+                user_data = res.get("user")
+
+            # sessão/token: pode estar em res.session, res.get('session'), ou diretamente em res
+            if hasattr(res, "session") and res.session:
+                session_obj = res.session
+                access_token = getattr(session_obj, "access_token", None) or (session_obj.get("access_token") if isinstance(session_obj, dict) else None)
+                refresh_token = getattr(session_obj, "refresh_token", None) or (session_obj.get("refresh_token") if isinstance(session_obj, dict) else None)
+            elif isinstance(res, dict) and res.get("session"):
+                access_token = res["session"].get("access_token")
+                refresh_token = res["session"].get("refresh_token")
+            else:
+                # fallback: se houver chaves planas
+                access_token = res.get("access_token") if isinstance(res, dict) else getattr(res, "access_token", None)
+                refresh_token = res.get("refresh_token") if isinstance(res, dict) else getattr(res, "refresh_token", None)
+
+            # 3. Cria User e faz login no Flask se autenticação OK
+            if user_data:
+                username = user_data.user_metadata.get('username', 'Usuário') if hasattr(user_data, "user_metadata") else user_data.get("user_metadata", {}).get("username", "Usuário")
+                user = User(id=user_data.id if hasattr(user_data, "id") else user_data.get("id"), email=user_data.email if hasattr(user_data, "email") else user_data.get("email"), username=username)
+                login_user(user)
+
+                # 4. Salva tokens na sessão para uso em chamadas server-side (supabase REST)
+                if access_token:
+                    session['supabase_access_token'] = access_token
+                if refresh_token:
+                    session['supabase_refresh_token'] = refresh_token
+
+                flash('Login realizado com sucesso!', 'success')
+                next_page = request.args.get('next')
+                return redirect(next_page or url_for('main.index')) 
+            else:
+                flash('Erro ao fazer login. Tente novamente.', 'danger')
             
         except Exception as e:
             error_message = str(e)

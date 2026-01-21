@@ -10,6 +10,7 @@ from services.listas import (
 )
 from services.ranking_csv import ler_ranking_comunidade
 from services.estatisticas_usuario import calcular_estatisticas_usuario
+import re
 
 arquivos_bp = Blueprint('arquivos', __name__, url_prefix='/arquivos')
 
@@ -50,6 +51,15 @@ def meus_arquivos():
         )
 
 
+def rgb_to_hex(rgb_str):
+    """Converte 'rgb(r, g, b)' para '#rrggbb'. Retorna None se não for rgb."""
+    m = re.match(r"rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})", rgb_str)
+    if not m:
+        return None
+    r, g, b = map(int, m.groups())
+    return "#{:02x}{:02x}{:02x}".format(r, g, b)
+
+
 @arquivos_bp.route('/criar-pasta', methods=['POST'])
 @login_required
 def criar_pasta():
@@ -66,6 +76,12 @@ def criar_pasta():
         descricao = data.get('descricao', '').strip()
         cor = data.get('cor', '#6366f1')
         
+        # converte rgb(...) para hex se necessário
+        if isinstance(cor, str) and cor.startswith("rgb"):
+            hexc = rgb_to_hex(cor)
+            if hexc:
+                cor = hexc
+
         print(f"🔍 Nome: {nome}")
         print(f"🔍 Descrição: {descricao}")
         print(f"🔍 Cor: {cor}")
