@@ -768,3 +768,16 @@ body {
     width: 100%;
   }
 }
+
+@media (max-width: 1024px) {
+  .btn-remover-item {
+    opacity: 1 !important; 
+    background: rgba(220, 38, 38, 1); 
+    width: 40px; 
+    height: 40px;
+  }
+
+  .btn-remover-item i {
+    font-size: 16px;
+  }
+}
