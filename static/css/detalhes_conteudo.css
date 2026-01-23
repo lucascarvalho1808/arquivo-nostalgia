@@ -666,7 +666,148 @@ body {
     font-size: 1.3rem;
 }
 
-/* --- MEDIA QUERIES --- */
+/* Modal centralizado para seleção de arquivo */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.modal-overlay[style*="display: flex"] {
+  display: flex !important;
+  opacity: 1;
+}
+
+.modal-content {
+  background-color: #164f75;
+  width: 450px; 
+  max-height: 80vh; 
+  border-radius: 20px;
+  padding: 25px; 
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container da lista de arquivos para habilitar o Scroll */
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  margin: 10px 0;
+  padding: 0 10px; 
+}
+
+/* Estilização da barra de rolagem interna */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.item-arquivo {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center; 
+    gap: 12px; 
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+
+.item-arquivo:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.item-arquivo input[type="radio"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    margin: 0 0 0 2px; 
+    font: inherit;
+    color: currentColor;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+/* Estado Selecionado (Efeito Donut) */
+.item-arquivo input[type="radio"]::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 0.2s transform ease-in-out;
+    box-shadow: inset 1em 1em white; 
+}
+
+.item-arquivo input[type="radio"]:checked {
+    border-color: white;
+}
+
+.item-arquivo input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+/* --- Label e Texto --- */
+.item-arquivo label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #e2e8f0;
+    cursor: pointer;
+    width: 100%;
+    line-height: 1.2;
+    padding: 0;
+    min-height: 24px;
+}
+
+/* --- Círculo Colorido --- */
+.color-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 0;
+    vertical-align: middle;
+    align-self: center;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+ /* --- MEDIA QUERIES --- */
 @media (min-width: 1101px) {
     .barra-busca {
         position: absolute;
@@ -798,26 +939,24 @@ body {
     display: block; 
     width: 100%;
     
-    /* A mágica dos 3 pontinhos (...) */
+    /* 3 pontos */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 
     /* Estilização Visual */
-    padding: 12px 5px 0 5px; /* Ajustei o padding para centralizar verticalmente */
+    padding: 12px 5px 0 5px; 
     font-weight: bold;
     font-size: 0.9rem;
     color: #fff;
     text-align: center;
-    height: 35px; /* Altura fixa para manter padrão */
+    height: 35px; 
 }
 
 .papel-ator {
-    /* Layout para funcionar o corte */
     display: block;
     width: 100%;
 
-    /* A mágica dos 3 pontinhos (...) */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -827,5 +966,219 @@ body {
     font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.888);
     text-align: center;
-    height: 30px; /* Altura fixa para manter padrão */
+    height: 30px; 
+}
+
+.item-arquivo {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.item-arquivo:hover {
+  background: rgba(99,102,241,0.08);
+}
+.item-arquivo input[type="radio"] {
+  accent-color: #6366f1;
+  margin-right: 8px;
+  transform: scale(1.3);
+  cursor: pointer;
+}
+.item-arquivo label {
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #e2e8f0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.color-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin-right: 6px;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: inline-block;
+}
+
+.layout-container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 140px 20px 40px 20px;
+}
+
+/* Fundo Escuro (Overlay) */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* A Caixa do Modal */
+.modal-content {
+  background-color: #164f75;
+  width: 500px;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  color: white;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: sans-serif;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+/* Header do Modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-close {
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  line-height: 1;
+}
+.btn-close:hover {
+  color: #ccc;
+}
+
+/* Labels e Inputs */
+.modal-body label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #e6f4ff;
+  margin-top: 15px;
+}
+
+/* Estilo Pílula Geral */
+.input-pill {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.input-pill:focus {
+  background-color: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 2px #82ccdd;
+}
+
+/* Input de Nome (Bem Redondo) */
+input.input-pill {
+  border-radius: 50px;
+  height: 45px;
+}
+
+/* Textarea de Descrição (Canto mais suave) */
+textarea.input-pill.area-texto {
+  border-radius: 15px;
+  height: 100px;
+  resize: none;
+  font-family: inherit;
+  padding-top: 15px;
+}
+
+/* Grid de Cores */
+.color-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.color-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.color-circle:hover {
+  transform: scale(1.15);
+}
+
+.color-circle.selected {
+  border-color: white;
+  transform: scale(1.1);
+}
+
+/* Botão Criar */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-create {
+  background-color: #0c3757;
+  color: white;
+  border: none;
+  padding: 10px 35px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 10px;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-create:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
 }

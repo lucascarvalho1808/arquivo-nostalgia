@@ -1,53 +1,58 @@
 import os
 from dotenv import load_dotenv
-from supabase import create_client, Client
-from flask_login import current_user
+import requests
 from flask import session
+from routes.extensions import supabase
 
 load_dotenv()
 
-# Configuração do Supabase
-SUPABASE_URL = os.environ.get('SUPABASE_URL')
-SUPABASE_KEY = os.environ.get('SUPABASE_KEY')
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 
 # Cores pré-definidas disponíveis para as listas
 CORES_DISPONIVEIS = [
     '#6366f1',  # Indigo (padrão)
-    '#ec4899',  # Pink
-    '#f59e0b',  # Amber
-    '#10b981',  # Emerald
-    '#3b82f6',  # Blue
-    '#8b5cf6',  # Violet
-    '#ef4444',  # Red
-    '#06b6d4',  # Cyan
-    '#f97316',  # Orange
-    '#14b8a6',  # Teal
-    '#a855f7',  # Purple
-    '#84cc16',  # Lime
+    '#f06292',  # Pink
+    '#2d3436',  # black
+    '#636e72',  # gray
+    '#dfe6e9',  # white
+    '#82ccdd',  # blue-light
+    '#218c53',  # green-dark
+    '#b8e994',  # green-light
+    '#f1c40f',  # yellow
+    '#e67e22',  # orange
+    '#e74c3c',  # red
+    '#8d6e63',  # brown
+    '#9b59b6',  # purple
 ]
+
+# Mapeamento de cores hexadecimais para classes CSS
+MAPEAMENTO_CORES = {
+    '#6366f1': 'indigo',
+    '#f06292': 'pink',
+    '#2d3436': 'black',
+    '#636e72': 'gray',
+    '#dfe6e9': 'white',
+    '#82ccdd': 'blue-light',
+    '#218c53': 'green-dark',
+    '#b8e994': 'green-light',
+    '#f1c40f': 'yellow',
+    '#e67e22': 'orange',
+    '#e74c3c': 'red',
+    '#8d6e63': 'brown',
+    '#9b59b6': 'purple'
+}
 
 
 def _get_supabase_client():
     """
-    Retorna um cliente Supabase com o token do usuário autenticado.
-    Isso garante que as políticas RLS funcionem corretamente.
+    Retorna o client Supabase configurado em routes.extensions (cliente do servidor).
     """
     try:
-        # Pega o access_token do usuário da sessão
-        access_token = session.get('access_token')
-        
-        if access_token:
-            # Cria um cliente com o token do usuário
-            client = create_client(SUPABASE_URL, SUPABASE_KEY)
-            client.auth.set_session(access_token, session.get('refresh_token'))
-            return client
-        else:
-            # Fallback para o cliente padrão
-            return supabase
-    except Exception as e:
-        print(f"Erro ao criar cliente Supabase: {e}")
         return supabase
+    except Exception as e:
+        print("Erro ao obter client Supabase:", e)
+        return None
 
 
 def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
@@ -98,7 +103,7 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
         return None
 
 
-def remover_item_lista(item_id):
+def remover_item_lista(item_id, usuario_id):
     """
     Remove um item de uma lista.
     
@@ -177,54 +182,88 @@ def verificar_item_na_lista(lista_id, api_id, tipo):
         return False
 
 
-def criar_lista(nome, descricao="", cor=None):
+def criar_lista(usuario_id, nome, descricao, cor):
     """
-    Cria uma nova lista para o usuário autenticado.
-    
-    Args:
-        nome (str): Nome da lista
-        descricao (str): Descrição opcional da lista
-        cor (str): Cor hexadecimal da lista (opcional, padrão: #6366f1)
-    
-    Returns:
-        dict: Dados da lista criada ou None em caso de erro
+    Cria uma nova lista usando o access_token do usuário (session['supabase_access_token']).
+    Retorna o objeto criado ou None.
     """
     try:
-        if not current_user.is_authenticated:
-            print("Erro: Usuário não autenticado.")
+        token = session.get('supabase_access_token')
+        if not token:
+            print("Token do Supabase não encontrado na sessão. Salve o token no login.")
             return None
-        
-        # Valida a cor se foi fornecida
-        if cor and cor not in CORES_DISPONIVEIS:
-            print(f"Erro: Cor '{cor}' não está na lista de cores disponíveis.")
-            return {"erro": "cor_invalida", "mensagem": "Cor não disponível. Escolha uma das cores pré-definidas."}
-        
-        # Define cor padrão se não foi fornecida
-        cor_selecionada = cor if cor else CORES_DISPONIVEIS[0]
-        
-        # Dados da lista a ser criada
-        dados_lista = {
-            "usuario_id": current_user.id,
-            "nome": nome,
-            "descricao": descricao,
-            "cor": cor_selecionada
+
+        url = f"{SUPABASE_URL.rstrip('/')}/rest/v1/listas"
+        headers = {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {token}",
+            "Prefer": "return=representation"
         }
-        
-        # Usa o cliente com o token do usuário
-        client = _get_supabase_client()
-        
-        # Insere a lista na tabela listas
-        response = client.table("listas").insert(dados_lista).execute()
-        
-        if response.data:
-            print(f"Lista '{nome}' criada com sucesso!")
-            return response.data[0]
+        payload = {
+            "user_id": usuario_id,
+            "nome_lista": nome,
+            "descricao": descricao,
+            "cor": cor
+        }
+
+        resp = requests.post(url, headers=headers, json=payload, timeout=10)
+        if resp.status_code in (200, 201):
+            data = resp.json()
+            return data[0] if isinstance(data, list) and data else data
         else:
-            print("Erro ao criar lista.")
+            print("Erro ao criar lista (Supabase REST):", resp.status_code, resp.text)
             return None
-        
+
     except Exception as e:
-        print(f"Erro ao criar lista: {e}")
+        print("Erro detalhado ao criar lista:", e)
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def atualizar_lista(lista_id, nome=None, descricao=None, cor=None):
+    """
+    Atualiza campos de uma lista (nome_lista, descricao, cor).
+    Retorna o registro atualizado ou None em caso de erro.
+    """
+    try:
+        token = session.get('supabase_access_token')
+        if not token:
+            print("Token do Supabase não encontrado na sessão.")
+            return None
+
+        url = f"{SUPABASE_URL.rstrip('/')}/rest/v1/listas?id=eq.{lista_id}"
+        headers = {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {token}",
+            "Prefer": "return=representation"
+        }
+
+        payload = {}
+        if nome is not None:
+            payload["nome_lista"] = nome
+        if descricao is not None:
+            payload["descricao"] = descricao
+        if cor is not None:
+            payload["cor"] = cor
+
+        if not payload:
+            return None
+
+        resp = requests.patch(url, headers=headers, json=payload, timeout=10)
+        if resp.status_code in (200, 201):
+            data = resp.json()
+            return data[0] if isinstance(data, list) and data else data
+        else:
+            print("Erro ao atualizar lista (Supabase REST):", resp.status_code, resp.text)
+            return None
+
+    except Exception as e:
+        print("Erro ao atualizar lista:", e)
+        import traceback
+        traceback.print_exc()
         return None
 
 
@@ -236,6 +275,83 @@ def obter_cores_disponiveis():
         list: Lista de códigos hexadecimais das cores disponíveis
     """
     return CORES_DISPONIVEIS.copy()
+
+
+def obter_listas_usuario(usuario_id):
+    try:
+        response = supabase.table("listas").select("*").eq("user_id", usuario_id).execute()
+        listas = response.data or []
+        for l in listas:
+            # normaliza cor e garante campo para o template
+            cor = (l.get("cor") or "#6366f1").strip().lower()
+            l["cor"] = cor
+            l["cor_classe"] = MAPEAMENTO_CORES.get(cor, "")
+            # mantém compatibilidade com templates que usam 'nome'
+            l["nome"] = l.get("nome_lista") or l.get("nome")
+        return listas
+    except Exception as e:
+        print("Erro ao buscar listas do usuário:", e)
+        return []
+        
+        
+def obter_lista_por_id(lista_id):
+    try:
+        response = supabase.table("listas").select("*").eq("id", lista_id).single().execute()
+        lista = response.data
+        if lista:
+            cor = (lista.get("cor") or "#6366f1").strip().lower()
+            lista["cor"] = cor
+            lista["cor_classe"] = MAPEAMENTO_CORES.get(cor, "")
+            lista["nome"] = lista.get("nome_lista") or lista.get("nome")
+        return lista
+    except Exception as e:
+        print("Erro ao buscar lista por ID:", e)
+        return None
+
+
+def obter_itens_lista(lista_id):
+    try:
+        response = supabase.table("itens_lista").select("*").eq("lista_id", lista_id).execute()
+        itens = response.data or []
+        # garantir chaves usadas no template
+        for it in itens:
+            it["titulo"] = it.get("titulo")
+        return itens
+    except Exception as e:
+        print("Erro ao buscar itens da lista:", e)
+        return []
+
+
+def deletar_lista(lista_id):
+    """
+    Deleta uma lista pelo ID (usa token do usuário salvo na sessão).
+    Retorna True se deletado com sucesso, False caso contrário.
+    """
+    try:
+        token = session.get('supabase_access_token')
+        if not token:
+            print("Token do Supabase não encontrado na sessão.")
+            return False
+
+        url = f"{SUPABASE_URL.rstrip('/')}/rest/v1/listas?id=eq.{lista_id}"
+        headers = {
+            "apikey": SUPABASE_KEY,
+            "Authorization": f"Bearer {token}",
+            "Prefer": "return=representation"
+        }
+
+        resp = requests.delete(url, headers=headers, timeout=10)
+        if resp.status_code in (200, 204):
+            return True
+
+        print("Erro ao deletar lista (Supabase REST):", resp.status_code, resp.text)
+        return False
+
+    except Exception as e:
+        print("Erro ao deletar lista:", e)
+        import traceback
+        traceback.print_exc()
+        return False
 
 
 # Função auxiliar para testes (opcional)

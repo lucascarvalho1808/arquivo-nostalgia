@@ -14,6 +14,8 @@ from routes.jogos import jogos_bp
 from routes.busca import busca_bp  
 from routes.listas import listas_bp
 from routes.detalhes import detalhes_bp
+from routes.arquivos import arquivos_bp
+from services.agendador_ranking import agendador
 
 load_dotenv()
 
@@ -48,8 +50,16 @@ app.register_blueprint(jogos_bp)
 app.register_blueprint(busca_bp) 
 app.register_blueprint(listas_bp, url_prefix='/listas')
 app.register_blueprint(detalhes_bp, url_prefix='/detalhes')
+app.register_blueprint(arquivos_bp)
+
+# Inicia o agendador de ranking (atualização diária do CSV)
+agendador.iniciar()
 
 # lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        app.run(debug=True)
+    finally:
+        # Para o agendador ao encerrar a aplicação
+        agendador.parar()
 # fim do debug

@@ -66,7 +66,7 @@
 
         {% if current_user.is_authenticated %}
         <!-- MENU PARA QUEM ESTÁ LOGADO -->
-        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
           <i class="fa-regular fa-folder-open"></i>
           <span>Arquivos</span>
         </a>
@@ -74,13 +74,9 @@
           <i class="fa-solid fa-circle-user"></i>
           <span>Perfil</span>
         </a>
-        <a href="{{ url_for('auth.logout') }}" class="item-menu">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Sair</span>
-        </a>
         {% else %}
         <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
-        <a href="{{ url_for('main.meus_arquivos') }}" class="item-menu">
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
           <i class="fa-regular fa-folder-open"></i>
           <span>Arquivos</span>
         </a>
@@ -134,7 +130,7 @@
             <div class="acoes-usuario">
               <button
                 class="btn-acao-tmdb"
-                onclick="adicionarLista({{ conteudo.id }}, 'filme')"
+                onclick="adicionarLista({{ conteudo.id }}, '{{ 'serie' if conteudo.get('name') else 'filme' }}')"
               >
                 <div class="icone-circulo">
                   <i class="fa-solid fa-folder-plus"></i>
@@ -227,15 +223,306 @@
         Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
       </div>
     </footer>
+    <div
+      id="modal-selecionar-arquivo"
+      class="modal-overlay"
+      style="display: none"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Escolha um arquivo</h3>
+
+          <span class="btn-close" onclick="fecharModalSelecionarArquivo()"
+            >&times;</span
+          >
+        </div>
+
+        <div class="modal-body" id="lista-arquivos">
+          <!-- Aqui será preenchido via JS -->
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-create" onclick="abrirModalNovaPasta()">
+            Criar novo arquivo
+          </button>
+
+          <button class="btn-create" id="btn-confirmar-adicao" disabled>
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-nova-pasta" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Novo arquivo</h3>
+
+          <span class="btn-close" onclick="fecharModalNovaPasta()"
+            >&times;</span
+          >
+        </div>
+
+        <div class="modal-body">
+          <label for="nomePasta">Nome do arquivo:</label>
+
+          <input type="text" id="nomePasta" class="input-pill" placeholder="" />
+
+          <label for="descPasta">Descrição do Arquivo:</label>
+
+          <textarea
+            id="descPasta"
+            class="input-pill area-texto"
+            placeholder=""
+          ></textarea>
+
+          <label>Escolha uma cor:</label>
+
+          <div class="color-grid">
+            <div
+              class="color-circle"
+              style="background: #6366f1"
+              title="Indigo"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #e74c3c"
+              title="Vermelho"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #b8e994"
+              title="Verde Claro"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #f1c40f"
+              title="Amarelo"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #9b59b6"
+              title="Roxo"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #8d6e63"
+              title="Marrom"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #636e72"
+              title="Cinza"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #82ccdd"
+              title="Azul Claro"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #2d3436"
+              title="Preto"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #e67e22"
+              title="Laranja"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #f06292"
+              title="Rosa"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #218c53"
+              title="Verde Escuro"
+            ></div>
+
+            <div
+              class="color-circle"
+              style="background: #dfe6e9"
+              title="Branco"
+            ></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-create" type="button" id="btn-criar-pasta">
+            Criar
+          </button>
+        </div>
+      </div>
+    </div>
 
     <script>
+      // Variáveis globais
+      let arquivoSelecionado = null;
+      let dadosConteudo = null;
+
       function moverCarrossel(distancia) {
         const container = document.getElementById("carrosselElenco");
         container.scrollBy({ left: distancia, behavior: "smooth" });
       }
 
       function adicionarLista(id, tipo) {
-        alert(`Adicionar ${tipo} ID ${id} à lista`);
+        dadosConteudo = {
+          api_id: id,
+          tipo: tipo,
+          titulo: document.querySelector(".titulo-obra")?.innerText || "",
+          poster_url: document.querySelector(".poster-grande")?.src || "",
+        };
+        abrirModalSelecionarArquivo();
+      }
+
+      function abrirModalSelecionarArquivo() {
+        arquivoSelecionado = null;
+        document.getElementById("btn-confirmar-adicao").disabled = true;
+        document.getElementById("modal-selecionar-arquivo").style.display =
+          "flex";
+        fetch("/arquivos/minhas-pastas-json")
+          .then((r) => r.json())
+          .then((data) => {
+            const lista = data.listas || [];
+            const container = document.getElementById("lista-arquivos");
+            container.innerHTML = "";
+            if (lista.length === 0) {
+              container.innerHTML = "<p>Você ainda não tem arquivos.</p>";
+            } else {
+              lista.forEach((l) => {
+                const div = document.createElement("div");
+                div.className = "item-arquivo";
+                div.innerHTML = `
+                  <input type="radio" name="arquivo" value="${l.id}" id="arq-${l.id}">
+                  <label for="arq-${l.id}">
+                    <span class="color-circle" style="background:${l.cor};"></span>
+                    ${l.nome}
+                  </label>
+                `;
+                div.querySelector("input").onclick = () => {
+                  arquivoSelecionado = l.id;
+                  document.getElementById("btn-confirmar-adicao").disabled =
+                    false;
+                };
+                container.appendChild(div);
+              });
+            }
+          });
+      }
+
+      function fecharModalSelecionarArquivo() {
+        document.getElementById("modal-selecionar-arquivo").style.display =
+          "none";
+      }
+
+      // Remove event listeners duplicados
+      document.getElementById("btn-confirmar-adicao").onclick = function () {
+        if (!arquivoSelecionado || !dadosConteudo) return;
+        fetch("/listas/adicionar-item", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            lista_id: arquivoSelecionado,
+            api_id: dadosConteudo.api_id,
+            tipo: dadosConteudo.tipo,
+            titulo: dadosConteudo.titulo,
+            poster_url: dadosConteudo.poster_url,
+          }),
+        })
+          .then((r) => r.json())
+          .then((resp) => {
+            fecharModalSelecionarArquivo();
+            if (resp.success) {
+              mostrarToast(
+                `${dadosConteudo.titulo} adicionado com sucesso ao arquivo!`,
+                "success",
+              );
+            } else {
+              mostrarToast("Erro ao adicionar ao arquivo.", "error");
+            }
+          });
+      };
+
+      function abrirModalNovaPasta() {
+        document.getElementById("modal-nova-pasta").classList.add("active");
+      }
+
+      function fecharModalNovaPasta() {
+        document.getElementById("modal-nova-pasta").classList.remove("active");
+        document.getElementById("nomePasta").value = "";
+        document.getElementById("descPasta").value = "";
+        document
+          .querySelectorAll(".color-circle")
+          .forEach((c) => c.classList.remove("selected"));
+      }
+
+      // Seleção de cor
+      document.querySelectorAll(".color-circle").forEach((cor) => {
+        cor.addEventListener("click", () => {
+          document
+            .querySelectorAll(".color-circle")
+            .forEach((c) => c.classList.remove("selected"));
+          cor.classList.add("selected");
+        });
+      });
+
+      // Criação de pasta (arquivo)
+      document.getElementById("btn-criar-pasta").onclick = async function () {
+        const nome = document.getElementById("nomePasta").value.trim();
+        const descricao = document.getElementById("descPasta").value.trim();
+        const corSelecionada = document.querySelector(".color-circle.selected");
+        let cor = "#6366f1";
+        if (corSelecionada) {
+          cor =
+            corSelecionada.style.background ||
+            corSelecionada.style.backgroundColor;
+        }
+        if (!nome) {
+          mostrarToast("Digite um nome para o arquivo!", "error");
+          return;
+        }
+        fetch("/arquivos/criar-pasta", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nome, descricao, cor }),
+        })
+          .then((r) => r.json())
+          .then((resp) => {
+            if (resp.success) {
+              fecharModalNovaPasta();
+              mostrarToast("Arquivo criado com sucesso!", "success");
+              abrirModalSelecionarArquivo(); // Atualiza a lista imediatamente!
+            } else {
+              mostrarToast("Erro ao criar arquivo.", "error");
+            }
+          });
+      };
+
+      // Toast simples (pode customizar)
+      function mostrarToast(mensagem, tipo = "info") {
+        const toastAntigo = document.querySelector(".toast-traducao");
+        if (toastAntigo) toastAntigo.remove();
+        const toast = document.createElement("div");
+        toast.className = `toast-traducao toast-${tipo}`;
+        toast.innerHTML = `<span>${mensagem}</span>`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.classList.add("show"), 100);
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
       }
     </script>
   </body>

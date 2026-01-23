@@ -1,204 +1,206 @@
-/* =========================================
-           1. RESET E VARIÁVEIS GERAIS
-   ========================================= */
+/* Variáveis Gerais */
 
-   :root {
-    --bg-body: #417eaa;
-    --header-bg: #22658f;
-    --text-primary: #f8fafc;
-    --text-secondary: #e2e8f0;
+:root {
+  --bg-body: #417eaa;
+  --header-bg: #22658f;
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: var(--bg-body);
-    color: var(--text-primary);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* =========================================
            2. CABEÇALHO FIXO
    ========================================= */
 .cabecalho-principal {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 30px;
-    flex-wrap: wrap;
-    gap: 15px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--header-bg);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--header-bg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-height: 100px;
 }
 
 .logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
 }
 
 .logo-pequena {
-    max-width: 100px;
-    margin-bottom: 5px;
+  max-width: 100px;
+  margin-bottom: 5px;
 }
 
 .nome-site-header {
-    font-size: 11px;
-    font-weight: 900;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-size: 11px;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .header-centro {
-    display: flex;
-    justify-content: center;
-    flex: 1;
+  display: flex;
+  justify-content: center;
+  flex: 1;
 }
 
 .caixa-titulo {
-    background-color: #0c3757;
-    padding: 10px 40px; 
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    max-width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  background-color: #0c3757;
+  padding: 10px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .caixa-titulo h1 {
-    font-size: 28px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: white;
-    margin: 0;
-    line-height: 1.2;
-    white-space: nowrap;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .menu-icones {
-    display: flex;
-    gap: 20px;
-    justify-content: flex-end;
-    width: 200px;
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  width: 200px;
 }
 
 .item-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    transition: opacity 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  transition: opacity 0.2s;
 }
 
 .item-menu:hover {
-    opacity: 0.8;
-    color: #0c3757;
+  opacity: 0.8;
+  color: #0c3757;
 }
 
 .item-menu i {
-    font-size: 18px;
-    margin-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 5px;
 }
 
 /* =========================================
            3. NOVO LAYOUT DA PASTA (MIOLO)
    ========================================= */
 .container-pasta {
-    margin-top: 130px; 
-    padding: 20px 40px;
-    flex: 1; 
-    width: 100%;
-    max-width: 1400px; 
-    align-self: center;
+  margin-top: 130px;
+  padding: 20px 40px;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  align-self: center;
 }
 
 .info-pasta {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end; 
-    gap: 30px;
-    flex-wrap: wrap; 
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  flex-wrap: wrap;
 }
 
 /* Wrapper do texto para ele não espalhar */
 .info-conteudo-texto {
-    flex: 1; 
-    max-width: 800px;
+  flex: 1;
+  max-width: 800px;
 }
 
 .info-pasta h2 {
-    font-size: 32px;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: white;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .info-pasta p {
-    font-size: 18px;
-    color: #e2e8f0;
-    line-height: 1.5;
-    font-weight: 500;
+  font-size: 18px;
+  color: #e2e8f0;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
 /* --- ESTILO DO BOTÃO EXPORTAR --- */
 .btn-exportar {
-    background-color: #0c3757;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.3s ease;
-    height: fit-content; 
+  background-color: #0c3757;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  height: fit-content;
 }
 
 .btn-exportar:hover {
-    background-color: #145a8d;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  background-color: #145a8d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
 }
 
 .btn-exportar i {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .divisor-pasta {
-    border: 0;
-    height: 2px;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
-    margin-bottom: 30px;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0)
+  );
+  margin-bottom: 30px;
 }
 
 /* =========================================
@@ -207,89 +209,88 @@ body {
 
 /* --- Footer --- */
 .rodape-principal {
-    width: 100%;
-    background-color: #0c3757;
-    color: #d1d1d1;
-    text-align: center;
-    padding: 40px 10px;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    margin-top: auto;
-    flex-shrink: 0;
+  width: 100%;
+  background-color: #0c3757;
+  color: #d1d1d1;
+  text-align: center;
+  padding: 40px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
 /* --- RODAPÉ: LINKS E COPYRIGHT --- */
 
 /* Garante que o rodapé organize os itens em coluna  */
 .rodape-principal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
 }
 
 .links-rodape {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .links-rodape a {
-    color: #a0a0a0;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-family: 'Segoe UI', sans-serif;
-    transition: color 0.3s;
+  color: #a0a0a0;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-family: "Segoe UI", sans-serif;
+  transition: color 0.3s;
 }
 
 .links-rodape a:hover {
-    color: #ffffff;
-    text-decoration: underline;
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 .separador {
-    color: #555;
-    font-size: 0.8rem;
+  color: #555;
+  font-size: 0.8rem;
 }
 
 .texto-copyright {
-    font-size: 0.75rem;
-    color: #999;
-    margin-top: 10px;
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 10px;
 }
-
 
 /* Crédito API - Rodapé */
 .credito-api {
-    font-size: 0.70rem;
-    color: #888;
-    margin-top: 10px;
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 10px;
 }
 
 .credito-api a {
-    color: #aaa;
-    text-decoration: none;
+  color: #aaa;
+  text-decoration: none;
 }
 
 .credito-api a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Crédito API - Abaixo da seção de jogos */
 .credito-api-jogos {
-    display: block;
-    text-align: right;
-    font-size: 0.65rem;
-    color: #666;
-    margin-top: 5px;
-    padding-right: 10px;
+  display: block;
+  text-align: right;
+  font-size: 0.65rem;
+  color: #666;
+  margin-top: 5px;
+  padding-right: 10px;
 }
 
 .credito-api-jogos a {
-    color: #888;
+  color: #888;
 }
 
 /* =========================================
@@ -297,80 +298,473 @@ body {
    ========================================= */
 
 @media (max-width: 1024px) {
-    .cabecalho-principal {
-        justify-content: space-between;
-    }
+  .cabecalho-principal {
+    justify-content: space-between;
+  }
 
-    .menu-icones, .logo-container {
-        width: 180px; 
-    }
-    
-    .caixa-titulo h1 {
-        font-size: 22px;
-    }
+  .menu-icones,
+  .logo-container {
+    width: 180px;
+  }
+
+  .caixa-titulo h1 {
+    font-size: 22px;
+  }
 }
 
-
 @media (max-width: 950px) {
-    .cabecalho-principal {
-        position: relative; 
-        flex-direction: column;
-        height: auto;
-        padding: 15px 10px;
-        gap: 15px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); 
-    }
+  .cabecalho-principal {
+    position: relative;
+    flex-direction: column;
+    height: auto;
+    padding: 15px 10px;
+    gap: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
 
-    .container-pasta {
-        margin-top: 30px; 
-        padding: 10px 20px;
-    }
+  .container-pasta {
+    margin-top: 30px;
+    padding: 10px 20px;
+  }
 
-    .logo-container { order: 1; width: 100%; margin-bottom: 5px; }
-    .menu-icones { order: 2; width: 100%; justify-content: center; gap: 25px; }
-    .header-centro { order: 3; width: 100%; padding: 0 10px; }
+  .logo-container {
+    order: 1;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .menu-icones {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+    gap: 25px;
+  }
+  .header-centro {
+    order: 3;
+    width: 100%;
+    padding: 0 10px;
+  }
 
-    .caixa-titulo { 
-        width: 100%; 
-        padding: 12px 10px;
-    }
-    
-    .caixa-titulo h1 { 
-        font-size: 20px;
-        white-space: normal;
-    }
-    
-    .item-menu span { display: block; }
+  .caixa-titulo {
+    width: 100%;
+    padding: 12px 10px;
+  }
+
+  .caixa-titulo h1 {
+    font-size: 20px;
+    white-space: normal;
+  }
+
+  .item-menu span {
+    display: block;
+  }
 }
 
 @media (max-width: 600px) {
-    .menu-icones {
-        justify-content: space-around;
-        gap: 0;
-        width: 100%;
-    }
+  .menu-icones {
+    justify-content: space-around;
+    gap: 0;
+    width: 100%;
+  }
 
-    .logo-pequena { max-width: 90px; }
-    .nome-site-header { font-size: 10px; }
-    .item-menu span { font-size: 9px; }
-    .item-menu i { font-size: 16px; }
+  .logo-pequena {
+    max-width: 90px;
+  }
+  .nome-site-header {
+    font-size: 10px;
+  }
+  .item-menu span {
+    font-size: 9px;
+  }
+  .item-menu i {
+    font-size: 16px;
+  }
 
-    .caixa-titulo h1 { 
-        font-size: clamp(14px, 5vw, 18px); 
-        letter-spacing: 1px;
-    }
+  .caixa-titulo h1 {
+    font-size: clamp(14px, 5vw, 18px);
+    letter-spacing: 1px;
+  }
 
-    .info-pasta h2 { font-size: 24px; word-wrap: break-word; }
-    .info-pasta p { font-size: 14px; }
+  .info-pasta h2 {
+    font-size: 24px;
+    word-wrap: break-word;
+  }
+  .info-pasta p {
+    font-size: 14px;
+  }
 
-    .info-pasta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
+  .info-pasta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
 
-    .btn-exportar {
-        width: 100%;
-        justify-content: center;
-    }
+  .btn-exportar {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* =========================================
+           6. ESTILO DOS ITENS SALVOS
+   ========================================= */
+
+.grid-itens-salvos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.card-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.card-item:hover {
+  transform: translateY(-5px);
+}
+
+.link-item {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.poster-container {
+  position: relative;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+}
+
+.poster-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+}
+
+.card-item:hover .overlay-hover {
+  opacity: 1;
+}
+
+.overlay-hover i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-item {
+  padding: 1rem;
+}
+
+.titulo-item {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.badges-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-filme {
+  background: #6366f1;
+  color: white;
+}
+
+.badge-serie {
+  background: #9b59b6;
+  color: white;
+}
+
+.badge-jogo {
+  background: #10b981;
+  color: white;
+}
+
+.btn-remover-item {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(220, 38, 38, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+.card-item:hover .btn-remover-item {
+  opacity: 1;
+}
+
+.btn-remover-item:hover {
+  background: rgba(185, 28, 28, 1);
+}
+
+.mensagem-vazia {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mensagem-vazia i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.mensagem-vazia p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.texto-secundario {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Container de ações para alinhar os botões lado a lado */
+.acoes-pasta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Estilo do novo botão de deletar */
+.btn-deletar-pasta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+  text-transform: uppercase;
+}
+
+.btn-deletar-pasta i {
+  font-size: 1rem;
+}
+
+.btn-deletar-pasta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+  filter: brightness(1.1);
+}
+
+.btn-deletar-pasta:active {
+  transform: translateY(0);
+}
+
+.btn-exportar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* modal overlay */
+#modal-delete-lista {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 7, 18, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 4000;
+}
+#modal-delete-lista[aria-hidden="false"] {
+  display: flex;
+}
+
+/* Modal de deletar */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 4000; 
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Quando estiver ativo */
+.modal-overlay[aria-hidden="false"] {
+  display: flex !important;
+  opacity: 1;
+}
+
+/* A Caixa do Modal */
+.modal-content {
+  background-color: #164f75;
+  width: 500px;
+  max-width: 90vw;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay[aria-hidden="false"] .modal-content {
+  transform: translateY(0);
+}
+
+/* Header com linha embaixo */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+}
+
+/* Botão X de fechar */
+.btn-close {
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  line-height: 1;
+  background: none;
+  border: none;
+  padding: 0 10px;
+}
+.btn-close:hover {
+  color: #ccc;
+}
+
+/* Corpo do modal */
+.modal-body {
+  margin-bottom: 30px;
+}
+
+/* Footer com os botões alinhados à direita */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.btn-pill {
+  border: none;
+  padding: 10px 35px;
+  border-radius: 50px; 
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: transform 0.2s, filter 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-pill:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Botão Cancelar */
+.btn-pill-cancel {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #e2e8f0;
+}
+.btn-pill-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  color: white;
+}
+
+/* Botão Deletar (Vermelho) */
+.btn-pill-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+  .modal-header h3 {
+    font-size: 18px;
+  }
+  .modal-footer {
+    flex-direction: column-reverse; 
+  }
+  .btn-pill {
+    width: 100%;
+  }
 }

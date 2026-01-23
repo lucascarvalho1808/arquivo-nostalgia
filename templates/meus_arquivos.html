@@ -1,324 +1,295 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meus Arquivos - Arquivo Nostalgia</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/meus_arquivos.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Arquivos - Gatadoo</title>
-    <link rel="stylesheet" href="meus_arq.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-
-<body>
-
+  <body>
     <header class="cabecalho-principal">
-        <div class="logo-container">
-            <img src="img/logo_arquivo_nostalgia.png" alt="Logo" class="logo-pequena">
-            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
-        </div>
+      <div class="logo-container">
+        <img
+          src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+          alt="Logo"
+          class="logo-pequena"
+        />
+        <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+      </div>
 
-        <div class="header-centro">
-            <div class="caixa-titulo">
-                <h1>Arquivos</h1>
-            </div>
+      <div class="header-centro">
+        <div class="caixa-titulo">
+          <h1>Arquivos</h1>
         </div>
+      </div>
 
-        <nav class="menu-icones">
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-clapperboard"></i>
-                <span>Filmes</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-tv"></i>
-                <span>Séries</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-gamepad"></i>
-                <span>Jogos</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-regular fa-folder-open"></i>
-                <span>Arquivos</span>
-            </a>
-            <a href="#" class="item-menu">
-                <i class="fa-solid fa-circle-user"></i>
-                <span>Perfil</span>
-            </a>
-        </nav>
+      <nav class="menu-icones">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>Filmes</span>
+        </a>
+        <a href="{{ url_for('series.index') }}" class="item-menu">
+          <i class="fa-solid fa-tv"></i>
+          <span>Séries</span>
+        </a>
+        <a href="{{ url_for('jogos.index') }}" class="item-menu">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Jogos</span>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <!-- MENU PARA QUEM ESTÁ LOGADO -->
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('main.perfil') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Perfil</span>
+        </a>
+        {% else %}
+        <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Login</span>
+        </a>
+
+        {% endif %}
+      </nav>
     </header>
 
     <main class="layout-container">
+      <section class="grid-pastas">
+        {% for lista in listas %}
+        <div class="folder-wrapper" id="folder-{{ lista.id }}">
+          <div
+            class="folder {{ lista.cor_classe }}"
+            data-lista-id="{{ lista.id }}"
+            {%
+            if
+            lista.cor
+            %}
+            style="background: {{ lista.cor }};"
+            {%
+            endif
+            %}
+          >
+            <div class="back"></div>
+            <div class="paper"></div>
+            <div class="paper"></div>
+            <div class="front"></div>
+          </div>
 
-        <section class="grid-pastas">
-            <div class="folder-wrapper">
-                <div class="folder yellow">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Amarelo</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder black">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Preto</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder gray">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Cinza</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder white">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Branco</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder indigo">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Indigo</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder blue-light">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Azul Claro</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder green-dark">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Verde Escuro</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder green-light">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Verde Claro</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder orange">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Laranja</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder red">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Vermelho</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder brown">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Marrom</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder purple">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Roxo</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <div class="folder pink">
-                    <div class="back"></div>
-                    <div class="paper"></div>
-                    <div class="paper"></div>
-                    <div class="front"></div>
-                </div>
-                <div class="label">Rosa</div>
-            </div>
-
-            <div class="folder-wrapper">
-                <button class="btn-add-folder">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-            </div>
-        </section>
-
-        <aside class="sidebar-dna">
-
-    <div class="sidebar-header-centered">
-        <h4 class="dna-title-main">Estatísticas</h4> <div class="info-wrapper">
-            <i class="fa-solid fa-circle-info info-icon-btn"></i>
-            
-            <div class="info-tooltip">
-                <strong class="tooltip-title">Sua Coleção</strong>
-                <p>Este gráfico reflete a média de tipos de obras (Filmes, Séries e Jogos) somando todos os arquivos que <strong>você</strong> salvou em suas pastas.</p>
-            </div>
+          <div class="label-row">
+            <div class="label">{{ lista.nome }}</div>
+          </div>
         </div>
-    </div>
-    <div class="sidebar-divider"></div>
+        {% endfor %}
 
-    <div class="dna-orbit-widget">
-        <div class="orbit-system">
+        <div class="folder-wrapper">
+          <button class="btn-add-folder">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+      </section>
+
+      <aside class="sidebar-dna">
+        <div class="sidebar-header-centered">
+          <h4 class="dna-title-main">Estatísticas</h4>
+          <div class="info-wrapper">
+            <i class="fa-solid fa-circle-info info-icon-btn"></i>
+
+            <div class="info-tooltip">
+              <strong class="tooltip-title">Sua Coleção</strong>
+              <p>
+                Este gráfico reflete a média de tipos de obras (Filmes, Séries e
+                Jogos) somando todos os arquivos que
+                <strong>você</strong> salvou em suas pastas.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-divider"></div>
+
+        <div class="dna-orbit-widget">
+          <div class="orbit-system">
             <div class="orbit-ring ring-movies"></div>
             <div class="orbit-ring ring-games"></div>
             <div class="orbit-ring ring-series"></div>
             <div class="orbit-core">
-                <span class="core-label">TOTAL</span>
-                <strong class="core-number">105</strong>
+              <span class="core-label">TOTAL</span>
+              <strong class="core-number">{{ estatisticas.total }}</strong>
             </div>
+          </div>
+
+          <div class="orbit-legend">
+            <div class="legend-pill blue">
+              <i class="fa-solid fa-film"></i> {{
+              estatisticas.filmes.porcentagem }}%
+            </div>
+            <div class="legend-pill yellow">
+              <i class="fa-solid fa-gamepad"></i> {{
+              estatisticas.jogos.porcentagem }}%
+            </div>
+            <div class="legend-pill white">
+              <i class="fa-solid fa-tv"></i> {{ estatisticas.series.porcentagem
+              }}%
+            </div>
+          </div>
         </div>
 
-        <div class="orbit-legend">
-            <div class="legend-pill blue"><i class="fa-solid fa-film"></i> 45%</div>
-            <div class="legend-pill yellow"><i class="fa-solid fa-gamepad"></i> 38%</div>
-            <div class="legend-pill white"><i class="fa-solid fa-tv"></i> 17%</div>
-        </div>
-    </div>
+        <div class="sidebar-divider"></div>
 
-    <div class="sidebar-divider"></div>
-
-    <div class="ranking-section-glass">
-        <div class="ranking-header-group">
+        <div class="ranking-section-glass">
+          <div class="ranking-header-group">
             <span class="ranking-subtitle">RANKING DA COMUNIDADE</span>
             <h4 class="ranking-title">
-                <i class="fa-solid fa-clapperboard title-icon blue"></i> Filmes Mais Salvos
+              <i class="fa-solid fa-clapperboard title-icon blue"></i> Filmes
+              Mais Salvos
             </h4>
-        </div>
+          </div>
 
-        <div class="ranking-podium">
+          <div class="ranking-podium">
+            {% if ranking.filmes and ranking.filmes|length >= 2 %}
             <div class="rank-card silver">
-                <div class="cover-wrapper glow-silver">
-                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/Pca1hVNgPAUcp6zVHldlboh80R.jpg" alt="Filme 2">
-                </div>
-                <i class="fa-solid fa-medal medal-icon silver-medal"></i>
+              <div class="cover-wrapper glow-silver">
+                <img
+                  src="{{ ranking.filmes[1].poster_url }}"
+                  alt="{{ ranking.filmes[1].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
+            {% endif %} {% if ranking.filmes and ranking.filmes|length >= 1 %}
             <div class="rank-card gold winner">
-                <div class="cover-wrapper glow-gold">
-                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/9aYipPdXLJO2d7Aoa9gnLXHlQfz.jpg" alt="Filme 1">
-                </div>
-                <i class="fa-solid fa-medal medal-icon gold-medal"></i>
+              <div class="cover-wrapper glow-gold">
+                <img
+                  src="{{ ranking.filmes[0].poster_url }}"
+                  alt="{{ ranking.filmes[0].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
+            {% endif %} {% if ranking.filmes and ranking.filmes|length >= 3 %}
             <div class="rank-card bronze">
-                <div class="cover-wrapper glow-bronze">
-                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/h264Wik2YY6mRoDMIVuGdbc7XYK.jpg" alt="Filme 3">
-                </div>
-                <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
+              <div class="cover-wrapper glow-bronze">
+                <img
+                  src="{{ ranking.filmes[2].poster_url }}"
+                  alt="{{ ranking.filmes[2].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
             </div>
+            {% endif %}
+          </div>
         </div>
-    </div>
 
-    <div class="ranking-section-glass">
-        <div class="ranking-header-group">
+        <div class="ranking-section-glass">
+          <div class="ranking-header-group">
             <span class="ranking-subtitle">RANKING DA COMUNIDADE</span>
             <h4 class="ranking-title">
-                <i class="fa-solid fa-tv title-icon purple"></i> Séries em Alta
+              <i class="fa-solid fa-tv title-icon purple"></i> Séries em Alta
             </h4>
-        </div>
+          </div>
 
-        <div class="ranking-podium">
+          <div class="ranking-podium">
+            {% if ranking.series and ranking.series|length >= 2 %}
             <div class="rank-card silver">
-                <div class="cover-wrapper glow-silver">
-                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/h0AIjSt9u2yjSzgTBhuQZVCXwCv.jpg" alt="Serie 2">
-                </div>
-                <i class="fa-solid fa-medal medal-icon silver-medal"></i>
+              <div class="cover-wrapper glow-silver">
+                <img
+                  src="{{ ranking.series[1].poster_url }}"
+                  alt="{{ ranking.series[1].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
+            {% endif %} {% if ranking.series and ranking.series|length >= 1 %}
             <div class="rank-card gold winner">
-                <div class="cover-wrapper glow-gold">
-                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/eK4gEBWNGJoxCD67KFKzaKfSzWU.jpg" alt="Serie 1">
-                </div>
-                <i class="fa-solid fa-medal medal-icon gold-medal"></i>
+              <div class="cover-wrapper glow-gold">
+                <img
+                  src="{{ ranking.series[0].poster_url }}"
+                  alt="{{ ranking.series[0].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
+            {% endif %} {% if ranking.series and ranking.series|length >= 3 %}
             <div class="rank-card bronze">
-                <div class="cover-wrapper glow-bronze">
-                    <img src="https://media.themoviedb.org/t/p/w300_and_h450_face/yCPGrd6fzbftuaH97OUS6tUdE4B.jpg" alt="Serie 3">
-                </div>
-                <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
+              <div class="cover-wrapper glow-bronze">
+                <img
+                  src="{{ ranking.series[2].poster_url }}"
+                  alt="{{ ranking.series[2].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
             </div>
+            {% endif %}
+          </div>
         </div>
-    </div>
 
-    <div class="ranking-section-glass">
-        <div class="ranking-header-group">
+        <div class="ranking-section-glass">
+          <div class="ranking-header-group">
             <span class="ranking-subtitle">RANKING DA COMUNIDADE</span>
             <h4 class="ranking-title">
-                <i class="fa-solid fa-gamepad title-icon green"></i> Jogos Favoritos
+              <i class="fa-solid fa-gamepad title-icon green"></i> Jogos
+              Favoritos
             </h4>
-        </div>
+          </div>
 
-        <div class="ranking-podium">
+          <div class="ranking-podium">
+            {% if ranking.jogos and ranking.jogos|length >= 2 %}
             <div class="rank-card silver">
-                <div class="cover-wrapper glow-silver">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1q1f.webp" alt="Jogo 2">
-                </div>
-                <i class="fa-solid fa-medal medal-icon silver-medal"></i>
+              <div class="cover-wrapper glow-silver">
+                <img
+                  src="{{ ranking.jogos[1].poster_url }}"
+                  alt="{{ ranking.jogos[1].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon silver-medal"></i>
             </div>
+            {% endif %} {% if ranking.jogos and ranking.jogos|length >= 1 %}
             <div class="rank-card gold winner">
-                <div class="cover-wrapper glow-gold">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/coa77e.webp" alt="Jogo 1">
-                </div>
-                <i class="fa-solid fa-medal medal-icon gold-medal"></i>
+              <div class="cover-wrapper glow-gold">
+                <img
+                  src="{{ ranking.jogos[0].poster_url }}"
+                  alt="{{ ranking.jogos[0].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon gold-medal"></i>
             </div>
+            {% endif %} {% if ranking.jogos and ranking.jogos|length >= 3 %}
             <div class="rank-card bronze">
-                <div class="cover-wrapper glow-bronze">
-                    <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/coaiyq.webp" alt="Jogo 3">
-                </div>
-                <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
+              <div class="cover-wrapper glow-bronze">
+                <img
+                  src="{{ ranking.jogos[2].poster_url }}"
+                  alt="{{ ranking.jogos[2].titulo }}"
+                />
+              </div>
+              <i class="fa-solid fa-medal medal-icon bronze-medal"></i>
             </div>
+            {% endif %}
+          </div>
         </div>
-    </div>
-
-</aside>
+      </aside>
     </main>
 
     <footer class="rodape-principal">
       <div class="links-rodape">
-        <a href="#">Termos de Uso</a>
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
         <span class="separador">|</span>
-        <a href="#">Política de Privacidade</a>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
       </div>
 
       <!-- Texto de Copyright -->
@@ -327,92 +298,244 @@
       </div>
 
       <!-- Crédito da API RAWG -->
-      <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
     </footer>
 
     <div id="modal-nova-pasta" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Novo arquivo</h3> <span class="btn-close" onclick="fecharModal()">&times;</span>
-            </div>
-
-            <div class="modal-body">
-                <label for="nomePasta">Nome do arquivo:</label>
-                <input type="text" id="nomePasta" class="input-pill" placeholder="">
-
-                <label for="descPasta">Descrição do Arquivo:</label>
-                <textarea id="descPasta" class="input-pill area-texto" placeholder=""></textarea>
-
-                <label>Escolha uma cor:</label>
-                <div class="color-grid">
-                    <div class="color-circle" style="background: #6366f1;" title="Indigo"></div>
-                    <div class="color-circle" style="background: #e74c3c;" title="Vermelho"></div>
-                    <div class="color-circle" style="background: #b8e994;" title="Verde Claro"></div>
-                    <div class="color-circle" style="background: #f1c40f;" title="Amarelo"></div>
-                    <div class="color-circle" style="background: #9b59b6;" title="Roxo"></div>
-                    <div class="color-circle" style="background: #8d6e63;" title="Marrom"></div>
-                    <div class="color-circle" style="background: #636e72;" title="Cinza"></div>
-                    <div class="color-circle" style="background: #82ccdd;" title="Azul Claro"></div>
-                    <div class="color-circle" style="background: #2d3436;" title="Preto"></div>
-                    <div class="color-circle" style="background: #e67e22;" title="Laranja"></div>
-                    <div class="color-circle" style="background: #f06292;" title="Rosa"></div>
-                    <div class="color-circle" style="background: #218c53;" title="Verde Escuro"></div>
-                    <div class="color-circle" style="background: #dfe6e9;" title="Branco"></div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn-create">Criar</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Novo arquivo</h3>
+          <span class="btn-close" onclick="fecharModal()">&times;</span>
         </div>
+
+        <div class="modal-body">
+          <label for="nomePasta">Nome do arquivo:</label>
+          <input type="text" id="nomePasta" class="input-pill" placeholder="" />
+
+          <label for="descPasta">Descrição do Arquivo:</label>
+          <textarea
+            id="descPasta"
+            class="input-pill area-texto"
+            placeholder=""
+          ></textarea>
+
+          <label>Escolha uma cor:</label>
+          <div class="color-grid">
+            <div
+              class="color-circle"
+              style="background: #6366f1"
+              title="Indigo"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #e74c3c"
+              title="Vermelho"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #b8e994"
+              title="Verde Claro"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #f1c40f"
+              title="Amarelo"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #9b59b6"
+              title="Roxo"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #8d6e63"
+              title="Marrom"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #636e72"
+              title="Cinza"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #82ccdd"
+              title="Azul Claro"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #2d3436"
+              title="Preto"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #e67e22"
+              title="Laranja"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #f06292"
+              title="Rosa"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #218c53"
+              title="Verde Escuro"
+            ></div>
+            <div
+              class="color-circle"
+              style="background: #dfe6e9"
+              title="Branco"
+            ></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-create">Criar</button>
+        </div>
+      </div>
     </div>
 
+    <!-- Toast container -->
+    <div id="toast" aria-live="polite" aria-atomic="true"></div>
+
     <script>
-        // JS Atualizado para pegar a classe .folder
-        document.querySelectorAll('.folder').forEach(folder => {
-            folder.addEventListener('click', () => {
-                console.log('Abrindo pasta...');
-                folder.style.transform = "translateY(-5px) scale(0.95)";
-                setTimeout(() => {
-                    folder.style.transform = "translateY(-5px) scale(1)";
-                }, 150);
-            });
+      // Redireciona para a página do arquivo ao clicar na pasta
+      document.querySelectorAll(".folder-wrapper").forEach((wrapper) => {
+        const folder = wrapper.querySelector(".folder");
+
+        if (folder && folder.hasAttribute("data-lista-id")) {
+          wrapper.style.cursor = "pointer";
+
+          wrapper.addEventListener("click", (e) => {
+            // Ignora o clique se for no botão de adicionar
+            if (e.target.closest(".btn-add-folder")) {
+              return;
+            }
+
+            const listaId = folder.getAttribute("data-lista-id");
+            if (listaId) {
+              window.location.href = `/arquivos/arquivo/${listaId}`;
+            }
+          });
+        }
+      });
+
+      // Seleciona os elementos do modal
+      const btnAdicionar = document.querySelector(".btn-add-folder");
+      const modal = document.getElementById("modal-nova-pasta");
+      const btnFechar = document.querySelector(".btn-close");
+      const btnCriar = document.querySelector(".btn-create");
+
+      // Abre o modal ao clicar no botão "+"
+      btnAdicionar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        modal.classList.add("active");
+      });
+
+      // Função para fechar o modal
+      function fecharModal() {
+        modal.classList.remove("active");
+        document.getElementById("nomePasta").value = "";
+        document.getElementById("descPasta").value = "";
+        // Remove seleção de cores
+        document
+          .querySelectorAll(".color-circle")
+          .forEach((c) => c.classList.remove("selected"));
+      }
+
+      // Fecha ao clicar no X
+      if (btnFechar) {
+        btnFechar.addEventListener("click", fecharModal);
+      }
+
+      // Fecha se clicar fora da caixinha (no fundo escuro)
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          fecharModal();
+        }
+      });
+
+      // Lógica para selecionar a cor (Visualmente)
+      const cores = document.querySelectorAll(".color-circle");
+
+      cores.forEach((cor) => {
+        cor.addEventListener("click", () => {
+          // Remove a classe 'selected' de todas
+          cores.forEach((c) => c.classList.remove("selected"));
+
+          // Adiciona a classe 'selected' apenas na clicada
+          cor.classList.add("selected");
         });
+      });
 
-        // Seleciona os elementos
-        const btnAdicionar = document.querySelector('.btn-add-folder');
-        const modal = document.getElementById('modal-nova-pasta');
+      // apenas helpers de toast (mantidos para feedback)
+      function showToast(message, type = "success", duration = 3000) {
+        const container = document.getElementById("toast");
+        if (!container) return;
+        const el = document.createElement("div");
+        el.className = `toast-message toast-${type}`;
+        el.textContent = message;
+        container.appendChild(el);
+        requestAnimationFrame(() => el.classList.add("toast-show"));
+        setTimeout(() => {
+          el.classList.remove("toast-show");
+          el.addEventListener("transitionend", () => el.remove(), {
+            once: true,
+          });
+        }, duration);
+      }
 
-        // Abre o modal ao clicar no botão "+"
-        btnAdicionar.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
+      // Enviar formulário de criação de pasta
+      btnCriar.addEventListener("click", async () => {
+        const nome = document.getElementById("nomePasta").value.trim();
+        const descricao = document.getElementById("descPasta").value.trim();
+        const corSelecionada = document.querySelector(".color-circle.selected");
 
-        // Função para fechar o modal
-        function fecharModal() {
-            modal.classList.remove('active');
+        if (!nome) {
+          showToast("Digite um nome para o arquivo.", "error");
+          return;
         }
 
-        // Fecha se clicar fora da caixinha (no fundo escuro)
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                fecharModal();
-            }
-        });
+        let cor = "#6366f1";
+        if (corSelecionada) {
+          cor =
+            corSelecionada.style.background ||
+            corSelecionada.style.backgroundColor;
+        }
 
-        // Lógica para selecionar a cor (Visualmente)
-        const cores = document.querySelectorAll('.color-circle');
+        try {
+          const response = await fetch("/arquivos/criar-pasta", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nome: nome,
+              descricao: descricao,
+              cor: cor,
+            }),
+          });
 
-        cores.forEach(cor => {
-            cor.addEventListener('click', () => {
-                // 1. Remove a classe 'selected' de todas
-                cores.forEach(c => c.classList.remove('selected'));
+          const data = await response.json();
 
-                // 2. Adiciona a classe 'selected' apenas na clicada
-                cor.classList.add('selected');
-            });
-        });
+          if (data.success) {
+            showToast("Arquivo criado com sucesso!", "success");
+            fecharModal();
+            window.location.reload();
+          } else {
+            showToast(
+              "Erro ao criar arquivo: " + (data.message || "tente novamente"),
+              "error",
+            );
+          }
+        } catch (error) {
+          console.error("Erro:", error);
+          showToast("Erro ao criar arquivo. Tente novamente.", "error");
+        }
+      });
     </script>
-</body>
-
+  </body>
 </html>
