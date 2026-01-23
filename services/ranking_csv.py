@@ -12,7 +12,7 @@ def gerar_ranking_comunidade():
         # 1. Buscar todos os itens salvos no Supabase
         response = supabase.table('itens_lista').select('*').execute()
         itens = response.data
-        
+        print("Itens retornados:", itens)
         # 2. Contar ocorrências por tipo e api_id
         contadores = {
             'filme': {},
@@ -21,19 +21,21 @@ def gerar_ranking_comunidade():
         }
         
         for item in itens:
-            tipo = item.get('tipo')
-            api_id = item.get('api_id')
-            titulo = item.get('titulo')
-            poster_url = item.get('poster_url')
-            
-            if tipo in contadores:
+            tipo = (item.get("tipo") or "").strip().lower() 
+            api_id = item.get("api_id")
+            titulo = item.get("titulo")
+            poster_url = item.get("poster_url")
+            print(f"DEBUG: tipo={repr(tipo)}, api_id={api_id}")
+            if tipo in contadores and api_id:
                 if api_id not in contadores[tipo]:
                     contadores[tipo][api_id] = {
-                        'titulo': titulo,
-                        'poster_url': poster_url,
-                        'contagem': 0
+                        "contagem": 0,
+                        "titulo": titulo,
+                        "poster_url": poster_url,
                     }
-                contadores[tipo][api_id]['contagem'] += 1
+                contadores[tipo][api_id]["contagem"] += 1
+        
+        print("Contadores:", contadores)
         
         # 3. Pegar Top 3 de cada categoria
         top_filmes = sorted(contadores['filme'].items(), 
