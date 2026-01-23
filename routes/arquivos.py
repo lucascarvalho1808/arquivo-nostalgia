@@ -6,7 +6,8 @@ from services.listas import (
     criar_lista,
     atualizar_lista,
     deletar_lista,
-    CORES_DISPONIVEIS
+    CORES_DISPONIVEIS,
+    remover_item_lista
 )
 from services.ranking_csv import ler_ranking_comunidade
 from services.estatisticas_usuario import calcular_estatisticas_usuario
@@ -203,3 +204,17 @@ def minhas_pastas_json():
             "success": False,
             "listas": []
         }), 500
+
+
+@arquivos_bp.route('/remover-item/<item_id>', methods=['DELETE'])
+@login_required
+def remover_item(item_id):
+    try:
+        sucesso = remover_item_lista(item_id, current_user.id)
+        if sucesso:
+            return jsonify(success=True)
+        else:
+            return jsonify(success=False, message="Item não encontrado ou não pode ser removido."), 404
+    except Exception as e:
+        print("Erro ao remover item:", e)
+        return jsonify(success=False, message="Erro interno ao remover item."), 500

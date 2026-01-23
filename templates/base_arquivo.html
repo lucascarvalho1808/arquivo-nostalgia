@@ -106,8 +106,16 @@
         {% if itens %} {% for item in itens %}
         <div class="card-item">
           <a
-            href="{{ url_for('detalhes.detalhes_item', tipo=item.tipo, item_id=item.api_id) }}"
-            class="link-item"
+            {% if item.tipo == 'filme' %}
+              href="{{ url_for('detalhes.filme', filme_id=item.api_id) }}"
+              class="link-item"
+            {% elif item.tipo == 'serie' %}
+              href="{{ url_for('detalhes.serie', serie_id=item.api_id) }}"
+              class="link-item"
+            {% elif item.tipo == 'jogo' %}
+              href="{{ url_for('detalhes.jogo', jogo_id=item.api_id) }}"
+              class="link-item"
+            {% endif %}
           >
             <div class="poster-container">
               <img
@@ -207,6 +215,24 @@
       </div>
     </div>
 
+    <!-- Modal para remover item da lista -->
+    <div id="modal-delete-item" class="modal-overlay" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-delete-item-title">
+        <button class="modal-close" aria-label="Fechar" title="Fechar">&times;</button>
+        <div class="modal-top">
+          <div class="modal-icon"><i class="fa-solid fa-trash"></i></div>
+          <h3 id="modal-delete-item-title">Remover conteúdo</h3>
+        </div>
+        <p id="modal-delete-item-text" class="modal-desc">
+          Deseja remover este conteúdo da lista? Esta ação não pode ser desfeita.
+        </p>
+        <div class="modal-actions">
+          <button id="modal-delete-item-cancel" class="btn btn-outline">Cancelar</button>
+          <button id="modal-delete-item-confirm" class="btn btn-danger">Remover</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       (function () {
         const btnDelete = document.getElementById("btn-delete-lista");
@@ -269,6 +295,81 @@
           }
         });
       })();
+    </script>
+    <script>
+      (function () {
+        let itemIdToDelete = null;
+        const modalItem = document.getElementById("modal-delete-item");
+        const txtItem = document.getElementById("modal-delete-item-text");
+        const btnCancelItem = document.getElementById("modal-delete-item-cancel");
+        const btnConfirmItem = document.getElementById("modal-delete-item-confirm");
+        const btnCloseItem = document.querySelector("#modal-delete-item .modal-close");
+
+        // Abrir modal ao clicar no botão de remover
+        document.querySelectorAll('.btn-remover-item').forEach(btn => {
+          btn.addEventListener('click', function () {
+            // ... (definir itemIdToDelete, texto, etc)
+            document.getElementById("modal-delete-item").setAttribute("aria-hidden", "false");
+          });
+        });
+
+        function closeModalItem() {
+          modalItem.setAttribute("aria-hidden", "true");
+          itemIdToDelete = null;
+        }
+
+        btnCancelItem.addEventListener("click", closeModalItem);
+        if (btnCloseItem) btnCloseItem.addEventListener("click", closeModalItem);
+
+        modalItem.addEventListener("click", (ev) => {
+          if (ev.target === modalItem) closeModalItem();
+        });
+        document.addEventListener("keydown", (ev) => {
+          if (ev.key === "Escape") closeModalItem();
+        });
+
+        btnConfirmItem.addEventListener("click", async () => {
+          if (!itemIdToDelete) return;
+          try {
+            const resp = await fetch(`/arquivos/remover-item/${itemIdToDelete}`, {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await resp.json();
+            if (resp.ok && data.success) {
+              // Remove o card do DOM
+              const card = document.querySelector(`.btn-remover-item[data-item-id="${itemIdToDelete}"]`).closest('.card-item');
+              if (card) card.remove();
+              mostrarToast("Conteúdo removido com sucesso!", "error");
+            } else {
+              mostrarToast('Erro ao remover conteúdo: ' + (data.message || 'tente novamente'), "error");
+            }
+          } catch (err) {
+            mostrarToast('Erro ao remover conteúdo. Tente novamente.', "error");
+          }
+          closeModalItem();
+        });
+      })();
+    </script>
+    <script>
+      function mostrarToast(mensagem, tipo = "success") {
+        // tipo: "success", "error", "warning"
+        const cor = tipo === "success" ? "#22c55e" : tipo === "error" ? "#ef4444" : "#f59e42";
+        const toast = document.createElement("div");
+        toast.textContent = mensagem;
+        toast.style.position = "fixed";
+        toast.style.bottom = "32px";
+        toast.style.right = "32px";
+        toast.style.background = cor;
+        toast.style.color = "#fff";
+        toast.style.padding = "14px 28px";
+        toast.style.borderRadius = "12px";
+        toast.style.fontWeight = "bold";
+        toast.style.boxShadow = "0 4px 16px rgba(0,0,0,0.18)";
+        toast.style.zIndex = "9999";
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3200);
+      }
     </script>
   </body>
 </html>

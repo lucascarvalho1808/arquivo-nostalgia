@@ -103,7 +103,7 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
         return None
 
 
-def remover_item_lista(item_id):
+def remover_item_lista(item_id, usuario_id):
     """
     Remove um item de uma lista.
     
