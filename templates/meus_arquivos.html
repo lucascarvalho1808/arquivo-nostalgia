@@ -17,11 +17,13 @@
   <body>
     <header class="cabecalho-principal">
       <div class="logo-container">
-        <img
-          src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
-          alt="Logo"
-          class="logo-pequena"
-        />
+        <a href="{{ url_for('main.index') }}">
+          <img
+        src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+        alt="Logo"
+        class="logo-pequena"
+          />
+        </a>
         <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
       </div>
 
