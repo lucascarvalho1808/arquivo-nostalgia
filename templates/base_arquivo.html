@@ -55,10 +55,6 @@
           <i class="fa-solid fa-circle-user"></i>
           <span>Perfil</span>
         </a>
-        <a href="{{ url_for('auth.logout') }}" class="item-menu">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Sair</span>
-        </a>
         {% else %}
         <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
         <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
@@ -106,13 +102,13 @@
         {% if itens %} {% for item in itens %}
         <div class="card-item">
           <a
-            {% if item.tipo == 'filme' %}
+            {% if item.tipo == "filme" %}
               href="{{ url_for('detalhes.filme', filme_id=item.api_id) }}"
               class="link-item"
-            {% elif item.tipo == 'serie' %}
+            {% elif item.tipo == "serie" %}
               href="{{ url_for('detalhes.serie', serie_id=item.api_id) }}"
               class="link-item"
-            {% elif item.tipo == 'jogo' %}
+            {% elif item.tipo == "jogo" %}
               href="{{ url_for('detalhes.jogo', jogo_id=item.api_id) }}"
               class="link-item"
             {% endif %}
@@ -186,49 +182,62 @@
       </p>
     </footer>
 
-    <!-- Confirm delete modal (local para esta página) -->
     <div id="modal-delete-lista" class="modal-overlay" aria-hidden="true">
-      <div
-        class="modal-card"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-delete-title"
-      >
-        <button class="modal-close" aria-label="Fechar" title="Fechar">
-          &times;
-        </button>
-        <div class="modal-top">
-          <div class="modal-icon"><i class="fa-solid fa-trash-can"></i></div>
-          <h3 id="modal-delete-title">Deletar arquivo</h3>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-delete-title">DELETAR ARQUIVO</h3>
+          <span class="btn-close modal-close">&times;</span>
         </div>
-        <p id="modal-delete-text" class="modal-desc">
-          Deseja deletar este arquivo? Esta ação não pode ser desfeita.
-        </p>
-        <div class="modal-actions">
-          <button id="modal-delete-cancel" class="btn btn-outline">
+
+        <div class="modal-body">
+          <p
+            id="modal-delete-text"
+            style="font-size: 1.1rem; color: #e2e8f0; margin-top: 10px"
+          >
+            Deseja deletar este arquivo? Esta ação não pode ser desfeita.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button id="modal-delete-cancel" class="btn-pill btn-pill-cancel">
             Cancelar
           </button>
-          <button id="modal-delete-confirm" class="btn btn-danger">
+          <button id="modal-delete-confirm" class="btn-pill btn-pill-danger">
             Deletar
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Modal para remover item da lista -->
     <div id="modal-delete-item" class="modal-overlay" aria-hidden="true">
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-delete-item-title">
-        <button class="modal-close" aria-label="Fechar" title="Fechar">&times;</button>
-        <div class="modal-top">
-          <div class="modal-icon"><i class="fa-solid fa-trash"></i></div>
-          <h3 id="modal-delete-item-title">Remover conteúdo</h3>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-delete-item-title">REMOVER CONTEÚDO</h3>
+          <span class="btn-close modal-close">&times;</span>
         </div>
-        <p id="modal-delete-item-text" class="modal-desc">
-          Deseja remover este conteúdo da lista? Esta ação não pode ser desfeita.
-        </p>
-        <div class="modal-actions">
-          <button id="modal-delete-item-cancel" class="btn btn-outline">Cancelar</button>
-          <button id="modal-delete-item-confirm" class="btn btn-danger">Remover</button>
+
+        <div class="modal-body">
+          <p
+            id="modal-delete-item-text"
+            style="font-size: 1.1rem; color: #e2e8f0; margin-top: 10px"
+          >
+            Deseja remover este conteúdo da lista?
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            id="modal-delete-item-cancel"
+            class="btn-pill btn-pill-cancel"
+          >
+            Cancelar
+          </button>
+          <button
+            id="modal-delete-item-confirm"
+            class="btn-pill btn-pill-danger"
+          >
+            Remover
+          </button>
         </div>
       </div>
     </div>
@@ -246,7 +255,6 @@
 
         function openModal() {
           modal.setAttribute("aria-hidden", "false");
-          // trap focus on confirm button
           btnConfirm.focus();
         }
         function closeModal() {
@@ -265,7 +273,6 @@
         btnCancel.addEventListener("click", closeModal);
         if (btnClose) btnClose.addEventListener("click", closeModal);
 
-        // close on ESC or click outside
         modal.addEventListener("click", (ev) => {
           if (ev.target === modal) closeModal();
         });
@@ -281,17 +288,28 @@
               headers: { "Content-Type": "application/json" },
             });
             const data = await resp.json();
+
             if (resp.ok && data.success) {
-              window.location.href = "{{ url_for('arquivos.meus_arquivos') }}";
-            } else {
-              // fallback: mostrar mensagem simples
               closeModal();
-              alert("Erro ao deletar: " + (data.message || "tente novamente"));
+              // 1. Mostra a mensagem
+              mostrarToast("Arquivo deletado com sucesso!", "success");
+
+              // 2. Espera 1,5 segundos para o usuário ler, depois redireciona
+              setTimeout(() => {
+                window.location.href =
+                  "{{ url_for('arquivos.meus_arquivos') }}";
+              }, 1500);
+            } else {
+              closeModal();
+              mostrarToast(
+                "Erro ao deletar: " + (data.message || "tente novamente"),
+                "error",
+              );
             }
           } catch (err) {
             console.error(err);
             closeModal();
-            alert("Erro ao deletar. Tente novamente.");
+            mostrarToast("Erro ao deletar. Tente novamente.", "error");
           }
         });
       })();
@@ -300,16 +318,27 @@
       (function () {
         let itemIdToDelete = null;
         const modalItem = document.getElementById("modal-delete-item");
-        const txtItem = document.getElementById("modal-delete-item-text");
-        const btnCancelItem = document.getElementById("modal-delete-item-cancel");
-        const btnConfirmItem = document.getElementById("modal-delete-item-confirm");
-        const btnCloseItem = document.querySelector("#modal-delete-item .modal-close");
+        const btnCancelItem = document.getElementById(
+          "modal-delete-item-cancel",
+        );
+        const btnConfirmItem = document.getElementById(
+          "modal-delete-item-confirm",
+        );
+        const btnCloseItem = document.querySelector(
+          "#modal-delete-item .modal-close",
+        );
 
-        // Abrir modal ao clicar no botão de remover
-        document.querySelectorAll('.btn-remover-item').forEach(btn => {
-          btn.addEventListener('click', function () {
-            // ... (definir itemIdToDelete, texto, etc)
-            document.getElementById("modal-delete-item").setAttribute("aria-hidden", "false");
+        // Abre o modal ao clicar no botão de remover
+        document.querySelectorAll(".btn-remover-item").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Captura o ID que está no HTML do botão e salva na variável
+            itemIdToDelete = this.getAttribute("data-item-id");
+
+            document
+              .getElementById("modal-delete-item")
+              .setAttribute("aria-hidden", "false");
           });
         });
 
@@ -319,7 +348,8 @@
         }
 
         btnCancelItem.addEventListener("click", closeModalItem);
-        if (btnCloseItem) btnCloseItem.addEventListener("click", closeModalItem);
+        if (btnCloseItem)
+          btnCloseItem.addEventListener("click", closeModalItem);
 
         modalItem.addEventListener("click", (ev) => {
           if (ev.target === modalItem) closeModalItem();
@@ -330,22 +360,41 @@
 
         btnConfirmItem.addEventListener("click", async () => {
           if (!itemIdToDelete) return;
+
           try {
-            const resp = await fetch(`/arquivos/remover-item/${itemIdToDelete}`, {
-              method: 'DELETE',
-              headers: { 'Content-Type': 'application/json' }
-            });
+            const resp = await fetch(
+              `/arquivos/remover-item/${itemIdToDelete}`,
+              {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+              },
+            );
             const data = await resp.json();
+
             if (resp.ok && data.success) {
-              // Remove o card do DOM
-              const card = document.querySelector(`.btn-remover-item[data-item-id="${itemIdToDelete}"]`).closest('.card-item');
-              if (card) card.remove();
-              mostrarToast("Conteúdo removido com sucesso!", "error");
+              // Remove o card da tela visualmente
+              const btnRemovido = document.querySelector(
+                `.btn-remover-item[data-item-id="${itemIdToDelete}"]`,
+              );
+              if (btnRemovido) {
+                const card = btnRemovido.closest(".card-item");
+                if (card) {
+                  card.style.transition = "transform 0.3s, opacity 0.3s";
+                  card.style.transform = "scale(0)";
+                  card.style.opacity = "0";
+                  setTimeout(() => card.remove(), 300);
+                }
+              }
+              mostrarToast("Conteúdo removido com sucesso!", "success");
             } else {
-              mostrarToast('Erro ao remover conteúdo: ' + (data.message || 'tente novamente'), "error");
+              mostrarToast(
+                "Erro ao remover conteúdo: " +
+                  (data.message || "tente novamente"),
+                "error",
+              );
             }
           } catch (err) {
-            mostrarToast('Erro ao remover conteúdo. Tente novamente.', "error");
+            mostrarToast("Erro ao remover conteúdo. Tente novamente.", "error");
           }
           closeModalItem();
         });
@@ -353,22 +402,38 @@
     </script>
     <script>
       function mostrarToast(mensagem, tipo = "success") {
-        // tipo: "success", "error", "warning"
-        const cor = tipo === "success" ? "#22c55e" : tipo === "error" ? "#ef4444" : "#f59e42";
+        // Cores baseadas no tipo
+        const cor =
+          tipo === "success"
+            ? "#22c55e"
+            : tipo === "error"
+              ? "#ef4444"
+              : "#f59e42";
+
         const toast = document.createElement("div");
         toast.textContent = mensagem;
         toast.style.position = "fixed";
         toast.style.bottom = "32px";
-        toast.style.right = "32px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
         toast.style.background = cor;
         toast.style.color = "#fff";
         toast.style.padding = "14px 28px";
-        toast.style.borderRadius = "12px";
+        toast.style.borderRadius = "50px"; 
         toast.style.fontWeight = "bold";
-        toast.style.boxShadow = "0 4px 16px rgba(0,0,0,0.18)";
+        toast.style.boxShadow = "0 4px 16px rgba(0,0,0,0.3)";
         toast.style.zIndex = "9999";
+        toast.style.textAlign = "center"; 
+        toast.style.minWidth = "300px"; 
+
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3200);
+
+        // Remove após 3.2 segundos
+        setTimeout(() => {
+          toast.style.transition = "opacity 0.5s ease";
+          toast.style.opacity = "0";
+          setTimeout(() => toast.remove(), 500);
+        }, 3200);
       }
     </script>
   </body>

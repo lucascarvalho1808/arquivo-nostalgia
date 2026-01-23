@@ -1,6 +1,4 @@
-/* =========================================
-           1. RESET E VARIÁVEIS GERAIS
-   ========================================= */
+/* Variáveis Gerais */
 
 :root {
   --bg-body: #417eaa;
@@ -630,116 +628,143 @@ body {
   display: flex;
 }
 
+/* Modal de deletar */
 .modal-overlay {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 4000; 
   justify-content: center;
-  z-index: 9999;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.modal-overlay[aria-hidden="true"] {
-  display: none !important;
+/* Quando estiver ativo */
+.modal-overlay[aria-hidden="false"] {
+  display: flex !important;
+  opacity: 1;
 }
 
-/* card */
-.modal-card {
-  background: #164f75;
-  border-radius: 18px;
-  padding: 32px 28px;
-  min-width: 320px;
+/* A Caixa do Modal */
+.modal-content {
+  background-color: #164f75;
+  width: 500px;
   max-width: 90vw;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  color: #fff;
-  position: relative;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: "Segoe UI", sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease;
 }
 
-.modal-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+.modal-overlay[aria-hidden="false"] .modal-content {
+  transform: translateY(0);
 }
-.modal-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 10px;
+
+/* Header com linha embaixo */
+.modal-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 20px;
-  color: #ffdddd;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
 }
-.modal-top h3 {
+
+.modal-header h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
-  color: #fff;
-}
-.modal-desc {
-  margin: 0 0 18px 0;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.35;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
 }
 
-.modal-card .modal-actions {
+/* Botão X de fechar */
+.btn-close {
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+  line-height: 1;
+  background: none;
+  border: none;
+  padding: 0 10px;
+}
+.btn-close:hover {
+  color: #ccc;
+}
+
+/* Corpo do modal */
+.modal-body {
+  margin-bottom: 30px;
+}
+
+/* Footer com os botões alinhados à direita */
+.modal-footer {
   display: flex;
-  gap: 10px;
   justify-content: flex-end;
-}
-.modal-card .btn {
-  cursor: pointer;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-weight: 600;
-}
-.modal-card .btn-outline {
-  background: transparent;
-  color: #dde3ea;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-.modal-card .btn-danger {
-  background: linear-gradient(90deg, #ef4444, #dc2626);
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.12);
+  gap: 15px;
 }
 
-.modal-close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
+.btn-pill {
   border: none;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 20px;
+  padding: 10px 35px;
+  border-radius: 50px; 
   cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-}
-.modal-close:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.02);
+  font-weight: bold;
+  font-size: 16px;
+  transition: transform 0.2s, filter 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* responsividade */
-@media (max-width: 480px) {
-  .modal-card {
-    padding: 14px;
+.btn-pill:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Botão Cancelar */
+.btn-pill-cancel {
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #e2e8f0;
+}
+.btn-pill-cancel:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  color: white;
+}
+
+/* Botão Deletar (Vermelho) */
+.btn-pill-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%;
+    padding: 20px;
   }
-  .modal-icon {
-    width: 40px;
-    height: 40px;
+  .modal-header h3 {
+    font-size: 18px;
+  }
+  .modal-footer {
+    flex-direction: column-reverse; 
+  }
+  .btn-pill {
+    width: 100%;
   }
 }

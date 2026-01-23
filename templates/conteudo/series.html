@@ -63,10 +63,6 @@
           <i class="fa-solid fa-circle-user"></i>
           <span>Perfil</span>
         </a>
-        <a href="{{ url_for('auth.logout') }}" class="item-menu">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Sair</span>
-        </a>
         {% else %}
         <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
         <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
