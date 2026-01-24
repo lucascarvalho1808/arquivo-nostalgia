@@ -609,6 +609,15 @@ textarea.input-pill.area-texto {
   transform: translateY(0);
 }
 
+/* --- Hover + Click --- */
+.info-wrapper:hover .info-tooltip,
+.info-wrapper.ativo .info-tooltip { 
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
 /* --- TÍTULOS DOS RANKINGS --- */
 .ranking-header-group {
   display: flex;
