@@ -1,4 +1,3 @@
-import csv
 import os
 from datetime import datetime
 from routes.extensions import supabase
@@ -6,26 +5,26 @@ from routes.extensions import supabase
 def gerar_ranking_comunidade():
     """
     Gera o ranking dos itens mais salvos pela comunidade
-    e persiste em CSV usando Python
+    e persiste em CSV 
     """
     try:
-        # 1. Buscar todos os itens salvos no Supabase
+        # Consulta todos os itens salvos pela comunidade no banco de dados
         response = supabase.table('itens_lista').select('*').execute()
         itens = response.data
-        print("Itens retornados:", itens)
-        # 2. Contar ocorrências por tipo e api_id
+
+        # Inicializa contadores para cada tipo de item
         contadores = {
             'filme': {},
             'serie': {},
             'jogo': {}
         }
         
+        # Conta quantas vezes cada item foi salvo, agrupando por tipo e api_id
         for item in itens:
             tipo = (item.get("tipo") or "").strip().lower() 
             api_id = item.get("api_id")
             titulo = item.get("titulo")
             poster_url = item.get("poster_url")
-            print(f"DEBUG: tipo={repr(tipo)}, api_id={api_id}")
             if tipo in contadores and api_id:
                 if api_id not in contadores[tipo]:
                     contadores[tipo][api_id] = {
@@ -35,65 +34,32 @@ def gerar_ranking_comunidade():
                     }
                 contadores[tipo][api_id]["contagem"] += 1
         
-        print("Contadores:", contadores)
+        # Seleciona os 3 itens mais populares de cada tipo
+        top_filmes = sorted(contadores['filme'].items(), key=lambda x: x[1]['contagem'], reverse=True)[:3]
+        top_series = sorted(contadores['serie'].items(), key=lambda x: x[1]['contagem'], reverse=True)[:3]
+        top_jogos = sorted(contadores['jogo'].items(), key=lambda x: x[1]['contagem'], reverse=True)[:3]
         
-        # 3. Pegar Top 3 de cada categoria
-        top_filmes = sorted(contadores['filme'].items(), 
-                           key=lambda x: x[1]['contagem'], 
-                           reverse=True)[:3]
-        top_series = sorted(contadores['serie'].items(), 
-                           key=lambda x: x[1]['contagem'], 
-                           reverse=True)[:3]
-        top_jogos = sorted(contadores['jogo'].items(), 
-                          key=lambda x: x[1]['contagem'], 
-                          reverse=True)[:3]
-        
-        # 4. Criar diretório data se não existir
         os.makedirs('data', exist_ok=True)
-        
-        # 5. Escrever no CSV usando Python puro (módulo csv nativo)
         caminho_csv = 'data/ranking_comunidade.csv'
         
-        with open(caminho_csv, 'w', newline='', encoding='utf-8') as arquivo:
-            escritor = csv.writer(arquivo)
-            
-            # Cabeçalho
-            escritor.writerow(['tipo', 'posicao', 'api_id', 'titulo', 'poster_url', 'contagem'])
-            
-            # Filmes
+        # Escreve o arquivo CSV manualmente
+        with open(caminho_csv, 'w', encoding='utf-8') as arquivo:
+            # Cabeçalho do CSV
+            arquivo.write('tipo,posicao,api_id,titulo,poster_url,contagem\n')
+            # Escreve os filmes
             for idx, (api_id, dados) in enumerate(top_filmes, 1):
-                escritor.writerow([
-                    'filme',
-                    idx,
-                    api_id,
-                    dados['titulo'],
-                    dados['poster_url'],
-                    dados['contagem']
-                ])
-            
-            # Séries
+                linha = f'filme,{idx},{api_id},"{dados["titulo"]}","{dados["poster_url"]}",{dados["contagem"]}\n'
+                arquivo.write(linha)
+            # Escreve as séries
             for idx, (api_id, dados) in enumerate(top_series, 1):
-                escritor.writerow([
-                    'serie',
-                    idx,
-                    api_id,
-                    dados['titulo'],
-                    dados['poster_url'],
-                    dados['contagem']
-                ])
-            
-            # Jogos
+                linha = f'serie,{idx},{api_id},"{dados["titulo"]}","{dados["poster_url"]}",{dados["contagem"]}\n'
+                arquivo.write(linha)
+            # Escreve os jogos
             for idx, (api_id, dados) in enumerate(top_jogos, 1):
-                escritor.writerow([
-                    'jogo',
-                    idx,
-                    api_id,
-                    dados['titulo'],
-                    dados['poster_url'],
-                    dados['contagem']
-                ])
+                linha = f'jogo,{idx},{api_id},"{dados["titulo"]}","{dados["poster_url"]}",{dados["contagem"]}\n'
+                arquivo.write(linha)
         
-        # 6. Registrar última atualização
+        # Salva a data/hora da última atualização do ranking
         with open('data/ultima_atualizacao.txt', 'w', encoding='utf-8') as f:
             f.write(datetime.now().strftime('%d/%m/%Y %H:%M:%S'))
         
@@ -108,15 +74,16 @@ def gerar_ranking_comunidade():
 def ler_ranking_comunidade():
     """
     Lê o ranking do CSV e retorna os dados estruturados.
-    Usa módulo csv nativo.
     """
     try:
         caminho_csv = 'data/ranking_comunidade.csv'
         
+        # Se o arquivo não existir, gera o ranking antes de ler
         if not os.path.exists(caminho_csv):
             print("Arquivo CSV não encontrado. O arquivo será gerado.")
             gerar_ranking_comunidade()
         
+        # Estrutura para armazenar o ranking lido
         ranking = {
             'filmes': [],
             'series': [],
@@ -124,27 +91,42 @@ def ler_ranking_comunidade():
             'ultima_atualizacao': None
         }
         
-        # Ler CSV com Python 
+        # Lê o arquivo CSV linha a linha, ignorando o cabeçalho
         with open(caminho_csv, 'r', encoding='utf-8') as arquivo:
-            leitor = csv.DictReader(arquivo)
-            
-            for linha in leitor:
+            linhas = arquivo.readlines()
+            for linha in linhas[1:]:  # pula o cabeçalho
+                # Divide a linha, tratando aspas
+                partes = []
+                atual = ''
+                em_aspas = False
+                for c in linha.strip():
+                    if c == '"':
+                        em_aspas = not em_aspas
+                    elif c == ',' and not em_aspas:
+                        partes.append(atual)
+                        atual = ''
+                    else:
+                        atual += c
+                partes.append(atual)
+                if len(partes) < 6:
+                    continue
+                tipo, posicao, api_id, titulo, poster_url, contagem = partes
                 item = {
-                    'posicao': int(linha['posicao']),
-                    'api_id': linha['api_id'],
-                    'titulo': linha['titulo'],
-                    'poster_url': linha['poster_url'],
-                    'contagem': int(linha['contagem'])
+                    'posicao': int(posicao),
+                    'api_id': api_id,
+                    'titulo': titulo,
+                    'poster_url': poster_url,
+                    'contagem': int(contagem)
                 }
-                
-                if linha['tipo'] == 'filme':
+                # Adiciona o item ao tipo correspondente
+                if tipo == 'filme':
                     ranking['filmes'].append(item)
-                elif linha['tipo'] == 'serie':
+                elif tipo == 'serie':
                     ranking['series'].append(item)
-                elif linha['tipo'] == 'jogo':
+                elif tipo == 'jogo':
                     ranking['jogos'].append(item)
         
-        # Ler última atualização
+        # Lê a data/hora da última atualização, se disponível
         try:
             with open('data/ultima_atualizacao.txt', 'r', encoding='utf-8') as f:
                 ranking['ultima_atualizacao'] = f.read().strip()
