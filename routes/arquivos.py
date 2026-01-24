@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for, current_app
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for, current_app, session
 from flask_login import login_required, current_user
 from services.listas import (
     obter_listas_usuario,
@@ -12,7 +12,9 @@ from services.listas import (
 from services.ranking_csv import ler_ranking_comunidade
 from services.estatisticas_usuario import calcular_estatisticas_usuario
 import re
+from datetime import datetime
 
+# Blueprint para rotas relacionadas a arquivos/listas do usuário
 arquivos_bp = Blueprint('arquivos', __name__, url_prefix='/arquivos')
 
 
@@ -23,8 +25,12 @@ def meus_arquivos():
     """
     Página principal com todas as listas (pastas) do usuário.
     Inclui o ranking da comunidade lido do CSV e estatísticas pessoais.
+    Salva a data/hora do último acesso na sessão.
     """
     try:
+        # Salva a data/hora do último acesso na sessão
+        session['ultimo_acesso'] = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+
         # Busca todas as listas do usuário logado
         listas = obter_listas_usuario(current_user.id)
         
@@ -39,16 +45,19 @@ def meus_arquivos():
             listas=listas,
             ranking=ranking,
             estatisticas=estatisticas,
-            cores_disponiveis=CORES_DISPONIVEIS
+            cores_disponiveis=CORES_DISPONIVEIS,
+            ultimo_acesso=session.get('ultimo_acesso')  
         )
     except Exception as e:
         print(f"Erro ao carregar meus arquivos: {e}")
+        # Em caso de erro, retorna a página com dados vazios
         return render_template(
             'meus_arquivos.html', 
             listas=[],
             ranking={'filmes': [], 'series': [], 'jogos': []},
             estatisticas={'total': 0, 'filmes': {'quantidade': 0, 'porcentagem': 0}, 'series': {'quantidade': 0, 'porcentagem': 0}, 'jogos': {'quantidade': 0, 'porcentagem': 0}},
-            cores_disponiveis=CORES_DISPONIVEIS
+            cores_disponiveis=CORES_DISPONIVEIS,
+            ultimo_acesso=session.get('ultimo_acesso')
         )
 
 
@@ -77,7 +86,7 @@ def criar_pasta():
         descricao = data.get('descricao', '').strip()
         cor = data.get('cor', '#6366f1')
         
-        # converte rgb(...) para hex se necessário
+        # Converte cor de rgb(...) para hexadecimal, se necessário
         if isinstance(cor, str) and cor.startswith("rgb"):
             hexc = rgb_to_hex(cor)
             if hexc:
@@ -87,7 +96,7 @@ def criar_pasta():
         print(f"🔍 Descrição: {descricao}")
         print(f"🔍 Cor: {cor}")
         
-        # Validações
+        # Validações de entrada
         if not nome:
             print("❌ Nome vazio!")
             return jsonify({'success': False, 'message': 'Nome da pasta é obrigatório'}), 400
@@ -100,7 +109,7 @@ def criar_pasta():
             print(f"⚠️ Cor inválida: {cor}, usando padrão")
             cor = '#6366f1'
         
-        # Criar a lista no Supabase
+        # Cria a lista no Supabase
         print(f"🔍 Chamando criar_lista...")
         nova_lista = criar_lista(
             usuario_id=current_user.id,
@@ -134,9 +143,10 @@ def criar_pasta():
 def visualizar_arquivo(lista_id):
     """
     Página de visualização de um arquivo específico (dentro da pasta).
+    Só permite acesso ao dono da lista.
     """
     try:
-        # Busca a lista específica
+        # Busca a lista específica pelo ID
         lista = obter_lista_por_id(lista_id)
         
         if not lista:
@@ -171,7 +181,7 @@ def deletar_pasta(lista_id):
         if not lista:
             return jsonify({'success': False, 'message': 'Lista não encontrada'}), 404
 
-        # checar propriedade (coluna no DB é user_id)
+        # Checa se a lista pertence ao usuário autenticado
         if lista.get('user_id') and str(lista.get('user_id')) != str(current_user.id):
             return jsonify({'success': False, 'message': 'Acesso negado'}), 403
 
@@ -209,6 +219,9 @@ def minhas_pastas_json():
 @arquivos_bp.route('/remover-item/<item_id>', methods=['DELETE'])
 @login_required
 def remover_item(item_id):
+    """
+    Remove um item de uma lista do usuário autenticado.
+    """
     try:
         sucesso = remover_item_lista(item_id, current_user.id)
         if sucesso:
