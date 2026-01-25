@@ -1,14 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Seletores dos botões de filtro, posters e ícone de busca
     const btnsFiltro = document.querySelectorAll('.btn-filtro');
     const posters = document.querySelectorAll('.item-poster');
     const iconeBusca = document.querySelector('.icone-busca');
     
-    // Cursor pointer no ícone de busca
+    // Define cursor pointer no ícone de busca para indicar interatividade
     if (iconeBusca) {
         iconeBusca.style.cursor = 'pointer';
     }
     
-    // Event listeners de clique nos posters
+    /*
+     * Adiciona event listeners de clique nos posters da página de resultados.
+     Ao clicar, redireciona para a página de detalhes do item (filme, série ou jogo).
+     */
     function adicionarEventListenersResultados() {
         document.querySelectorAll('.item-poster').forEach(item => {
             item.style.cursor = 'pointer';
@@ -24,16 +28,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Filtros
+    /*
+     Event listeners para os botões de filtro (filmes, séries, jogos, todos).
+     Mostra ou esconde posters conforme o filtro selecionado.
+     */
     btnsFiltro.forEach(btn => {
         btn.addEventListener('click', function() {
-            // Remove 'ativo' de todos
+            // Remove a classe 'ativo' de todos os botões
             btnsFiltro.forEach(b => b.classList.remove('ativo'));
-            // Adiciona 'ativo' no clicado
+            // Adiciona a classe 'ativo' no botão clicado
             this.classList.add('ativo');
             
             const filtro = this.dataset.filtro;
             
+            // Mostra ou esconde posters conforme o filtro selecionado
             posters.forEach(poster => {
                 if (filtro === 'todos') {
                     poster.style.display = '';
@@ -48,17 +56,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Chamar no carregamento inicial
+    // Chama a função para adicionar listeners nos posters ao carregar a página
     adicionarEventListenersResultados();
 });
 
+/*
+ Cria e adiciona um poster de jogo na grade de posters.
+ Suporta dois estilos: Steam (vertical) e RAWG (horizontal).
+ */
 function criarPoster(jogo) {
     if (!jogo.poster_url) return;
     
     const divPoster = document.createElement('div');
     
     if (jogo.origem_imagem === 'steam') {
-        // --- ESTILO 1: STEAM (Vertical) ---
+        // ESTILO 1: STEAM (Vertical) 
         divPoster.className = 'item-poster poster-clean steam-card';
         
         const fallbackAttr = jogo.imagem_fallback 
@@ -82,10 +94,10 @@ function criarPoster(jogo) {
             </a>
         `;
     } else {
-        // --- ESTILO 2: RAWG (Horizontal forçado a preencher) ---
-        // Aqui está o segredo: adicionei os styles inline igual fizemos no HTML
+        // ESTILO 2: RAWG (Horizontal forçado a preencher) 
+        // Usa estilos inline para garantir o layout correto
         divPoster.className = 'game-card';
-        divPoster.style.height = '100%'; // Garante altura total
+        divPoster.style.height = '100%'; 
 
         divPoster.innerHTML = `
             <div class="item-poster poster-clean" style="height: 100%; width: 100%;">

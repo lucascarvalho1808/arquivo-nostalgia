@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Seletores dos elementos da barra de busca e grid de posters
     const inputBusca = document.querySelector('.barra-topo input');
     const iconeBusca = document.querySelector('.barra-topo .icone-lupa');
     const gridPosters = document.querySelector('.grade-posters');
     
+    // Salva o conteúdo original do grid para restaurar depois
     let conteudoOriginal = gridPosters ? gridPosters.innerHTML : '';
     
+    /**
+     Função para buscar filmes pelo termo informado.
+     Atualiza o grid de posters com os resultados ou mensagens de erro.
+     */
     async function buscarFilmes(termo) {
         if (!termo.trim()) {
             gridPosters.innerHTML = conteudoOriginal;
@@ -12,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
-            // Loading estilizado
+            // Exibe loading estilizado enquanto busca
             gridPosters.innerHTML = `
                 <div class="loading-busca">
                     <div class="spinner"></div>
@@ -20,9 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             
+            // Faz requisição para a API de busca de filmes
             const response = await fetch(`/api/busca/filmes?q=${encodeURIComponent(termo)}`);
             const filmes = await response.json();
             
+            // Se não houver resultados, exibe mensagem de "sem resultados"
             if (filmes.length === 0) {
                 gridPosters.innerHTML = `
                     <div class="sem-resultados">
@@ -34,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            // Monta o HTML dos posters dos filmes encontrados
             gridPosters.innerHTML = filmes.map(filme => `
                 <div class="item-poster" data-id="${filme.id}" data-tipo="filme">
                     <a href="#">
@@ -45,10 +54,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `).join('');
             
-            // Adicionar listeners de clique
+            // Adiciona clique nos novos elementos
             adicionarEventListenersBusca();
             
         } catch (error) {
+            // Em caso de erro na requisição, exibe mensagem de erro
             console.error('Erro ao buscar filmes:', error);
             gridPosters.innerHTML = `
                 <div class="mensagem-erro">
@@ -59,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Listener para clique no ícone de busca
     if (iconeBusca) {
         iconeBusca.style.cursor = 'pointer';
         iconeBusca.addEventListener('click', function() {
@@ -66,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Listener para pressionar Enter no campo de busca
     if (inputBusca) {
         inputBusca.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -75,13 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    /**
+     Função global para limpar a busca e restaurar o grid original.
+     */
     window.limparBusca = function() {
         if (inputBusca) inputBusca.value = '';
         gridPosters.innerHTML = conteudoOriginal;
         adicionarEventListenersBusca();
     };
     
-    // Função para adicionar event listeners
+    /**
+     Adiciona event de clique nos posters para redirecionar para a página de detalhes.
+     */
     function adicionarEventListenersBusca() {
         document.querySelectorAll('.item-poster').forEach(item => {
             item.style.cursor = 'pointer';
@@ -97,6 +114,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Chamar no carregamento inicial
+    // Chama função no carregamento inicial
     adicionarEventListenersBusca();
 });

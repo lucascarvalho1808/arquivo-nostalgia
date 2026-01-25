@@ -17,12 +17,14 @@ from routes.detalhes import detalhes_bp
 from routes.arquivos import arquivos_bp
 from services.agendador_ranking import agendador
 
+# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
+# Criação da instância principal do Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET_KEY')
 
-# Configuração do LoginManager
+# Configuração do gerenciador de login do Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login' 
@@ -31,6 +33,10 @@ login_manager.login_message_category = "info"
 
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    Função para carregar o usuário logado a partir do ID salvo na sessão.
+    Busca informações do usuário autenticado no Supabase.
+    """
     try:
         user_response = supabase.auth.get_user()
         if user_response and user_response.user and user_response.user.id == user_id:

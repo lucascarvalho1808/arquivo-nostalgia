@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
     <title>{{ lista.nome if lista else 'Arquivo' }} - Arquivo Nostalgia</title>
     <link
       rel="stylesheet"
@@ -83,7 +87,7 @@
         </div>
 
         <div class="acoes-pasta">
-          <button class="btn-exportar">
+          <button class="btn-exportar" id="btn-exportar-csv">
             <i class="fa-solid fa-file-export"></i> BAIXAR
           </button>
 
@@ -438,5 +442,13 @@
         }, 3200);
       }
     </script>
+    <script>
+      // Ativa o botão em conjunto com a rota de download da lista do usuário em formato CSV
+      document.getElementById('btn-exportar-csv').addEventListener('click', function() {
+        const listaId = "{{ lista.id }}";
+        const url = `/arquivos/exportar-csv/${listaId}`;
+        window.location.href = url; 
+      });
+  </script>
   </body>
 </html>

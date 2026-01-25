@@ -8,6 +8,10 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
+    """
+    Rota de login do usuário.
+    Autentica no Supabase, faz login no Flask e armazena tokens na sessão.
+    """
     form = LoginForm()
     if form.validate_on_submit():
         try:
@@ -22,13 +26,13 @@ def login():
             access_token = None
             refresh_token = None
 
-            # se res tem atributos (objeto)
+            # Extrai dados do usuário do resultado da autenticação
             if hasattr(res, "user"):
                 user_data = res.user
             elif isinstance(res, dict):
                 user_data = res.get("user")
 
-            # sessão/token: pode estar em res.session, res.get('session'), ou diretamente em res
+            # Extrai tokens de sessão do resultado
             if hasattr(res, "session") and res.session:
                 session_obj = res.session
                 access_token = getattr(session_obj, "access_token", None) or (session_obj.get("access_token") if isinstance(session_obj, dict) else None)
@@ -37,14 +41,18 @@ def login():
                 access_token = res["session"].get("access_token")
                 refresh_token = res["session"].get("refresh_token")
             else:
-                # fallback: se houver chaves planas
+                # Fallback: se houver chaves planas
                 access_token = res.get("access_token") if isinstance(res, dict) else getattr(res, "access_token", None)
                 refresh_token = res.get("refresh_token") if isinstance(res, dict) else getattr(res, "refresh_token", None)
 
             # 3. Cria User e faz login no Flask se autenticação OK
             if user_data:
                 username = user_data.user_metadata.get('username', 'Usuário') if hasattr(user_data, "user_metadata") else user_data.get("user_metadata", {}).get("username", "Usuário")
-                user = User(id=user_data.id if hasattr(user_data, "id") else user_data.get("id"), email=user_data.email if hasattr(user_data, "email") else user_data.get("email"), username=username)
+                user = User(
+                    id=user_data.id if hasattr(user_data, "id") else user_data.get("id"),
+                    email=user_data.email if hasattr(user_data, "email") else user_data.get("email"),
+                    username=username
+                )
                 login_user(user)
 
                 # 4. Salva tokens na sessão para uso em chamadas server-side (supabase REST)
@@ -71,6 +79,10 @@ def login():
 
 @auth_bp.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
+    """
+    Rota de cadastro de novo usuário.
+    Registra o usuário no Supabase e envia confirmação por e-mail.
+    """
     form = CadastroForm()
     if form.validate_on_submit():
         try:
@@ -94,6 +106,10 @@ def cadastro():
 @auth_bp.route('/logout')
 @login_required
 def logout():
+    """
+    Rota de logout do usuário.
+    Encerra a sessão no Supabase, limpa a sessão Flask e faz logout.
+    """
     try:
         supabase.auth.sign_out()
         session.clear()
@@ -107,11 +123,15 @@ def logout():
 
 @auth_bp.route('/esqueceu-senha', methods=['GET', 'POST'])
 def esqueceu_senha():
+    """
+    Rota para solicitação de redefinição de senha.
+    Envia e-mail com link de redefinição usando Supabase.
+    """
     form = EsqueceuSenhaForm()
     
     if form.validate_on_submit():
         try:
-            # URL completa de redirecionamento
+            # URL completa de redirecionamento após redefinição
             url_redirecionamento = url_for('auth.redefinir_senha', _external=True)
             
             supabase.auth.reset_password_email(
@@ -134,7 +154,7 @@ def esqueceu_senha():
 @auth_bp.route('/redefinir-senha', methods=['GET', 'POST'])
 def redefinir_senha():
     """
-    Esta rota é acessada quando o usuário clica no link do e-mail.
+    Rota acessada pelo link enviado por e-mail para redefinir senha.
     O Supabase envia tokens via fragment (#) na URL.
     """
     form = RedefinirSenhaForm()
@@ -148,15 +168,15 @@ def redefinir_senha():
                 flash('Token de autenticação não encontrado. Solicite um novo link.', 'danger')
                 return redirect(url_for('auth.esqueceu_senha'))
             
-            # Define a sessão do usuário usando o token
+            # Define a sessão do usuário usando o token recebido
             supabase.auth.set_session(access_token, request.form.get('refresh_token', ''))
             
-            # Atualiza a senha
+            # Atualiza a senha do usuário
             supabase.auth.update_user({
                 "password": form.senha.data
             })
             
-            # Faz logout para segurança
+            # Faz logout para segurança após alteração de senha
             supabase.auth.sign_out()
             
             flash('Sua senha foi alterada com sucesso! Faça login com a nova senha.', 'success')

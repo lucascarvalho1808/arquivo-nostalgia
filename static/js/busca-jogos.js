@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Seletores dos elementos da barra de busca e grid de posters
     const inputBusca = document.querySelector('.barra-topo input');
     const iconeBusca = document.querySelector('.barra-topo .icone-lupa');
     const gridPosters = document.querySelector('.grade-posters');
@@ -6,24 +7,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Guarda o conteúdo original para restaurar se limpar a busca
     let conteudoOriginal = gridPosters ? gridPosters.innerHTML : '';
     
-    // Função de navegação (mesma do jogos.js)
+    /*
+     Função de navegação para página de detalhes do jogo.
+     Redireciona para a rota de detalhes usando o id e tipo.
+     */
     function navegarParaDetalhes(id, tipo) {
         const url = `/detalhes/${tipo}/${id}`;
         window.location.href = url;
     }
 
-    // Detecta mobile
+    /*
+     Detecta se o usuário está em um dispositivo mobile.
+     Retorna true para telas pequenas ou user agents de mobile.
+     */
     function isMobile() {
         return window.innerWidth <= 768 || 
                /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     }
 
-    // Adiciona eventos de clique ao card
+    /*
+     Adiciona eventos de clique ao card do jogo.
+     No mobile: duplo clique para abrir detalhes.
+     No desktop: clique único.
+     */
     function adicionarEventoCard(card) {
         card.style.cursor = 'pointer';
         
         if (isMobile()) {
-            // Mobile: duplo clique
+            // Mobile: duplo clique para abrir detalhes
             card.addEventListener('click', function(e) {
                 e.preventDefault();
                 
@@ -36,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         } else {
-            // Desktop: clique único
+            // Desktop: clique único para abrir detalhes
             card.addEventListener('click', function(e) {
                 e.preventDefault();
                 const id = this.getAttribute('data-id');
@@ -45,6 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /*
+     Função para buscar jogos pelo termo informado.
+     Atualiza o grid de posters com os resultados ou mensagens de erro.
+     */
     async function buscarJogos(termo) {
         if (!termo.trim()) {
             restaurarOriginal();
@@ -52,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         try {
+            // Exibe loading enquanto busca
             gridPosters.innerHTML = `
                 <div style="grid-column: 1/-1; text-align: center; color: white; padding: 50px;">
                     <i class="fas fa-spinner fa-spin fa-2x"></i>
@@ -59,9 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             
+            // Faz requisição para a API de busca de jogos
             const response = await fetch(`/api/busca/jogos?q=${encodeURIComponent(termo)}`);
             const jogos = await response.json();
             
+            // Se não houver resultados, exibe mensagem de "sem resultados"
             if (jogos.length === 0) {
                 gridPosters.innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; color: white; padding: 40px;">
@@ -73,8 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
+            // Limpa o grid antes de adicionar os novos cards
             gridPosters.innerHTML = '';
             
+            // Cria e adiciona os cards dos jogos encontrados
             jogos.forEach(jogo => {
                 const imagemSrc = jogo.poster || jogo.poster_url || 'https://via.placeholder.com/300x450?text=Sem+Imagem';
                 
@@ -103,11 +123,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             
         } catch (error) {
+            // Em caso de erro na requisição, exibe mensagem de erro
             console.error('Erro na busca:', error);
             gridPosters.innerHTML = `<p style="color: white; grid-column: 1/-1; text-align: center;">Erro ao conectar com o servidor.</p>`;
         }
     }
     
+    /*
+     Restaura o grid de posters para o conteúdo original.
+     Também readiciona os eventos de clique nos cards originais.
+     */
     function restaurarOriginal() {
         gridPosters.innerHTML = conteudoOriginal;
         
@@ -116,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         cardsOriginais.forEach(card => adicionarEventoCard(card));
     }
 
+    // Listener para clique no ícone de busca
     if (iconeBusca) {
         iconeBusca.style.cursor = 'pointer';
         iconeBusca.addEventListener('click', (e) => {
@@ -124,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Listener para pressionar Enter no campo de busca
     if (inputBusca) {
         inputBusca.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -132,11 +159,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Listener para limpar busca ao apagar o campo
         inputBusca.addEventListener('input', (e) => {
             if (e.target.value === '') restaurarOriginal();
         });
     }
     
+    /*
+     Função global para limpar a busca e restaurar o grid original.
+     */
     window.limparBusca = function() {
         if (inputBusca) inputBusca.value = '';
         restaurarOriginal();

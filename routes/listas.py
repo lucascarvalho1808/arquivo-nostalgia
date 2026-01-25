@@ -10,14 +10,14 @@ from services.listas import (
     CORES_DISPONIVEIS
 )
 
+# Cria o Blueprint para rotas relacionadas a listas personalizadas do usuário
 listas_bp = Blueprint('listas', __name__)
-
 
 @listas_bp.route('/cores-disponiveis', methods=['GET'])
 def cores_disponiveis():
     """
     Retorna as cores disponíveis para personalização das listas.
-    
+
     Retorna:
     {
         "success": true,
@@ -28,7 +28,6 @@ def cores_disponiveis():
         "success": True,
         "cores": obter_cores_disponiveis()
     }), 200
-
 
 @listas_bp.route('/criar-lista', methods=['POST'])
 @login_required
@@ -64,7 +63,7 @@ def criar_lista_route():
         # Descrição é opcional
         descricao = dados.get('descricao', '').strip()
         
-        # Cor é opcional
+        # Cor é opcional, mas se informada deve ser válida
         cor = dados.get('cor')
         if cor and cor not in CORES_DISPONIVEIS:
             return jsonify({
@@ -101,13 +100,12 @@ def criar_lista_route():
             "erro": "Erro interno do servidor."
         }), 500
 
-
 @listas_bp.route('/adicionar-item', methods=['POST'])
 @login_required
 def adicionar_item():
     """
     Rota para adicionar um item (filme/série/jogo) a uma lista.
-    
+
     Esperado no body (JSON):
     {
         "lista_id": "uuid-da-lista",
@@ -116,7 +114,7 @@ def adicionar_item():
         "titulo": "Clube da Luta",
         "poster_url": "https://image.tmdb.org/t/p/w300/poster.jpg"
     }
-    
+
     Retorna:
     {
         "success": true,
@@ -185,16 +183,15 @@ def adicionar_item():
             "erro": "Erro interno do servidor."
         }), 500
 
-
 @listas_bp.route('/remover-item/<item_id>', methods=['DELETE'])
 @login_required
 def remover_item(item_id):
     """
     Rota para remover um item de uma lista.
-    
+
     Parâmetro na URL:
         item_id (str): UUID do item a ser removido
-    
+
     Retorna:
     {
         "success": true,
@@ -222,16 +219,15 @@ def remover_item(item_id):
             "erro": "Erro interno do servidor."
         }), 500
 
-
 @listas_bp.route('/lista/<lista_id>/itens', methods=['GET'])
 @login_required
 def listar_itens(lista_id):
     """
     Rota para buscar todos os itens de uma lista.
-    
+
     Parâmetro na URL:
         lista_id (str): UUID da lista
-    
+
     Retorna:
     {
         "success": true,
@@ -254,20 +250,19 @@ def listar_itens(lista_id):
             "erro": "Erro interno do servidor."
         }), 500
 
-
 @listas_bp.route('/verificar-item', methods=['POST'])
 @login_required
 def verificar_item():
     """
     Rota para verificar se um item já existe em uma lista.
-    
+
     Esperado no body (JSON):
     {
         "lista_id": "uuid-da-lista",
         "api_id": "550",
         "tipo": "filme"
     }
-    
+
     Retorna:
     {
         "existe": true/false

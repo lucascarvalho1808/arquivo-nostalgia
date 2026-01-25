@@ -4,6 +4,7 @@ import requests
 from flask import session
 from routes.extensions import supabase
 
+# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
@@ -58,14 +59,14 @@ def _get_supabase_client():
 def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
     """
     Adiciona um item (filme/série/jogo) a uma lista específica.
-    
+
     Args:
         lista_id (str): UUID da lista onde o item será adicionado
         api_id (str): ID do item na API externa (TMDB ou RAWG)
         tipo (str): Tipo do conteúdo ('filme', 'serie' ou 'jogo')
         titulo (str): Título do filme/série/jogo
         poster_url (str): URL da imagem do poster
-    
+
     Returns:
         dict: Dados do item adicionado ou None em caso de erro
     """
@@ -74,7 +75,7 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
         if tipo not in ['filme', 'serie', 'jogo']:
             print(f"Erro: Tipo inválido '{tipo}'. Use 'filme', 'serie' ou 'jogo'.")
             return None
-        
+
         # Dados do item a ser inserido
         dados_item = {
             "lista_id": lista_id,
@@ -83,22 +84,22 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
             "titulo": titulo,
             "poster_url": poster_url
         }
-        
+
         # Usa o cliente com o token do usuário
         client = _get_supabase_client()
-        
+
         # Insere o item na tabela itens_lista
         response = client.table("itens_lista").insert(dados_item).execute()
-        
+
         print(f"Item '{titulo}' adicionado à lista com sucesso!")
         return response.data[0] if response.data else None
-        
+
     except Exception as e:
         # Verifica se é erro de duplicata (item já existe na lista)
         if "duplicate key" in str(e).lower() or "unique" in str(e).lower():
             print(f"Item '{titulo}' já existe nesta lista.")
             return {"erro": "duplicado", "mensagem": "Este item já está na lista."}
-        
+
         print(f"Erro ao adicionar item à lista: {e}")
         return None
 
@@ -106,24 +107,24 @@ def adicionar_item_lista(lista_id, api_id, tipo, titulo, poster_url):
 def remover_item_lista(item_id, usuario_id):
     """
     Remove um item de uma lista.
-    
+
     Args:
         item_id (str): UUID do item a ser removido
-    
+
     Returns:
         bool: True se removido com sucesso, False caso contrário
     """
     try:
         client = _get_supabase_client()
         response = client.table("itens_lista").delete().eq("id", item_id).execute()
-        
+
         if response.data:
             print(f"Item removido da lista com sucesso!")
             return True
         else:
             print(f"Item não encontrado.")
             return False
-            
+
     except Exception as e:
         print(f"Erro ao remover item da lista: {e}")
         return False
@@ -132,10 +133,10 @@ def remover_item_lista(item_id, usuario_id):
 def buscar_itens_lista(lista_id):
     """
     Busca todos os itens de uma lista específica.
-    
+
     Args:
         lista_id (str): UUID da lista
-    
+
     Returns:
         list: Lista de itens ou lista vazia em caso de erro
     """
@@ -146,9 +147,9 @@ def buscar_itens_lista(lista_id):
             .eq("lista_id", lista_id)\
             .order("adicionado_em", desc=True)\
             .execute()
-        
+
         return response.data if response.data else []
-        
+
     except Exception as e:
         print(f"Erro ao buscar itens da lista: {e}")
         return []
@@ -157,12 +158,12 @@ def buscar_itens_lista(lista_id):
 def verificar_item_na_lista(lista_id, api_id, tipo):
     """
     Verifica se um item já existe em uma lista específica.
-    
+
     Args:
         lista_id (str): UUID da lista
         api_id (str): ID do item na API externa
         tipo (str): Tipo do conteúdo ('filme', 'serie' ou 'jogo')
-    
+
     Returns:
         bool: True se o item já existe, False caso contrário
     """
@@ -174,9 +175,9 @@ def verificar_item_na_lista(lista_id, api_id, tipo):
             .eq("api_id", str(api_id))\
             .eq("tipo", tipo)\
             .execute()
-        
+
         return len(response.data) > 0 if response.data else False
-        
+
     except Exception as e:
         print(f"Erro ao verificar item na lista: {e}")
         return False
@@ -270,7 +271,7 @@ def atualizar_lista(lista_id, nome=None, descricao=None, cor=None):
 def obter_cores_disponiveis():
     """
     Retorna a lista de cores disponíveis para personalização.
-    
+
     Returns:
         list: Lista de códigos hexadecimais das cores disponíveis
     """
@@ -278,6 +279,15 @@ def obter_cores_disponiveis():
 
 
 def obter_listas_usuario(usuario_id):
+    """
+    Busca todas as listas do usuário autenticado, normalizando campos para o template.
+
+    Args:
+        usuario_id (str): ID do usuário
+
+    Returns:
+        list: Listas do usuário com campos de cor e nome normalizados
+    """
     try:
         response = supabase.table("listas").select("*").eq("user_id", usuario_id).execute()
         listas = response.data or []
@@ -292,9 +302,18 @@ def obter_listas_usuario(usuario_id):
     except Exception as e:
         print("Erro ao buscar listas do usuário:", e)
         return []
-        
-        
+
+
 def obter_lista_por_id(lista_id):
+    """
+    Busca uma lista específica pelo ID, normalizando campos para o template.
+
+    Args:
+        lista_id (str): UUID da lista
+
+    Returns:
+        dict: Dados da lista ou None em caso de erro
+    """
     try:
         response = supabase.table("listas").select("*").eq("id", lista_id).single().execute()
         lista = response.data
@@ -310,6 +329,15 @@ def obter_lista_por_id(lista_id):
 
 
 def obter_itens_lista(lista_id):
+    """
+    Busca todos os itens de uma lista específica para uso em templates.
+
+    Args:
+        lista_id (str): UUID da lista
+
+    Returns:
+        list: Lista de itens com campos normalizados
+    """
     try:
         response = supabase.table("itens_lista").select("*").eq("lista_id", lista_id).execute()
         itens = response.data or []
