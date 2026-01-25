@@ -87,7 +87,7 @@
         </div>
 
         <div class="acoes-pasta">
-          <button class="btn-exportar">
+          <button class="btn-exportar" id="btn-exportar-csv">
             <i class="fa-solid fa-file-export"></i> BAIXAR
           </button>
 
@@ -442,5 +442,13 @@
         }, 3200);
       }
     </script>
+    <script>
+      // Ativa o botão em conjunto com a rota de download da lista do usuário em formato CSV
+      document.getElementById('btn-exportar-csv').addEventListener('click', function() {
+        const listaId = "{{ lista.id }}";
+        const url = `/arquivos/exportar-csv/${listaId}`;
+        window.location.href = url; 
+      });
+  </script>
   </body>
 </html>

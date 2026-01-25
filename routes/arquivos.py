@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for, current_app, session
+from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for, current_app, session, send_file, Response
 from flask_login import login_required, current_user
 from services.listas import (
     obter_listas_usuario,
@@ -7,7 +7,8 @@ from services.listas import (
     atualizar_lista,
     deletar_lista,
     CORES_DISPONIVEIS,
-    remover_item_lista
+    remover_item_lista,
+    buscar_itens_lista
 )
 from services.ranking_csv import ler_ranking_comunidade
 from services.estatisticas_usuario import calcular_estatisticas_usuario
@@ -231,3 +232,72 @@ def remover_item(item_id):
     except Exception as e:
         print("Erro ao remover item:", e)
         return jsonify(success=False, message="Erro interno ao remover item."), 500
+
+
+@arquivos_bp.route('/exportar-csv/<lista_id>')
+def exportar_csv_lista(lista_id):
+    """
+    Exporta os itens da lista em formato CSV para download.
+    Gera o arquivo manualmente.
+    """
+    print(f"Exportando CSV para lista_id: {lista_id}")
+    lista = obter_lista_por_id(lista_id)
+    if not lista:
+        print("Lista não encontrada!")
+        return "Lista não encontrada", 404
+
+    itens = buscar_itens_lista(lista_id)
+    if not itens:
+        print("Nenhum item encontrado na lista.")
+
+    # Cabeçalho do CSV
+    cabecalho = ['Título', 'Tipo', 'Ano', 'Poster', 'Descrição']
+    linhas = []
+
+    # Adiciona o cabeçalho
+    linhas.append(';'.join(cabecalho))
+
+    # Função para escapar aspas e ponto e vírgula
+    def esc(v):
+        v = str(v or '').replace('"', '""')
+        if ';' in v or '"' in v or '\n' in v:
+            return f'"{v}"'
+        return v
+
+    # Função para extrair ano do título, se vier entre parênteses
+    def extrair_ano(titulo):
+        import re
+        m = re.search(r'\((\d{4})\)', titulo or '')
+        return m.group(1) if m else ''
+
+    # Adiciona cada item como linha do CSV
+    for item in itens:
+        titulo = item.get('titulo', '')
+        ano = item.get('ano', '') or extrair_ano(titulo)
+        linha = [
+            esc(titulo),
+            esc(item.get('tipo', '').capitalize()),
+            esc(ano),
+            esc(item.get('poster_url', '')),
+            esc(item.get('descricao', '') or '')
+        ]
+        linhas.append(';'.join(linha))
+
+    # Junta tudo em uma string
+    conteudo_csv = '\n'.join(linhas)
+
+    # Adiciona UTF-8 para compatibilidade com excel e outros
+    bom = '\ufeff'
+    conteudo_csv = bom + conteudo_csv
+
+    # Nome do arquivo
+    nome_arquivo = f"{lista['nome'].replace(' ', '_')}_arquivo_nostalgia.csv"
+
+    # Retorna como download
+    return Response(
+        conteudo_csv,
+        mimetype='text/csv; charset=utf-8',
+        headers={
+            "Content-Disposition": f"attachment; filename={nome_arquivo}"
+        }
+    )
