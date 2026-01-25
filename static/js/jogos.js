@@ -1,30 +1,41 @@
-// Controle de estado
+// Controle de estado da página e filtros
 let paginaAtual = 1;
 let generosSelecionados = '';
 
+// Elementos do DOM usados na página de jogos
 const botaoVerMais = document.getElementById('botao-ver-mais');
 const gradePosters = document.querySelector('.grade-posters');
 const btnBuscarFiltro = document.getElementById('btn-buscar-filtro');
 const formFiltros = document.getElementById('form-filtros');
 
-// Função de navegação (importada do script.js)
+/*
+ Função de navegação para página de detalhes do jogo.
+ Redireciona para a rota de detalhes usando o id e tipo.
+ */
 function navegarParaDetalhes(id, tipo) {
     const url = `/detalhes/${tipo}/${id}`;
     window.location.href = url;
 }
 
-// Detecta mobile (importada do script.js)
+/*
+ Detecta se o usuário está em um dispositivo mobile.
+ Retorna true para telas pequenas ou user agents de mobile.
+ */
 function isMobile() {
     return window.innerWidth <= 768 || 
            /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
-// Adiciona eventos de clique ao card criado dinamicamente
+/*
+ Adiciona eventos de clique ao card criado dinamicamente.
+ No mobile: duplo clique para abrir detalhes.
+ No desktop: clique único.
+ */
 function adicionarEventoCard(card) {
     card.style.cursor = 'pointer';
     
     if (isMobile()) {
-        // Mobile: duplo clique
+        // Mobile: duplo clique para abrir detalhes
         card.addEventListener('click', function(e) {
             e.preventDefault();
             
@@ -37,7 +48,7 @@ function adicionarEventoCard(card) {
             }
         });
     } else {
-        // Desktop: clique único
+        // Desktop: clique único para abrir detalhes
         card.addEventListener('click', function(e) {
             e.preventDefault();
             const id = this.getAttribute('data-id');
@@ -46,7 +57,10 @@ function adicionarEventoCard(card) {
     }
 }
 
-// Cria o HTML de um poster e adiciona na grade
+/*
+ Cria o HTML de um poster de jogo e adiciona na grade de posters.
+ Suporta capas verticais (Steam) e padrão (RAWG).
+ */
 function criarPoster(jogo) {
     if (!jogo.poster_url) return;
     
@@ -101,7 +115,7 @@ function criarPoster(jogo) {
     adicionarEventoCard(divPoster);
 }
 
-// Limpa a grade de posters
+/*Limpa todos os posters da grade.*/
 function limparGrade() {
     gradePosters.innerHTML = '';
 }
@@ -124,6 +138,7 @@ async function buscarJogos(pagina, generos, substituir = false) {
         const response = await fetch(url);
         const jogos = await response.json();
 
+        // Se não houver resultados, exibe mensagem e desativa botão
         if (jogos.length === 0) {
             if (substituir) {
                 gradePosters.innerHTML = '<p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum jogo encontrado para estes filtros.</p>';
@@ -133,16 +148,20 @@ async function buscarJogos(pagina, generos, substituir = false) {
             return;
         }
 
+        // Se for uma nova busca (filtro), limpa a grade primeiro
         if (substituir) {
             limparGrade();
         }
 
+        // Adiciona os jogos na grade
         jogos.forEach(jogo => criarPoster(jogo));
 
+        // Reativa o botão "Ver mais"
         botaoVerMais.disabled = false;
         botaoVerMais.textContent = 'Ver mais';
 
     } catch (error) {
+        // Em caso de erro, exibe mensagem e reativa botão
         console.error('Erro ao carregar jogos:', error);
         botaoVerMais.textContent = 'Erro - Tentar novamente';
         botaoVerMais.disabled = false;
@@ -160,23 +179,27 @@ if (botaoVerMais) {
     });
 }
 
-// Botão de filtro
+// Botão "BUSCAR" do filtro - Aplica os filtros selecionados
 if (btnBuscarFiltro) {
     btnBuscarFiltro.addEventListener('click', async function() {
+        // Reseta para página 1 quando aplica novo filtro
         paginaAtual = 1;
         generosSelecionados = coletarGenerosSelecionados();
         
+        // Feedback visual de carregamento
         btnBuscarFiltro.textContent = 'Buscando...';
         btnBuscarFiltro.disabled = true;
 
+        // Busca com os novos filtros 
         await buscarJogos(paginaAtual, generosSelecionados, true);
 
+        // Restaura o botão
         btnBuscarFiltro.textContent = 'BUSCAR';
         btnBuscarFiltro.disabled = false;
     });
 }
 
-// Inicializa eventos nos cards já carregados
+// Inicializa eventos nos cards já carregados ao carregar a página
 document.addEventListener("DOMContentLoaded", function() {
     const cards = document.querySelectorAll('[data-tipo="jogo"]');
     
@@ -184,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
         adicionarEventoCard(card);
     });
 
-    // Remove 'ativo' ao clicar fora (mobile)
+    // Remove 'ativo' ao clicar fora de qualquer card de jogo (mobile)
     if (isMobile()) {
         document.addEventListener('click', function(e) {
             if (!e.target.closest('[data-tipo="jogo"]')) {

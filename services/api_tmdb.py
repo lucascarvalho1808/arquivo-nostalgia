@@ -2,8 +2,10 @@ import os
 import requests
 from dotenv import load_dotenv
 
+# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
+# Chave da API do TMDB e URLs base
 TMDB_API_KEY = os.environ.get('TMDB_API_KEY')
 BASE_URL = "https://api.themoviedb.org/3"
 IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -294,7 +296,9 @@ def buscar_series_por_genero(generos, pagina=1):
         return []
 
 def buscar_filmes(termo, max_resultados=200):
-    """Busca filmes pelo termo digitado com múltiplas páginas (até 200 resultados)"""
+    """
+    Busca filmes pelo termo digitado com múltiplas páginas (até 200 resultados).
+    """
     try:
         filmes = []
         pagina = 1
@@ -350,9 +354,10 @@ def buscar_filmes(termo, max_resultados=200):
         print(f"Erro ao buscar filmes: {e}")
         return []
 
-
 def buscar_series(termo, max_resultados=200):
-    """Busca séries pelo termo digitado com múltiplas páginas (até 200 resultados)"""
+    """
+    Busca séries pelo termo digitado com múltiplas páginas (até 200 resultados).
+    """
     try:
         series = []
         pagina = 1

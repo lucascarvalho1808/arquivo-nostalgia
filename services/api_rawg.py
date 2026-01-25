@@ -3,17 +3,20 @@ import requests
 import re
 from dotenv import load_dotenv
 
+# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
+# Chave da API RAWG e URL base
 RAWG_API_KEY = os.environ.get('RAWG_API_KEY')
 BASE_URL = "https://api.rawg.io/api"
 
+# Cache para IDs da Steam já buscados
 _steam_id_cache = {}
-
 
 def _buscar_id_steam_por_nome(nome_jogo):
     """
     Busca o AppID da Steam usando o nome do jogo na API de busca da Steam.
+    Usa cache para evitar requisições repetidas.
     """
     if nome_jogo in _steam_id_cache:
         return _steam_id_cache[nome_jogo]
@@ -34,10 +37,9 @@ def _buscar_id_steam_por_nome(nome_jogo):
     
     return None
 
-
 def _extrair_steam_id(stores, nome_jogo):
     """
-    Tenta encontrar o ID da Steam.
+    Tenta encontrar o ID da Steam para o jogo.
     1. Tenta pela URL da RAWG (se disponível).
     2. Se tiver loja Steam mas sem URL, busca pelo nome na Steam.
     """
@@ -59,16 +61,18 @@ def _extrair_steam_id(stores, nome_jogo):
         
     return None
 
-
 def _gerar_capa_steam(steam_id):
-    """Gera a URL da capa vertical da Steam."""
+    """
+    Gera a URL da capa vertical da Steam.
+    """
     if not steam_id:
         return None
     return f"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/{steam_id}/library_600x900.jpg"
 
-
 def _buscar_dados_steam_detalhes(app_id):
-    """Busca dados ricos na API pública da Steam."""
+    """
+    Busca dados ricos na API pública da Steam para um app_id.
+    """
     url_steam = f"https://store.steampowered.com/api/appdetails?appids={app_id}&l=brazilian"
     try:
         response = requests.get(url_steam, timeout=3)
@@ -79,9 +83,11 @@ def _buscar_dados_steam_detalhes(app_id):
         print(f"Erro ao conectar na Steam: {e}")
     return None
 
-
 def _formatar_jogos_lista(resultados):
-    """Formata a lista. Define se usa estilo Steam ou RAWG."""
+    """
+    Formata a lista de jogos retornada pela RAWG.
+    Define se usa estilo Steam (capa vertical) ou RAWG (imagem padrão).
+    """
     jogos_formatados = []
     for jogo in resultados:
         steam_id = _extrair_steam_id(jogo.get('stores', []), jogo.get('name'))
@@ -106,9 +112,10 @@ def _formatar_jogos_lista(resultados):
         })
     return jogos_formatados
 
-
 def buscar_jogos_populares(pagina=1, page_size=25):
-    """Busca jogos populares."""
+    """
+    Busca jogos populares na RAWG.
+    """
     endpoint = f"{BASE_URL}/games"
     params = {
         'key': RAWG_API_KEY,
@@ -126,9 +133,10 @@ def buscar_jogos_populares(pagina=1, page_size=25):
         print(f"Erro ao buscar jogos na RAWG: {e}")
         return []
 
-
 def pesquisar_jogos(query):
-    """Pesquisa jogos por nome."""
+    """
+    Pesquisa jogos por nome na RAWG.
+    """
     endpoint = f"{BASE_URL}/games"
     params = {
         'key': RAWG_API_KEY,
@@ -144,7 +152,6 @@ def pesquisar_jogos(query):
     except requests.exceptions.RequestException as e:
         print(f"Erro ao pesquisar jogos: {e}")
         return []
-
 
 def buscar_detalhes_jogo(jogo_id):
     """
@@ -204,7 +211,6 @@ def buscar_detalhes_jogo(jogo_id):
         traceback.print_exc()
         return None
 
-
 def buscar_catalogo_jogos(pagina=1):
     """
     Busca jogos para a página /jogos.
@@ -236,7 +242,6 @@ def buscar_catalogo_jogos(pagina=1):
     except requests.exceptions.RequestException as e:
         print(f"Erro ao buscar catálogo de jogos: {e}")
         return []
-
 
 def buscar_jogos_por_genero(generos, pagina=1):
     """
@@ -271,9 +276,10 @@ def buscar_jogos_por_genero(generos, pagina=1):
         print(f"Erro ao buscar jogos por gênero: {e}")
         return []
 
-
 def buscar_jogos(termo, max_resultados=200):
-    """Busca jogos pelo termo digitado com múltiplas páginas (até 200 resultados)"""
+    """
+    Busca jogos pelo termo digitado com múltiplas páginas (até 200 resultados).
+    """
     try:
         jogos = []
         pagina = 1
