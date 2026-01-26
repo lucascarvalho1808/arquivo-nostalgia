@@ -441,15 +441,12 @@
       }
     });
 
-    /* =========================================
-     LÓGICA DO TOOLTIP DO HUB (Mobile & Desktop)
-     ========================================= */
-    // 1. Seleciona todos os wrappers de info (caso tenha mais de um)
+    // lógica do tooltip do hub para mobile e desktop
     const infoWrappersHub = document.querySelectorAll('.info-wrapper');
 
     infoWrappersHub.forEach(wrapper => {
       wrapper.addEventListener('click', (event) => {
-        // Impede que o clique feche imediatamente
+        // impede que o clique feche imediatamente
         event.stopPropagation();
 
         // Verifica se JÁ está aberto

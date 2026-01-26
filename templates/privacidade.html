@@ -159,16 +159,16 @@
     </main>
 
     <footer class="rodape-principal">
-        <div class="links-rodape">
-            <a href="#">Termos de Uso</a>
-            <span class="separador">|</span>
-            <a href="#">Política de Privacidade</a>
-        </div>
+      <div class="links-rodape">
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
+      </div>
 
-        <!--Texto Copyright-->
-        <div class="texto-copyright">
-            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
-        </div>
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
     </footer>
 </body>
 

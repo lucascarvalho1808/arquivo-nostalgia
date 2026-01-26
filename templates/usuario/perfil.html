@@ -300,7 +300,7 @@
 
         btnEditar.addEventListener('click', () => {
             if (!editando) {
-                // --- MODO EDIÇÃO ---
+                // Modo edição
                 const nomeAtual = nomeUsuario.innerText;
                 nomeUsuario.innerHTML = `<input type="text" class="input-editar-nome" id="input-nome-temp" value="${nomeAtual}">`;
                 btnEditar.innerHTML = '<i class="fa-solid fa-check"></i> Salvar';
@@ -308,7 +308,7 @@
                 btnEditar.style.color = 'white';
                 editando = true;
             } else {
-                // --- MODO SALVAR ---
+                // Modo salvar
                 const input = document.getElementById('input-nome-temp');
                 const novoNome = input.value;
 

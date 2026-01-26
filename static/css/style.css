@@ -241,7 +241,7 @@ body {
     margin-left: 10px;
 }
 
-/* --- ESTILOS DO CARROSSEL --- */
+/* --- Estilos do carrossel --- */
 
 /* Container para centralizar o Carrossel */
 .center {
@@ -333,7 +333,7 @@ body {
     transition: box-shadow 0.3s ease;
 }
 
-/* --- O Overlay (Escurecimento ao mostrar o nome do jogo) --- */
+/* --- Overlay (Escurecimento ao mostrar o nome do jogo) --- */
 .game-info-overlay {
     position: absolute;
     top: 0;
@@ -660,7 +660,7 @@ body {
     flex-shrink: 0;
 }
 
-/* --- RODAPÉ: LINKS E COPYRIGHT --- */
+/* Rodapé com links e copyright--- */
 
 /* Garante que o rodapé organize os itens em coluna  */
 .rodape-principal {
@@ -702,7 +702,7 @@ body {
     margin-top: 10px;
 }
 
-/* --- MEDIA QUERIES --- */
+/* Responsividade */
 @media (min-width: 1101px) {
     .barra-busca {
         position: absolute;

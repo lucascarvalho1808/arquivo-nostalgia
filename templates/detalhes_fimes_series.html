@@ -376,15 +376,17 @@
     </div>
 
     <script>
-      // Variáveis globais
+      // Variáveis globais para armazenar seleção e dados do conteúdo
       let arquivoSelecionado = null;
       let dadosConteudo = null;
 
+      // Move o carrossel de elenco para esquerda ou direita
       function moverCarrossel(distancia) {
         const container = document.getElementById("carrosselElenco");
         container.scrollBy({ left: distancia, behavior: "smooth" });
       }
 
+      // Prepara os dados do conteúdo e abre o modal de seleção de arquivo
       function adicionarLista(id, tipo) {
         dadosConteudo = {
           api_id: id,
@@ -395,6 +397,7 @@
         abrirModalSelecionarArquivo();
       }
 
+      // Abre o modal para selecionar um arquivo e carrega as opções do usuário
       function abrirModalSelecionarArquivo() {
         arquivoSelecionado = null;
         document.getElementById("btn-confirmar-adicao").disabled = true;
@@ -430,12 +433,13 @@
           });
       }
 
+      // Fecha o modal de seleção de arquivo
       function fecharModalSelecionarArquivo() {
         document.getElementById("modal-selecionar-arquivo").style.display =
           "none";
       }
 
-      // Remove event listeners duplicados
+      // Adiciona o item selecionado ao arquivo escolhido
       document.getElementById("btn-confirmar-adicao").onclick = function () {
         if (!arquivoSelecionado || !dadosConteudo) return;
         fetch("/listas/adicionar-item", {
@@ -463,10 +467,12 @@
           });
       };
 
+      // Abre o modal para criar um novo arquivo
       function abrirModalNovaPasta() {
         document.getElementById("modal-nova-pasta").classList.add("active");
       }
 
+      // Fecha o modal de criação de novo arquivo e limpa os campos
       function fecharModalNovaPasta() {
         document.getElementById("modal-nova-pasta").classList.remove("active");
         document.getElementById("nomePasta").value = "";
@@ -486,7 +492,7 @@
         });
       });
 
-      // Criação de pasta (arquivo)
+      // Cria um novo arquivo (pasta) com os dados informados
       document.getElementById("btn-criar-pasta").onclick = async function () {
         const nome = document.getElementById("nomePasta").value.trim();
         const descricao = document.getElementById("descPasta").value.trim();
@@ -518,7 +524,7 @@
           });
       };
 
-      // Toast simples (pode customizar)
+      // Exibe um toast de feedback para o usuário
       function mostrarToast(mensagem, tipo = "info") {
         const toastAntigo = document.querySelector(".toast-traducao");
         if (toastAntigo) toastAntigo.remove();

@@ -1,4 +1,4 @@
-/* Variáveis Gerais */
+/* variáveis gerais de cor e fonte */
 :root {
   --bg-body: #417eaa;
   --header-bg: #22658f;
@@ -15,6 +15,7 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* configurações gerais do body */
 body {
   background-color: var(--bg-body);
   color: var(--text-primary);
@@ -24,9 +25,7 @@ body {
   overflow-x: hidden;
 }
 
-/* =========================================
-           2. CABEÇALHO FIXO
-   ========================================= */
+/* cabeçalho fixo no topo */
 .cabecalho-principal {
   display: flex;
   align-items: center;
@@ -44,6 +43,7 @@ body {
   min-height: 100px;
 }
 
+/* container do logo no cabeçalho */
 .logo-container {
   display: flex;
   flex-direction: column;
@@ -51,11 +51,13 @@ body {
   width: 200px;
 }
 
+/* logo pequena */
 .logo-pequena {
   max-width: 100px;
   margin-bottom: 5px;
 }
 
+/* nome do site no cabeçalho */
 .nome-site-header {
   font-size: 11px;
   font-weight: 900;
@@ -64,12 +66,14 @@ body {
   letter-spacing: 1px;
 }
 
+/* centralização do título no cabeçalho */
 .header-centro {
   display: flex;
   justify-content: center;
   flex: 1;
 }
 
+/* caixa do título central */
 .caixa-titulo {
   background-color: #0c3757;
   padding: 10px 60px;
@@ -77,6 +81,7 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* título principal do cabeçalho */
 .caixa-titulo h1 {
   font-size: 28px;
   text-transform: uppercase;
@@ -85,6 +90,7 @@ body {
   margin: 0;
 }
 
+/* menu de ícones do cabeçalho */
 .menu-icones {
   display: flex;
   gap: 20px;
@@ -92,6 +98,7 @@ body {
   width: 200px;
 }
 
+/* item do menu de ícones */
 .item-menu {
   display: flex;
   flex-direction: column;
@@ -103,6 +110,7 @@ body {
   transition: opacity 0.2s;
 }
 
+/* efeito hover no item do menu */
 .item-menu:hover {
   opacity: 0.8;
   color: #0c3757;
@@ -113,9 +121,7 @@ body {
   margin-bottom: 5px;
 }
 
-/* ========================================================
-     3. LAYOUT PRINCIPAL (GRID + SIDEBAR + POP-UP (MODAL))
-   ======================================================== */
+/* layout principal com grid para conteúdo e sidebar */
 .layout-container {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -126,7 +132,7 @@ body {
   padding: 140px 20px 40px 20px;
 }
 
-/* Fundo Escuro (Overlay) */
+/* fundo escuro do modal */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -184,6 +190,7 @@ body {
   letter-spacing: 1px;
 }
 
+/* botão de fechar modal */
 .btn-close {
   font-size: 28px;
   font-weight: bold;
@@ -274,6 +281,7 @@ textarea.input-pill.area-texto {
   justify-content: flex-end;
 }
 
+/* botão de criar pasta */
 .btn-create {
   background-color: #0c3757;
   color: white;
@@ -293,9 +301,7 @@ textarea.input-pill.area-texto {
   filter: brightness(1.1);
 }
 
-/* =========================================
-           4. ÁREA DAS PASTAS (ESQUERDA)
-   ========================================= */
+/* grid de pastas */
 .grid-pastas {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -303,13 +309,14 @@ textarea.input-pill.area-texto {
   align-content: start;
 }
 
+/* wrapper da pasta */
 .folder-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* --- ESTILO DAS PASTAS (CÁLCULO AUTOMÁTICO DE SOMBRA) --- */
+/* estilo da pasta */
 .folder {
   /* Cor Padrão (Indigo) - Se não escolher outra, usa essa */
   --folder-color: #6366f1;
@@ -333,7 +340,6 @@ textarea.input-pill.area-texto {
   height: 90%;
   background-color: var(--folder-color);
   filter: brightness(0.75);
-
   border-radius: 6px;
 }
 
@@ -380,7 +386,6 @@ textarea.input-pill.area-texto {
 
   /* Usa a cor base pura */
   background-color: var(--folder-color);
-
   border-radius: 0 6px 6px 6px;
   z-index: 2;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
@@ -467,9 +472,7 @@ textarea.input-pill.area-texto {
   box-shadow: 0 4px 15px rgba(12, 55, 87, 0.3);
 }
 
-/* =========================================
-   5. SIDEBAR DNA (CUSTOMIZADO - TEMA AZUL)
-   ========================================= */
+/* Sidebar dna (customidado - tema azul)*/
 
 :root {
   /* CORES DE RANKING (Mantidas originais) */
@@ -508,7 +511,7 @@ textarea.input-pill.area-texto {
   overflow: hidden; /* Garante que o header respeite o arredondado */
 }
 
-/* --- CABEÇALHO DA SIDEBAR & TOOLTIP --- */
+/* cabeçalho da sidebar */
 .sidebar-header-centered {
   background-color: #084063;
   position: relative;
@@ -555,7 +558,7 @@ textarea.input-pill.area-texto {
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
-/* O Balão (Tooltip) - FORMATAÇÃO DO TEXTO MELHORADA */
+/* tooltip de informação */
 .info-tooltip {
   visibility: hidden;
   opacity: 0;
@@ -618,7 +621,7 @@ textarea.input-pill.area-texto {
   pointer-events: auto;
 }
 
-/* --- TÍTULOS DOS RANKINGS --- */
+/* títulos dos rankings */
 .ranking-header-group {
   display: flex;
   flex-direction: column;
@@ -665,15 +668,10 @@ textarea.input-pill.area-texto {
   opacity: 0.6;
 }
 
-/* =========================================
-   NOVO GRÁFICO: NÚCLEO ORBITAL
-   ========================================= */
-
+/* gráfico de núcleo orbital */
 .dna-orbit-widget {
-  /* --- MUDANÇA DE COR AQUI (Widgets) --- */
   background-color: #042946;
   border: 1px solid #22658f;
-
   border-radius: 12px;
   padding: 15px;
   display: flex;
@@ -810,8 +808,7 @@ textarea.input-pill.area-texto {
   cursor: default;
 }
 
-/* Cores Específicas */
-/* Azul */
+/* cores específicas para legendas */
 .legend-pill.blue {
   border-color: rgba(59, 130, 246, 0.3);
   color: #60a5fa;
@@ -837,12 +834,10 @@ textarea.input-pill.area-texto {
   transform: scale(1.05);
 }
 
-/* --- RANKINGS / PODIUM --- */
+/* ranking podium */
 .ranking-section-glass {
-  /* --- MUDANÇA DE COR AQUI (Widgets) --- */
   background-color: #0c3757;
   border: 1px solid #22658f;
-
   padding: 10px;
   border-radius: 12px;
   margin: 5px 15px;
@@ -929,7 +924,7 @@ textarea.input-pill.area-texto {
 .gold-medal {
   background: var(--gold-grad);
   -webkit-background-clip: text;
-  background-clip: text; /* <--- O Padrão Moderno resolve o aviso */
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent; /* Fallback de segurança */
   font-size: 1.2rem;
@@ -955,10 +950,7 @@ textarea.input-pill.area-texto {
   transform: translateY(-3px);
 }
 
-/* =========================================
-           6. RODAPÉ
-   ========================================= */
-/* --- Footer --- */
+/* rodapé principal */
 .rodape-principal {
   width: 100%;
   background-color: #0c3757;
@@ -984,6 +976,7 @@ textarea.input-pill.area-texto {
   padding: 20px 0;
 }
 
+/* links do rodapé */
 .links-rodape {
   display: flex;
   align-items: center;
@@ -1044,9 +1037,7 @@ textarea.input-pill.area-texto {
   color: #888;
 }
 
-/* =========================================
-           7. RESPONSIVIDADE (MEDIA QUERIES)
-   ========================================= */
+/* responsividade para telas médias */
 @media (max-width: 968px) {
   .layout-container {
     grid-template-columns: 1fr;
@@ -1202,7 +1193,7 @@ textarea.input-pill.area-texto {
   }
 }
 
-/* Toast básico */
+/* toast de mensagens */
 #toast {
   position: fixed;
   right: 20px;
