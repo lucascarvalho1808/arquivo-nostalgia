@@ -42,12 +42,13 @@ def load_user(user_id):
         user_response = supabase.auth.get_user()
         if user_response and user_response.user and user_response.user.id == user_id:
             user_data = user_response.user
-            username = user_data.user_metadata.get('username', 'Usuário')
+            profile_data = supabase.table("profiles").select("*").eq("id", user_data.id).single().execute().data
+            username = profile_data["username"] if profile_data else 'Usuário'
             return User(
                 id=user_data.id,
                 email=user_data.email,
                 username=username,
-                created_at=getattr(user_data, 'created_at', None)
+                created_at=profile_data.get("created_at") if profile_data else None
             )
     except Exception as e:
         print(f"Erro ao carregar usuário da sessão: {e}")

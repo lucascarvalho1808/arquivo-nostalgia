@@ -97,6 +97,24 @@ def cadastro():
                 }
             })
             flash('Registro realizado com sucesso. Verifique seu e-mail para confirmar a conta.', 'success')
+            
+            try:
+                # Pega o id do usuário criado
+                user_id = None
+                if hasattr(user, "user") and hasattr(user.user, "id"):
+                    user_id = user.user.id
+                elif isinstance(user, dict) and "user" in user and "id" in user["user"]:
+                    user_id = user["user"]["id"]
+
+                if user_id:
+                    supabase.table("profiles").insert({
+                        "id": user_id,
+                        "username": form.nome.data
+                    }).execute()
+            except Exception as e:
+                # Não bloqueia o cadastro se falhar, mas pode logar o erro
+                print("Erro ao criar perfil em profiles:", e)
+            
             return redirect(url_for('auth.login'))
         except Exception as e:
             flash(f'Erro no registro: {str(e)}', 'danger')

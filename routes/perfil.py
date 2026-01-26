@@ -59,7 +59,7 @@ def atualizar_nome():
 
     # Atualiza no Supabase
     try:
-        resp = supabase.table("usuarios").update({"username": novo_nome.strip()}).eq("id", current_user.id).execute()
+        resp = supabase.table("profiles").update({"username": novo_nome.strip()}).eq("id", current_user.id).execute()
         if resp.data:
             # Atualiza o current_user em tempo real (opcional)
             current_user.username = novo_nome.strip()
