@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+    <title>Política de Privacidade - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/politica.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <a href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo"
+                    class="logo-pequena" />
+            </a>
+            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </div>
+
+        <div class="header-centro">
+            <div class="caixa-titulo">
+                <h1>Política de Privacidade</h1>
+            </div>
+        </div>
+
+        <nav class="menu-icones">
+            <a href="{{ url_for('filmes.index') }}" class="item-menu">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span>Filmes</span>
+            </a>
+            <a href="{{ url_for('series.index') }}" class="item-menu">
+                <i class="fa-solid fa-tv"></i>
+                <span>Séries</span>
+            </a>
+            <a href="{{ url_for('jogos.index') }}" class="item-menu">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Jogos</span>
+            </a>
+
+            {% if current_user.is_authenticated %}
+            <!-- MENU PARA QUEM ESTÁ LOGADO -->
+            <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="{{ url_for('perfil.perfil') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Perfil</span>
+            </a>
+            {% else %}
+            <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+            <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Login</span>
+            </a>
+
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="main-conteudo">
+
+        <div class="card-politica">
+            <div class="card-texto">
+                <p class="data-atualizacao"><strong>Última atualização:</strong> 04 de Fevereiro de 2026</p>
+
+                <h3>1. Introdução</h3>
+                <p>
+                    O <em><strong>Arquivo Nostalgia</strong></em> é um projeto desenvolvido para a preservação de
+                    memórias digitais. A sua privacidade é de extrema importância para nós. Esta Política de Privacidade
+                    descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais, em conformidade
+                    com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD).
+                </p>
+
+                <h3>2. Dados Coletados</h3>
+                <p>Para proporcionar a funcionalidade completa do sistema, coletamos os seguintes tipos de informações:
+                </p>
+                <ul>
+                    <li><strong>Informações de Cadastro:</strong> Ao criar uma conta, solicitamos seu <strong>Nome de
+                            Usuário</strong> e endereço de <strong>E-mail</strong>.</li>
+                    <li><strong>Credenciais de Acesso:</strong> Sua senha é armazenada de forma criptografada
+                        (<em>hash</em>), garantindo que nem mesmo os administradores do sistema tenham acesso à
+                        sequência original de caracteres.</li>
+                    <li><strong>Dados de Uso:</strong> Armazenamos os arquivos (listas) que você cria (ex: "Filmes
+                        Favoritos", "Jogos da Infância") e os itens que você adiciona ao seu acervo pessoal.</li>
+                    <li><strong>Registros de Acesso (Logs):</strong> Como a maioria dos serviços web, coletamos
+                        automaticamente informações técnicas quando você acessa o site, como seu endereço IP e tipo de
+                        navegador, para fins de segurança e diagnóstico.</li>
+                </ul>
+
+                <h3>3. Finalidade do Tratamento dos Dados</h3>
+                <p>Utilizamos seus dados exclusivamente para as seguintes finalidades:</p>
+                <ol>
+                    <li><strong>Autenticação:</strong> Para identificar você e permitir o acesso seguro à sua conta
+                        pessoal.</li>
+                    <li><strong>Funcionalidade:</strong> Para persistir suas listas e preferências no banco de dados,
+                        garantindo que seu "Arquivo Nostalgia" esteja disponível em acessos futuros.</li>
+                </ol>
+
+                <h3>4. Compartilhamento e Tecnologias de Terceiros</h3>
+                <p>O <em>Arquivo Nostalgia</em> utiliza serviços de terceiros para operar. Ao utilizar nossa plataforma,
+                    seus dados podem ser processados pelas seguintes infraestruturas:</p>
+                <ul>
+                    <li><strong>Supabase:</strong> Serviço de banco de dados em nuvem onde suas informações de cadastro
+                        e listas são armazenadas com segurança.</li>
+                    <li><strong>Render:</strong> Plataformas de hospedagem que mantêm o site online.</li>
+                    <li><strong>APIs de Conteúdo (TMDB, RAWG e Steam):</strong> Utilizamos estas APIs para buscar
+                        imagens e informações sobre filmes e jogos. Dados de navegação anônimos podem ser requisitados
+                        por estes serviços para entregar o conteúdo.</li>
+                    <li><strong>Google Gemini (AI):</strong> Utilizamos esta API para geração de textos criativos.
+                        Apenas o contexto de obras é enviado, sem identificação de usuários.</li>
+                </ul>
+
+                <h3>5. Cookies e Tecnologias de Rastreamento</h3>
+                <p>
+                    Utilizamos <em>cookies</em> estritamente necessários para o funcionamento do sistema,
+                    especificamente para o <strong>gerenciamento de sessão</strong>. Isso permite que você permaneça
+                    logado enquanto navega entre as páginas sem precisar digitar sua senha repetidamente. Você pode
+                    configurar seu navegador para recusar cookies, mas isso impedirá o login na plataforma.
+                </p>
+
+                <h3>6. Segurança dos Dados</h3>
+                <p>
+                    Adotamos práticas de segurança alinhadas aos padrões de desenvolvimento web, incluindo criptografia
+                    de senhas e comunicação segura (HTTPS). No entanto, ressaltamos que nenhum sistema é completamente
+                    imune a riscos.
+                </p>
+
+                <h3>7. Seus Direitos (LGPD)</h3>
+                <p>Você tem o direito de:</p>
+                <ul>
+                    <li>Confirmar a existência de tratamento de seus dados.</li>
+                    <li>Acessar os dados que possuímos sobre você.</li>
+                    <li>Corrigir dados incompletos ou desatualizados.</li>
+                    <li>Solicitar a exclusão completa da sua conta e de todos os dados associados a qualquer momento.
+                    </li>
+                </ul>
+
+                <h3>8. Contato</h3>
+                <p>
+                    Para exercer seus direitos ou tirar dúvidas sobre esta política, entre em contato através do e-mail
+                    do desenvolvedor responsável: <strong>suporte.arquivonostalgia@gmail.com</strong>.
+                </p>
+            </div>
+
+            <div class="detalhe-inferior"></div>
+        </div>
+
+    </main>
+
+    <footer class="rodape-principal">
+        <div class="links-rodape">
+            <a href="#">Termos de Uso</a>
+            <span class="separador">|</span>
+            <a href="#">Política de Privacidade</a>
+        </div>
+
+        <!--Texto Copyright-->
+        <div class="texto-copyright">
+            Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+        </div>
+    </footer>
+</body>
+
+</html>
