@@ -63,7 +63,7 @@ Este projeto visa resolver o problema das **memórias afetivas fragmentadas** na
 
 ### 1. Clone o repositório
 ```bash
-git clone [https://github.com/lucascarvalho1808/arquivo-nostalgia.git]
+git clone https://github.com/lucascarvalho1808/arquivo-nostalgia.git
 cd arquivo-nostalgia
 
 ```
@@ -264,7 +264,7 @@ This project aims to solve the problem of **fragmented affective memories** in t
 ### 1. Clone the repository
 
 ```bash
-git clone [https://github.com/lucascarvalho1808/arquivo-nostalgia.git]
+git clone https://github.com/lucascarvalho1808/arquivo-nostalgia.git
 cd arquivo-nostalgia
 
 ```
