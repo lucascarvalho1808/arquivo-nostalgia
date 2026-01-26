@@ -84,7 +84,9 @@
                 <div class="hero-info">
                     <h1 class="hero-name" id="nome-usuario">{{ usuario.username or usuario.nome or usuario.email.split('@')[0] }}</h1>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span class="hero-rank"> <i class="fa-solid fa-trophy"></i> {{ rank_geral[1] }} </span>
+                        <span class="hero-rank">
+                          <i class="fa-solid fa-trophy {{ rank_geral[1] }}"></i> {{ rank_geral[0] }}
+                        </span>
 
                         <div class="rank-info-wrapper">
                             <i id="hero-info-icon" class="fa-solid fa-circle-info info-icon"></i>
@@ -149,7 +151,9 @@
             <div class="stats-container">
 
                 <div class="stat-card filmes">
-                    <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="stat-icon {{ rank_filme[2] }}">
+                        <i class="fa-solid fa-trophy {{ rank_filme[1] }}"></i>
+                    </div>
                     <div class="stat-info">
                         <div style="display: flex; justify-content: center; align-items: center;">
                             <span class="stat-label">Coleção de Filmes</span>
@@ -177,13 +181,17 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="stat-rank">{{ rank_filme[1] }}</h3>
+                        <h3 class="stat-rank">
+                          {{ rank_filme[0] }}
+                        </h3>
                         <span id="count-filmes" style="display:none;">{{ stats.filmes.quantidade }}</span>
                     </div>
                 </div>
 
                 <div class="stat-card series">
-                    <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                    <div class="stat-icon {{ rank_serie[2] }}">
+                        <i class="fa-solid fa-trophy {{ rank_serie[1] }}"></i>
+                    </div>
                     <div class="stat-info">
                         <div style="display: flex; justify-content: center; align-items: center;">
                             <span class="stat-label">Maratona de Séries</span>
@@ -211,13 +219,17 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="stat-rank">{{ rank_serie[1] }}</h3>
+                        <h3 class="stat-rank">
+                          {{ rank_serie[0] }}
+                        </h3>
                         <span id="count-series" style="display:none;">{{ stats.series.quantidade }}</span>
                     </div>
                 </div>
 
                 <div class="stat-card jogos">
-                    <div class="stat-icon"><i class="fa-solid fa-trophy"></i></i></div>
+                    <div class="stat-icon {{ rank_jogo[2] }}">
+                        <i class="fa-solid fa-trophy {{ rank_jogo[1] }}"></i>
+                    </div>
                     <div class="stat-info">
                         <div style="display: flex; justify-content: center; align-items: center;">
                             <span class="stat-label">Biblioteca de Jogos</span>
@@ -245,7 +257,9 @@
                                 </div>
                             </div>
                         </div>
-                        <h3 class="stat-rank">{{ rank_jogo[1] }}</h3>
+                        <h3 class="stat-rank">
+                          {{ rank_jogo[0] }}
+                        </h3>
                         <span id="count-jogos" style="display:none;">{{ stats.jogos.quantidade }}</span>
                     </div>
                 </div>

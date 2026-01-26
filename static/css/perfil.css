@@ -180,10 +180,6 @@ body {
     background: rgba(255,255,255,0.05);
 }
 
-.filmes .stat-icon { color: #3b82f6; box-shadow: 0 0 15px #3b82f6; }
-.series .stat-icon { color: #ffffff; box-shadow: 0 0 15px #ffffff; }
-.jogos .stat-icon  { color: #ffd700; box-shadow: 0 0 15px #ffd700; }
-
 .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); display: block; margin-bottom: 5px; }
 .stat-rank { font-size: 1rem; font-weight: 800; color: white; margin-bottom: 2px; }
 .stat-count { font-size: 0.8rem; color: #aaa; font-weight: 600; }
@@ -446,3 +442,10 @@ body {
     bottom: auto;
     top: 125%;
 }
+
+/* Sombra dinâmica para cada cor de troféu */
+.sombra-bronze   { box-shadow: 0 0 25px 0 #cd7f32; }
+.sombra-prata    { box-shadow: 0 0 25px 0 #c0c0c0; }
+.sombra-ouro     { box-shadow: 0 0 25px 0 #ffd700; }
+.sombra-rubi     { box-shadow: 0 0 25px 0 #e0115f; }
+.sombra-diamante { box-shadow: 0 0 25px 0 #00bfff; }

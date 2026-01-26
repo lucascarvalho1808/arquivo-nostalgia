@@ -1,47 +1,47 @@
 def rank_global(qtd):
-    if qtd > 500:
-        return ("Rank V", "Lenda do Arquivo")
-    elif qtd > 250:
-        return ("Rank IV", "Guardião da Memória")
-    elif qtd > 100:
-        return ("Rank III", "Colecionador Nostálgico")
-    elif qtd > 20:
-        return ("Rank II", "Sócio de Carteirinha")
+    if qtd >= 500:
+        return ("Lenda do Arquivo", "t-diamante")
+    elif qtd >= 250:
+        return ("Guardião da Memória", "t-rubi")
+    elif qtd >= 100:
+        return ("Colecionador Nostálgico", "t-ouro")
+    elif qtd >= 20:
+        return ("Sócio de Carteirinha", "t-prata")
     else:
-        return ("Rank I", "Turista do Passado")
+        return ("Turista do Passado", "t-bronze")
 
 def rank_filmes(qtd):
     if qtd >= 301:
-        return ("Rank V", "Vencedor do Oscar")
+        return ("Vencedor do Oscar", "t-diamante", "sombra-diamante")
     elif qtd >= 151:
-        return ("Rank IV", "Diretor Visionário")
+        return ("Diretor Visionário", "t-rubi", "sombra-rubi")
     elif qtd >= 51:
-        return ("Rank III", "Cinéfilo voraz")
+        return ("Cinéfilo voraz", "t-ouro", "sombra-ouro")
     elif qtd >= 11:
-        return ("Rank II", "Cliente de Locadora")
+        return ("Cliente de Locadora", "t-prata", "sombra-prata")
     else:
-        return ("Rank I", "Espectador Casual")
+        return ("Espectador Casual", "t-bronze", "sombra-bronze")
 
 def rank_series(qtd):
     if qtd >= 61:
-        return ("Rank V", "Rei do Streaming")
+        return ("Rei do Streaming", "t-diamante", "sombra-diamante")
     elif qtd >= 31:
-        return ("Rank IV", "Senhor das Séries")
+        return ("Senhor das Séries", "t-rubi", "sombra-rubi")
     elif qtd >= 16:
-        return ("Rank III", "Devorador de Temporadas")
+        return ("Devorador de Temporadas", "t-ouro", "sombra-ouro")
     elif qtd >= 6:
-        return ("Rank II", "Maratonador de Episódios")
+        return ("Maratonador de Episódios", "t-prata", "sombra-prata")
     else:
-        return ("Rank I", "Avaliador de Pilotos")
+        return ("Avaliador de Pilotos", "t-bronze", "sombra-bronze")
 
 def rank_jogos(qtd):
     if qtd >= 101:
-        return ("Rank V", "God Mode")
+        return ("God Mode", "t-diamante", "sombra-diamante")
     elif qtd >= 51:
-        return ("Rank IV", "Caçador de Platinas")
+        return ("Caçador de Platinas", "t-rubi", "sombra-rubi")
     elif qtd >= 21:
-        return ("Rank III", "Mestre dos Controles")
+        return ("Mestre dos Controles", "t-ouro", "sombra-ouro")
     elif qtd >= 6:
-        return ("Rank II", "Leitor de Detonados")
+        return ("Leitor de Detonados", "t-prata", "sombra-prata")
     else:
-        return ("Rank I", "Player Casual")
+        return ("Player Casual", "t-bronze", "sombra-bronze")
