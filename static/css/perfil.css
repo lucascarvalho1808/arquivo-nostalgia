@@ -335,6 +335,7 @@ body {
 }
 .links-rodape { display: flex; align-items: center; gap: 10px; }
 .links-rodape a { color: #a0a0a0; text-decoration: none; font-size: 0.85rem; }
+.links-rodape a:hover { color: #ffffff; text-decoration: underline;}
 .separador { color: #555; }
 .texto-copyright { font-size: 0.75rem; color: #999; }
 
