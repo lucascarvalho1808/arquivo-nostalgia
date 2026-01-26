@@ -339,9 +339,9 @@
 
     <footer class="rodape-principal">
       <div class="links-rodape">
-        <a href="#">Termos de Uso</a>
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
         <span class="separador">|</span>
-        <a href="#">Política de Privacidade</a>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
       </div>
 
       <!-- Texto de Copyright -->
@@ -350,7 +350,10 @@
       </div>
 
       <!-- Crédito da API RAWG -->
-      <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
     </footer>
 
     <!-- Scripts Externos -->

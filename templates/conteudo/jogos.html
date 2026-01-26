@@ -293,19 +293,23 @@
   </div>
 
   <footer class="rodape-principal">
-    <div class="links-rodape">
-      <a href="#">Termos de Uso</a>
-      <span class="separador">|</span>
-      <a href="#">Política de Privacidade</a>
-    </div>
+      <div class="links-rodape">
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
+      </div>
 
-    <div class="texto-copyright">
-      Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
-    </div>
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
 
-    <!-- Crédito da API RAWG -->
-    <p class="credito-api">Game data powered by <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a></p>
-  </footer>
+      <!-- Crédito da API RAWG -->
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
+    </footer>
 
   <script src="{{ url_for('static', filename='js/jogos.js') }}"></script>
 
