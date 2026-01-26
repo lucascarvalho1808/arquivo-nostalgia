@@ -135,7 +135,7 @@
               <div class="badges-item">
                 {% if item.tipo == 'filme' %}
                 <span class="badge badge-filme">
-                  <i class="fa-solid fa-film"></i> Filme
+                  <i class="fa-solid fa-clapperboard"></i> Filme
                 </span>
                 {% elif item.tipo == 'serie' %}
                 <span class="badge badge-serie">
@@ -449,6 +449,56 @@
         const url = `/arquivos/exportar-csv/${listaId}`;
         window.location.href = url; 
       });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  
+      const cardLinks = document.querySelectorAll(".card-item .link-item");
+
+      cardLinks.forEach((link) => {
+        link.addEventListener("click", function (e) {
+      
+          // 1. VERIFICAÇÃO DE MOUSE (A CORREÇÃO PRINCIPAL)
+          // Se o navegador detectar que esse clique veio de um MOUSE,
+          // a gente para a função aqui (return). O link abre direto.
+          // O hover do CSS já cuidou de mostrar o overlay antes.
+          if (e.pointerType === "mouse") return;
+
+          // -----------------------------------------------------------
+          // DAQUI PARA BAIXO, O CÓDIGO SÓ RODA SE FOR TOUCH (DEDO/CANETA)
+          // -----------------------------------------------------------
+
+          const card = this.closest(".card-item");
+          const isActive = card.classList.contains("mobile-active");
+
+          // Se o card NÃO está ativo (Primeiro Toque)
+          if (!isActive) {
+            // Bloqueia a entrada no link
+            e.preventDefault();
+
+            // Fecha todos os outros cards que estejam abertos
+            document.querySelectorAll(".card-item").forEach((c) => {
+              c.classList.remove("mobile-active");
+            });
+
+            // Adiciona a classe neste card (Mostra o overlay e botões)
+            card.classList.add("mobile-active");
+          }
+      
+          // Se já estava ativo (isActive == true), o código não faz nada,
+          // ou seja, o link funciona e abre a página.
+        });
+      });
+
+      // Fecha o overlay se clicar no fundo vazio (Lógica Mobile)
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".card-item")) {
+          document.querySelectorAll(".card-item").forEach((c) => {
+            c.classList.remove("mobile-active");
+          });
+        }
+      });
+    });
   </script>
   </body>
 </html>

@@ -357,7 +357,29 @@ body {
   .item-menu span {
     display: block;
   }
+
+  .info-pasta {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .info-conteudo-texto {
+    max-width: 100%;
+  }
+
+  .acoes-pasta {
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap; 
+  }
 }
+
+/* =========================================
+   CORREÇÃO HÍBRIDA (TABLETS E DESKTOP)
+   Funciona com mouse (hover) OU toque (classe .mobile-active)
+   ========================================= */
 
 @media (max-width: 600px) {
   .menu-icones {
@@ -394,14 +416,13 @@ body {
 
   .info-pasta {
     flex-direction: column;
-    align-items: flex-start;
     gap: 15px;
   }
 
   .btn-exportar {
-    width: 100%;
     justify-content: center;
   }
+
 }
 
 /* =========================================
@@ -410,17 +431,19 @@ body {
 
 .grid-itens-salvos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
 }
 
+/* --- ESTRUTURA DO CARD --- */
 .card-item {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
+  background: #22658f;
   transition: transform 0.3s ease;
+  z-index: 1; 
 }
 
 .card-item:hover {
@@ -433,8 +456,9 @@ body {
   display: block;
 }
 
+/* --- IMAGEM E OVERLAY  --- */
 .poster-container {
-  position: relative;
+  position: relative; 
   aspect-ratio: 2/3;
   overflow: hidden;
 }
@@ -445,38 +469,14 @@ body {
   object-fit: cover;
 }
 
-.overlay-hover {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  color: white;
-}
-
-.card-item:hover .overlay-hover {
-  opacity: 1;
-}
-
-.overlay-hover i {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
+/* --- INFO (TEXTO) --- */
 .info-item {
   padding: 1rem;
 }
 
 .titulo-item {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
   color: white;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -489,7 +489,7 @@ body {
 }
 
 .badge {
-  padding: 0.25rem 0.75rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 20px;
   font-size: 0.75rem;
   display: inline-flex;
@@ -497,47 +497,121 @@ body {
   gap: 0.25rem;
 }
 
-.badge-filme {
-  background: #6366f1;
+.badge-filme { background: #3b82f6; color: #0c3757; }
+.badge-serie { background: #ffffff; color: #0c3757; }
+.badge-jogo { background: #ffd700; color: #0c3757; }
+
+
+/* =========================================
+   OVERLAY E BOTÃO DE DELETAR (LÓGICA UNIFICADA)
+   ========================================= */
+
+/* 1. O Fundo Escuro (Overlay) */
+.overlay-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: white;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none; 
 }
 
-.badge-serie {
-  background: #9b59b6;
-  color: white;
+.overlay-hover i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
 }
 
-.badge-jogo {
-  background: #10b981;
-  color: white;
+/* Reativa cliques apenas no ícone e texto "Ver Detalhes" */
+.overlay-hover span, 
+.overlay-hover i {
+  pointer-events: auto;
 }
 
+/* 2. O Botão de Deletar */
 .btn-remover-item {
   position: absolute;
   top: 10px;
-  right: 10px;
-  background: rgba(220, 38, 38, 0.9);
-  border: none;
-  border-radius: 50%;
+  right: 10px; 
   width: 35px;
   height: 35px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.9);
+  color: white;
+  border: none; 
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  color: white;
+  cursor: pointer; 
+  z-index: 20;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-}
-
-.card-item:hover .btn-remover-item {
-  opacity: 1;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
 }
 
 .btn-remover-item:hover {
   background: rgba(185, 28, 28, 1);
+  transform: scale(1.1) !important;
 }
+
+.overlay-hover, 
+.btn-remover-item {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+/* --- REGRAS DE ATIVAÇÃO (MOUSE E TOQUE) --- */
+
+/* A. Quando passa o mouse (Desktop) */
+.card-item:hover .overlay-hover,
+.card-item:hover .btn-remover-item {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* B. Quando toca na tela (Tablet/Mobile via Javascript) */
+.card-item.mobile-active .overlay-hover,
+.card-item.mobile-active .btn-remover-item {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  .card-item:hover .overlay-hover,
+  .card-item:hover .btn-remover-item {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* 3. CENÁRIO B: Dispositivos TOUCH (Celular/Tablet) */
+/* Se não tiver mouse, dependemos da classe .touch-active que o JS vai colocar */
+.card-item.touch-active .overlay-hover,
+.card-item.touch-active .btn-remover-item {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ajuste visual para celular: o botão de deletar precisa ser clicável */
+.btn-remover-item {
+  z-index: 20; 
+}
+
+/* =========================================
+   OUTROS ELEMENTOS (Mensagem vazia, Modais, etc)
+   ========================================= */
 
 .mensagem-vazia {
   grid-column: 1 / -1;
@@ -546,30 +620,16 @@ body {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.mensagem-vazia i {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
+.mensagem-vazia i { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+.mensagem-vazia p { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.texto-secundario { font-size: 0.9rem; opacity: 0.7; }
 
-.mensagem-vazia p {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-}
-
-.texto-secundario {
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-
-/* Container de ações para alinhar os botões lado a lado */
 .acoes-pasta {
   display: flex;
   gap: 12px;
   align-items: center;
 }
 
-/* Estilo do novo botão de deletar */
 .btn-deletar-pasta {
   display: inline-flex;
   align-items: center;
@@ -587,19 +647,10 @@ body {
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
   text-transform: uppercase;
 }
-
-.btn-deletar-pasta i {
-  font-size: 1rem;
-}
-
 .btn-deletar-pasta:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
   filter: brightness(1.1);
-}
-
-.btn-deletar-pasta:active {
-  transform: translateY(0);
 }
 
 .btn-exportar {
@@ -613,8 +664,8 @@ body {
   font-size: 0.85rem;
 }
 
-/* modal overlay */
-#modal-delete-lista {
+/* --- MODAIS --- */
+#modal-delete-lista, .modal-overlay {
   position: fixed;
   inset: 0;
   display: none;
@@ -624,34 +675,12 @@ body {
   backdrop-filter: blur(4px);
   z-index: 4000;
 }
-#modal-delete-lista[aria-hidden="false"] {
-  display: flex;
-}
-
-/* Modal de deletar */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  z-index: 4000; 
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-/* Quando estiver ativo */
+#modal-delete-lista[aria-hidden="false"],
 .modal-overlay[aria-hidden="false"] {
   display: flex !important;
   opacity: 1;
 }
 
-/* A Caixa do Modal */
 .modal-content {
   background-color: #164f75;
   width: 500px;
@@ -661,18 +690,11 @@ body {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  font-family: "Segoe UI", sans-serif;
   display: flex;
   flex-direction: column;
-  transform: translateY(-20px);
-  transition: transform 0.3s ease;
-}
-
-.modal-overlay[aria-hidden="false"] .modal-content {
   transform: translateY(0);
 }
 
-/* Header com linha embaixo */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -681,37 +703,21 @@ body {
   border-bottom: 2px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 15px;
 }
-
 .modal-header h3 {
   margin: 0;
   font-size: 22px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: white;
 }
 
-/* Botão X de fechar */
 .btn-close {
   font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  color: white;
-  line-height: 1;
   background: none;
   border: none;
-  padding: 0 10px;
-}
-.btn-close:hover {
-  color: #ccc;
+  color: white;
+  cursor: pointer;
 }
 
-/* Corpo do modal */
-.modal-body {
-  margin-bottom: 30px;
-}
-
-/* Footer com os botões alinhados à direita */
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -721,63 +727,51 @@ body {
 .btn-pill {
   border: none;
   padding: 10px 35px;
-  border-radius: 50px; 
+  border-radius: 50px;
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  transition: transform 0.2s, filter 0.2s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
 }
+.btn-pill:hover { transform: scale(1.05); }
 
-.btn-pill:hover {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-
-/* Botão Cancelar */
 .btn-pill-cancel {
-  background-color: transparent;
+  background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: #e2e8f0;
 }
-.btn-pill-cancel:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: white;
-  color: white;
-}
-
-/* Botão Deletar (Vermelho) */
 .btn-pill-danger {
   background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
   color: white;
 }
 
-/* Responsividade */
+/* =========================================
+   RESPONSIVIDADE ESPECÍFICA DA GRADE
+   ========================================= */
+
 @media (max-width: 600px) {
-  .modal-content {
-    width: 95%;
-    padding: 20px;
+  .grid-itens-salvos {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 10px;
   }
-  .modal-header h3 {
-    font-size: 18px;
-  }
-  .modal-footer {
-    flex-direction: column-reverse; 
-  }
-  .btn-pill {
-    width: 100%;
-  }
+
+  .titulo-item { font-size: 0.75rem; }
+  .badge { font-size: 0.6rem; padding: 2px 6px; }
+  
+  /* No celular puro, o texto "Ver Detalhes" pode ser redundante se o card for pequeno,
+     mas mantemos o overlay escuro para destacar que foi clicado */
+  .overlay-hover span { display: none; }
+  .overlay-hover i { font-size: 1.5rem; }
+  
+  .modal-content { width: 95%; padding: 20px; }
+  .modal-footer { flex-direction: column-reverse; }
+  .btn-pill { width: 100%; }
 }
 
-@media (max-width: 1024px) {
-  .btn-remover-item {
-    opacity: 1 !important; 
-    background: rgba(220, 38, 38, 1); 
-    width: 40px; 
-    height: 40px;
+@media (max-width: 380px) {
+  .grid-itens-salvos {
+    grid-template-columns: repeat(2, 1fr);
   }
-
-  .btn-remover-item i {
-    font-size: 16px;
-  }
+  .titulo-item { font-size: 0.85rem; }
 }
