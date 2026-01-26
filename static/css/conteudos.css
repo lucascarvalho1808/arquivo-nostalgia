@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-/* --- Fundo da página --- */
+/* fundo da página */
 body {
     background-color: #417eaa;
     color: white;
@@ -32,7 +32,7 @@ body {
     z-index: 1000;
 }
 
-/* --- Logo --- */
+/* container do logo */
 .logo-container {
     display: flex;
     flex-direction: column;
@@ -45,18 +45,19 @@ body {
 
 .logo-container a {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     text-decoration: none;
     color: inherit;
 }
 
+/* logo pequena */
 .logo-pequena {
     max-width: 110px;
     margin-bottom: 5px;
 }
 
-/* --- Nome Logo --- */
+/* nome do site no cabeçalho */
 .nome-site-header {
     font-size: 12px;
     font-weight: 900;
@@ -93,7 +94,7 @@ body {
     gap: 20px;
     align-items: center;
     flex-shrink: 0;
-    width: 240px; 
+    width: 240px;
     justify-content: flex-end;
 }
 
@@ -121,8 +122,7 @@ body {
     margin-bottom: 5px;
 }
 
-
-/* --- Container Principal (Barra de Pesquisa e Pôsteres) --- */
+/* container principal da página (barra de pesquisa e pôsteres) */
 .container-layout {
     display: flex;
     flex: 1;
@@ -136,7 +136,7 @@ body {
     max-width: 100%;
 }
 
-/* --- Sidebar (Filtro) --- */
+/* barra lateral de filtros */
 .sidebar-filtro {
     width: 250px;
     background-color: #084063;
@@ -150,14 +150,14 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Sidebar ("Header") --- */
+/* cabeçalho da barra lateral */
 .titulo-filtro {
     background-color: #082d47;
     text-align: center;
     padding: 20px 0;
 }
 
-/* --- Sidebar (Nome "Filtro") --- */
+/* título da barra lateral */
 .titulo-filtro h2 {
     margin: 0;
     color: white;
@@ -166,18 +166,17 @@ body {
     letter-spacing: 2px;
 }
 
-/* --- Sidebar (Conteúdo "Gêneros") --- */
+/* conteúdo da barra lateral (gêneros) */
 .sidebar-conteudo {
     padding: 15px;
     overflow-y: auto;
     flex: 1;
     padding-right: 10px;
-    /* Para Firefox */
     scrollbar-width: thin;
     scrollbar-color: #0c3757 #084063;
 }
 
-/* --- ESTILO DA BARRA (Chrome, Edge, Safari, Opera) --- */
+/* barra de rolagem da barra lateral (Chrome, Edge, Safari, Opera) */
 .sidebar-conteudo::-webkit-scrollbar {
     width: 7px;
 }
@@ -199,7 +198,7 @@ body {
     display: none;
 }
 
-/* --- Caixa dos Gêneros do Filtro --- */
+/* caixa dos gêneros do filtro */
 .design-botao {
     display: flex;
     flex-direction: column;
@@ -236,7 +235,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* --- Caixa dos Gêneros do Filtro (Quando selecionado) --- */
+/* estilo da caixa do gênero quando selecionada */
 .botao-genero input:checked+.design-botao {
     background-color: #22658f;
     color: white;
@@ -245,7 +244,7 @@ body {
     font-weight: 900;
 }
 
-/* --- Botão Buscar --- */
+/* botão de buscar */
 .botao-buscar {
     width: 100%;
     background-color: #0c3757;
@@ -263,7 +262,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* --- Botão Buscar (Hover) --- */
+/* efeito hover no botão de buscar */
 .botao-buscar:hover {
     background-color: #22658f;
     border-color: #5aa1d1;
@@ -271,7 +270,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* --- Área de Scroll (DIREITA) --- */
+/* área de conteúdo à direita da sidebar */
 .area-scrollavel {
     flex: 1;
     overflow-y: auto;
@@ -280,30 +279,29 @@ body {
     scrollbar-color: #0c3757 #417eaa;
 }
 
-/* --- Barra de Busca Espaçamento para Cima --- */
+/* espaçamento da barra de busca */
 .barra-busca-container {
     margin-bottom: 20px;
 }
 
-/* --- Barra de Busca (Placeholder) --- */
+/* placeholder da barra de busca */
 .barra-busca-container input::placeholder {
     color: #0c3757;
     opacity: 1;
 }
 
-/* --- Barra de Busca (Posição) --- */
+/* posição da barra de busca */
 .barra-topo {
     position: relative;
     width: 100%;
 }
 
-/* --- Barra de Busca --- */
+/* input da barra de busca */
 .barra-topo input {
     width: 100%;
     padding: 15px 25px;
     border-radius: 30px;
     border: 3px solid #0c3757;
-    /* Borda igual da home */
     outline: none;
     font-size: 16px;
     font-weight: bold;
@@ -311,7 +309,7 @@ body {
     background-color: rgba(255, 255, 255, 0.95);
 }
 
-/* --- Barra de Busca (ícone Lupa) --- */
+/* ícone da lupa na barra de busca */
 .icone-lupa {
     position: absolute;
     right: 20px;
@@ -328,21 +326,22 @@ body {
     grid-template-columns: repeat(auto-fill, 160px);
     gap: 20px;
     padding: 20px;
-    justify-content: center; 
+    justify-content: center;
 }
 
-/* Estilo do Poster */
+/* estilo do pôster */
 .item-poster {
-    width: 160px;  
-    height: 240px; 
+    width: 160px;
+    height: 240px;
     border-radius: 10px;
     overflow: hidden;
     transition: transform 0.3s ease;
     cursor: pointer;
     background-color: #222;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+/* efeito hover no pôster */
 .item-poster:hover {
     transform: scale(1.05);
     z-index: 2;
@@ -356,12 +355,95 @@ body {
     display: block;
 }
 
+/* pôster de jogos e placeholder */
+.poster-jogos,
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+/* estrutura do card de pôster */
+.poster-wrapper,
+.game-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+}
+
+/* overlay escuro ao mostrar o nome do jogo */
+.game-info-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 10%, rgba(12, 55, 87, 0.4) 50%, rgba(12, 55, 87, 0.95) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* nome do jogo no overlay */
+.game-title {
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 3px rgba(12, 55, 87, 1);
+    padding: 0 10px;
+}
+
+/* exibe overlay e zoom no hover ou em dispositivos touch */
+.poster-wrapper:hover .game-info-overlay,
+.game-card:hover .game-info-overlay,
+.poster-wrapper.ativo .game-info-overlay,
+.game-card.ativo .game-info-overlay {
+    opacity: 1;
+}
+
+/* 2. Zoom na Imagem */
+.poster-wrapper:hover .poster-jogos,
+.game-card:hover .poster-jogos,
+.poster-wrapper.ativo .poster-jogos,
+.game-card.ativo .poster-jogos {
+    transform: scale(1.1);
+}
+
+/* 3. Sombra Externa */
+.poster-wrapper:hover,
+.game-card:hover,
+.poster-wrapper.ativo,
+.game-card.ativo {
+    box-shadow: 0 5px 20px rgba(12, 55, 87, 0.8);
+    z-index: 5;
+}
+
+.poster-jogos {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
 /* Remove o estilo antigo do poster-vazio se ainda existir */
 .poster-vazio {
     display: none;
 }
 
-/* --- Área Botão "Ver Mais" --- */
+/* área do botão "ver mais" */
 .container-botao-mais {
     width: 100%;
     display: flex;
@@ -369,7 +451,7 @@ body {
     margin: 40px 0 20px 0;
 }
 
-/* --- Estilização Botão "Ver Mais" --- */
+/* botão "ver mais" */
 #botao-ver-mais {
     background-color: #22658f;
     border: 2px solid #0c3757;
@@ -383,7 +465,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* --- Hover Botão "Ver Mais" --- */
+/* efeito hover no botão "ver mais" */
 #botao-ver-mais:hover {
     background-color: #0c3757;
     color: white;
@@ -391,7 +473,7 @@ body {
     box-shadow: 0 4px 15px rgba(12, 55, 87, 0.3);
 }
 
-/* --- Footer --- */
+/* rodapé principal */
 .rodape-principal {
     width: 100%;
     background-color: #0c3757;
@@ -399,26 +481,27 @@ body {
     text-align: center;
     font-size: 10px;
     font-weight: 500;
-    letter-spacing: 0.px;
+    letter-spacing: 0px;
     margin-top: auto;
     flex-shrink: 0;
-    height: 60px;
+    height: auto;
+    min-height: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    padding: 20px 0;
+    gap: 5px;
+    padding: 15px 0;
 }
 
-/* --- Links Footer --- */
+/* links do rodapé */
 .links-rodape {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-/* --- Links Footer Estilização --- */
+/* estilização dos links do rodapé */
 .links-rodape a {
     color: #a0a0a0;
     text-decoration: none;
@@ -427,19 +510,19 @@ body {
     transition: color 0.3s;
 }
 
-/* --- Links Footer Hover --- */
+/* efeito hover nos links do rodapé */
 .links-rodape a:hover {
     color: #ffffff;
     text-decoration: underline;
 }
 
-/* --- Links Footer Separador --- */
+/* separador entre links do rodapé */
 .separador {
     color: #555;
     font-size: 0.8rem;
 }
 
-/* --- Texto Copyrigth e Frase de Efeito --- */
+/* texto de copyright e frase de efeito no rodapé */
 .texto-copyright {
     font-size: 0.75rem;
     color: #999;
@@ -447,21 +530,120 @@ body {
 }
 
 /* --- MEDIA QUERIES --- */
-@media (min-width: 861px) and (max-width: 1024px) {
+
+@media (min-width: 1024px) {
+    .sidebar-filtro {
+        max-height: 85vh;
+        height: auto;
+        overflow-y: auto;
+        align-self: flex-start;
+        border-radius: 20px;
+        position: static;
+    }
+
+
+    .input-gatilho,
+    .botao-toggle-filtro {
+        display: none;
+    }
 
     .container-layout {
-        gap: 15px;
-        padding-left: 10px;
-        padding-right: 10px;
+        height: 100vh;
+        overflow: hidden;
+        align-items: flex-start;
+    }
+
+    .sidebar-conteudo {
+        overflow-y: auto;
+        flex: 1;
+        scrollbar-width: thin;
+    }
+
+    .area-scrollavel {
+        flex: 1;
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 20px;
+        padding-right: 15px;
+    }
+
+    .grade-posters {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 20px;
+        padding-bottom: 40px;
+    }
+
+    .item-poster {
+        width: 160px;
+        height: 240px;
+        aspect-ratio: unset;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1025px) and (min-height: 900px) {
+    .sidebar-filtro {
+        max-height: 62vh;
+    }
+}
+
+@media (min-width: 1024px) and (max-height: 900px) {
+
+    .container-layout {
+        padding-top: 130px;
+        padding-bottom: 10px;
+        align-items: flex-start;
     }
 
     .sidebar-filtro {
-        width: 190px;
+        width: 230px;
+        max-height: calc(100vh - 160px);
+        height: 100%;
         position: static;
-        height: auto;
-        transform: none;
         display: flex;
-        max-height: 61vh;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .sidebar-conteudo {
+        overflow-y: auto;
+        flex: 1;
+    }
+
+    .grade-posters {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .item-poster {
+        width: 140px;
+        height: 210px;
+    }
+
+    .input-gatilho,
+    .botao-toggle-filtro {
+        display: none;
+    }
+}
+
+@media (min-width: 861px) and (max-width: 1023px) {
+
+    .container-layout {
+        gap: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .sidebar-filtro {
+        width: 200px;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        max-height: 65vh;
+        height: auto;
+        overflow-y: auto;
+        align-self: flex-start;
     }
 
     .grade-generos {
@@ -473,12 +655,8 @@ body {
         font-size: 14px;
     }
 
-    .item-genero {
-        font-size: 13px;
-    }
-
     .design-botao {
-        padding: 10px 5px;
+        padding: 8px 4px;
     }
 
     .design-botao i {
@@ -490,15 +668,18 @@ body {
     }
 
     .grade-posters {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 15px;
     }
 
-    m-menu span {
-        display: none;
+    .item-poster {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2/3;
     }
 
-    .input-gatilho, .botao-toggle-filtro {
+    .input-gatilho,
+    .botao-toggle-filtro {
         display: none;
     }
 }
@@ -553,14 +734,45 @@ body {
     .sidebar-filtro {
         position: fixed;
         width: 210px;
-        top: 300px;
-        left: -250px;
-        height: calc(100vh - 310px);
-        max-height: none;
-        max-height: 67vh;
+        top: 280px;
+        bottom: auto;
+        max-height: calc(100vh - 300px);
+        height: auto;
+        display: flex;
+        flex-direction: column;
         z-index: 1999;
         transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+        border-bottom-right-radius: 12px;
+        left: -250px;
+    }
+
+    .sidebar-conteudo {
+        flex: 1;
+        overflow-y: auto;
+        min-height: 0;
+        padding: 10px;
+    }
+
+    .botao-buscar {
+        width: 85%;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 12px 0;
+        background-color: #0c3757;
+        color: white;
+        border: 1px solid #22658f;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        flex-shrink: 0;
     }
 
     .botao-toggle-filtro {
@@ -569,7 +781,7 @@ body {
         gap: 10px;
         position: fixed;
         left: 0;
-        top: 322px;
+        top: 400px;
         z-index: 2000;
         background-color: #0c3757;
         color: white;
@@ -617,15 +829,253 @@ body {
     .container-botao-mais {
         margin-bottom: 40px;
     }
+
+    .grade-posters {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        padding: 15px;
+        justify-content: center;
+    }
+
+    /* 2. A CORREÇÃO DE PROPORÇÃO (Igual ao Mobile) */
+    .item-poster,
+    .game-card {
+        width: 100%;
+        aspect-ratio: 2/3;
+        /* Força o retângulo vertical */
+        height: auto;
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        display: block;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* 3. A CORREÇÃO DA IMAGEM (Corta para caber) */
+    .poster-jogos {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 0;
+        /* O arredondamento fica na div pai (.item-poster) */
+    }
+
 }
 
-@media (min-width: 1025px) {
+@media (max-width: 600px) {
 
-    .sidebar-filtro {
-        max-height: 100vh;
+    .container-layout {
+        padding-top: 225px;
     }
 
-    .input-gatilho, .botao-toggle-filtro {
-        display: none;
+    .logo-container {
+        order: 1;
+        width: 100%;
+        margin-bottom: 0;
     }
+
+    .menu-icones {
+        order: 2;
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 2px;
+        gap: 0;
+    }
+
+    .logo-pequena {
+        max-width: 90px; 
+        margin-bottom: 0;
+    }
+    
+    .nome-site-header {
+        font-size: 10px;
+    }
+
+    .item-menu span {
+        font-size: 9px;
+        margin-top: 2px;
+    }
+
+    .item-menu i {
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+
+    .caixa-titulo {
+        padding: 8px 60px;
+        margin-bottom: 5px;
+    }
+    
+    .caixa-titulo h1 {
+        font-size: 16px;
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .container-layout {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .grade-posters {
+        display: grid;
+        /* Define 2 colunas de tamanho igual */
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        padding-bottom: 20px;
+        justify-content: center;
+    }
+
+    /* AQUI ESTÁ A MÁGICA DA CORREÇÃO */
+    .item-poster,
+    .game-card {
+        width: 100%;
+        /* Define a proporção fixa (Vertical). 
+           Pode usar 3/4 se achar 2/3 muito alto */
+        aspect-ratio: 2/3;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        margin: 0;
+        display: block;
+        position: relative;
+        /* Garante que a imagem absoluta fique aqui dentro */
+        overflow: hidden;
+        /* Garante que nada saia da borda redonda */
+    }
+
+    /* Forçamos a imagem a preencher a caixa criada acima */
+    .poster-jogos {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        /* Corta as laterais para preencher sem esticar */
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+
+/* Crédito API - Rodapé */
+.credito-api {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 2px 0;
+    padding: 0;
+    line-height: 1;
+}
+
+.credito-api a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+}
+
+.credito-api a:hover {
+    text-decoration: underline;
+}
+
+/* Loading de busca */
+.loading-busca {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
+.loading-busca .spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top: 4px solid #4a90a4;
+    border-radius: 50%;
+    animation: girar 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes girar {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-busca p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+/* Mensagens de busca */
+.mensagem-erro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    width: 100%;
+    grid-column: 1 / -1;
+    color: #ff6b6b;
+    font-size: 1.1rem;
+}
+
+.mensagem-erro i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.7;
+}
+
+/* Sem resultados */
+.sem-resultados {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    width: 100%;
+    grid-column: 1 / -1;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sem-resultados i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.4;
+}
+
+.sem-resultados p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.btn-limpar-busca {
+    background-color: #2c5a7c;
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-limpar-busca:hover {
+    background-color: #4a90a4;
+    transform: scale(1.05);
 }

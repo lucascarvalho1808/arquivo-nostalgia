@@ -1,8 +1,9 @@
 import random
 from datetime import datetime
-from services.api_tmdb import buscar_filmes_populares
+from services.api_tmdb import buscar_filmes_classicos
 from services.ia_gemini import gerar_arquivo_confidencial
 
+# Variáveis de cache para evitar gerar uma nova curiosidade mais de uma vez por dia
 _cache_curiosidade = None
 _data_ultima_atualizacao = None
 
@@ -23,8 +24,8 @@ def get_curiosidade_diaria():
     print("Gerando nova curiosidade do dia...")
 
     try:
-        # Busca lista de filmes populares
-        filmes = buscar_filmes_populares(pagina=1)
+        # Busca lista de filmes clássicos (página 1)
+        filmes = buscar_filmes_classicos(pagina=1)
         
         if not filmes:
             return None
@@ -35,7 +36,7 @@ def get_curiosidade_diaria():
         # Chama o Gemini para gerar o texto
         texto_curiosidade = gerar_arquivo_confidencial(filme_escolhido['titulo'], "filme")
 
-        # 4. Monta o objeto final
+        # Monta o objeto final com as informações do filme e o texto gerado
         nova_curiosidade = {
             'titulo': filme_escolhido['titulo'],
             'data_lancamento': filme_escolhido['data_lancamento'],
@@ -44,7 +45,7 @@ def get_curiosidade_diaria():
             'tipo': 'filme'
         }
 
-        # Salva no cache
+        # Salva no cache para não gerar novamente no mesmo dia
         _cache_curiosidade = nova_curiosidade
         _data_ultima_atualizacao = hoje
         

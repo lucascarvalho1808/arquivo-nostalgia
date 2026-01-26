@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Cadastro</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+    <title>Cadastro - Arquivo Nostalgia</title>
     <link rel="stylesheet" href="../../static/css/auth.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="../../static/img/logo_arquivo_nostalgia.png" type="image/x-icon">
@@ -18,7 +22,7 @@
         <h2 class="titulo-nostalgia">Arquivo Nostalgia</h2>
 
         <form action="" method="POST">
-            {{ form.hidden_tag() }} <!-- Proteção CSRF -->
+            {{ form.hidden_tag() }} <!-- Proteção -->
 
             <div class="grupo-campo">
                 {{ form.nome.label(class="label-visual") }} <!-- Usa o label do formulário -->
@@ -57,7 +61,7 @@
         </form>
 
         <div class="link-entrar">
-            Já tem conta? <a href="{{ url_for('login') }}">Entre aqui.</a>
+            <a href="{{ url_for('auth.login') }}">Já tem conta? Faça login</a>
         </div>
 
     </div>

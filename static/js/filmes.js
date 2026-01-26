@@ -1,20 +1,22 @@
-// Controle de estado
+// Controle de estado da página e filtros
 let paginaAtual = 1;
 let generosSelecionados = '';  // Guarda os gêneros do filtro ativo
 
-// Elementos do DOM
+// Elementos do DOM usados na página de filmes
 const botaoVerMais = document.getElementById('botao-ver-mais');
 const gradePosters = document.querySelector('.grade-posters');
 const btnBuscarFiltro = document.getElementById('btn-buscar-filtro');
 const formFiltros = document.getElementById('form-filtros');
 
-/**
- * Cria o HTML de um poster e adiciona na grade
+/*
+ Cria o HTML de um poster e adiciona na grade
  */
 function criarPoster(filme) {
     if (filme.poster_url) {
         const divPoster = document.createElement('div');
         divPoster.className = 'item-poster';
+        divPoster.dataset.id = filme.id;
+        divPoster.dataset.tipo = 'filme';
         divPoster.innerHTML = `
             <a href="#">
                 <img src="${filme.poster_url}" alt="${filme.titulo}" loading="lazy">
@@ -25,23 +27,23 @@ function criarPoster(filme) {
 }
 
 /**
- * Limpa a grade de posters
+ * Limpa todos os posters da grade.
  */
 function limparGrade() {
     gradePosters.innerHTML = '';
 }
 
-/**
- * Coleta os IDs dos gêneros selecionados nos checkboxes
+/*
+ Coleta os IDs dos gêneros selecionados nos checkboxes
  */
 function coletarGenerosSelecionados() {
     const checkboxes = formFiltros.querySelectorAll('input[name="genero"]:checked');
     const ids = Array.from(checkboxes).map(cb => cb.value);
-    return ids.join(',');  // Ex: "28,35,12"
+    return ids.join(',');  
 }
 
-/**
- * Busca filmes (com ou sem filtro) e atualiza a grade
+/*
+ Busca filmes (com ou sem filtro) e atualiza a grade
  */
 async function buscarFilmes(pagina, generos, substituir = false) {
     try {
@@ -53,6 +55,7 @@ async function buscarFilmes(pagina, generos, substituir = false) {
         const response = await fetch(url);
         const filmes = await response.json();
 
+        // Se não houver resultados, exibe mensagem e desativa botão
         if (filmes.length === 0) {
             if (substituir) {
                 gradePosters.innerHTML = '<p style="color: white; text-align: center; grid-column: 1/-1;">Nenhum filme encontrado para estes filtros.</p>';
@@ -70,20 +73,48 @@ async function buscarFilmes(pagina, generos, substituir = false) {
         // Adiciona os filmes na grade
         filmes.forEach(filme => criarPoster(filme));
 
-        // Reativa o botão
+        // Adiciona os listeners de clique nos novos posters
+        adicionarEventListenersFilmes();
+
+        // Reativa o botão "Ver mais"
         botaoVerMais.disabled = false;
         botaoVerMais.textContent = 'Ver mais';
 
     } catch (error) {
+        // Em caso de erro, exibe mensagem e reativa botão
         console.error('Erro ao carregar filmes:', error);
         botaoVerMais.textContent = 'Erro - Tentar novamente';
         botaoVerMais.disabled = false;
     }
 }
 
-// --- EVENT LISTENERS ---
+/*
+ Adiciona event listeners de clique aos posters de filmes.
+ Remove listeners antigos clonando o elemento antes de adicionar novos.
+ */
+function adicionarEventListenersFilmes() {
+    document.querySelectorAll('.item-poster').forEach(item => {
+        // Remove listeners duplicados clonando o elemento
+        const novoItem = item.cloneNode(true);
+        item.parentNode.replaceChild(novoItem, item);
+    });
+    
+    // Adiciona os listeners aos elementos limpos
+    document.querySelectorAll('.item-poster').forEach(item => {
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            const tipo = this.dataset.tipo;
+            
+            if (id && tipo) {
+                window.location.href = `/detalhes/${tipo}/${id}`;
+            }
+        });
+    });
+}
 
-// Botão "Ver mais" - Carrega próxima página
+// Botão "Ver mais" - Carrega próxima página de filmes
 if (botaoVerMais) {
     botaoVerMais.addEventListener('click', async function() {
         botaoVerMais.disabled = true;
@@ -101,7 +132,7 @@ if (btnBuscarFiltro) {
         paginaAtual = 1;
         generosSelecionados = coletarGenerosSelecionados();
         
-        // Feedback visual
+        // Feedback visual de carregamento
         btnBuscarFiltro.textContent = 'Buscando...';
         btnBuscarFiltro.disabled = true;
 
@@ -113,3 +144,6 @@ if (btnBuscarFiltro) {
         btnBuscarFiltro.disabled = false;
     });
 }
+
+// Chama a função para adicionar listeners nos posters ao carregar a página
+document.addEventListener('DOMContentLoaded', adicionarEventListenersFilmes);

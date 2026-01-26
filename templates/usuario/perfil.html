@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+    <title>Perfil - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/perfil.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+    <header class="cabecalho-principal">
+      <div class="logo-container">
+        <a href="{{ url_for('main.index') }}">
+          <img
+        src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+        alt="Logo"
+        class="logo-pequena"
+          />
+        </a>
+        <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+      </div>
+
+      <div class="header-centro">
+        <div class="caixa-titulo">
+          <h1>PERFIL</h1>
+        </div>
+      </div>
+
+      <nav class="menu-icones">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>Filmes</span>
+        </a>
+        <a href="{{ url_for('series.index') }}" class="item-menu">
+          <i class="fa-solid fa-tv"></i>
+          <span>Séries</span>
+        </a>
+        <a href="{{ url_for('jogos.index') }}" class="item-menu">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Jogos</span>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <!-- MENU PARA QUEM ESTÁ LOGADO -->
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('perfil.perfil') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Perfil</span>
+        </a>
+        {% else %}
+        <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Login</span>
+        </a>
+
+        {% endif %}
+      </nav>
+    </header>
+
+    <main class="container-dashboard">
+
+        <div class="dashboard-card">
+
+            <div class="profile-hero">
+                <div class="avatar-wrapper-astro">
+                    <i class="fa-solid fa-user-astronaut"></i>
+                </div>
+
+                <div class="hero-info">
+                    <h1 class="hero-name" id="nome-usuario">{{ usuario.username or usuario.nome or usuario.email.split('@')[0] }}</h1>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span class="hero-rank">
+                          <i class="fa-solid fa-trophy {{ rank_geral[1] }}"></i> {{ rank_geral[0] }}
+                        </span>
+
+                        <div class="rank-info-wrapper">
+                            <i id="hero-info-icon" class="fa-solid fa-circle-info info-icon"></i>
+                            <div class="rank-tooltip tooltip-down">
+                                <span class="tooltip-title">Ranking Global</span>
+                                <ul class="rank-list">
+                                    <li><span><i class="fa-solid fa-trophy t-bronze"></i> Rank I</span> <span>0+</span>
+                                    </li>
+                                    <li><span><i class="fa-solid fa-trophy t-prata"></i> Rank II</span> <span>20+</span>
+                                    </li>
+                                    <li><span><i class="fa-solid fa-trophy t-ouro"></i> Rank III</span>
+                                        <span>100+</span>
+                                    </li>
+                                    <li><span><i class="fa-solid fa-trophy t-rubi"></i> Rank IV</span> <span>250+</span>
+                                    </li>
+                                    <li><span><i class="fa-solid fa-trophy t-diamante"></i> Rank V</span>
+                                        <span>500+</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-grid-topo">
+
+                <div class="info-box destaque-frase">
+                    <div class="box-icon"><i class="fa-solid fa-quote-left"></i></div>
+                    <div class="box-content">
+                        <span class="label">Frase Nostálgica</span>
+                        <p class="value">"Onde o tempo para e a memória prevalece..."</p>
+                    </div>
+                </div>
+
+                <div class="info-duplo">
+                    <div class="info-box mini">
+                        <div class="box-icon"><i class="fa-regular fa-envelope"></i></div>
+                        <div class="box-content">
+                            <span class="label">E-mail</span>
+                            <p class="value-mini">{{ usuario.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="info-box mini">
+                        <div class="box-icon"><i class="fa-solid fa-calendar-check"></i></div>
+                        <div class="box-content">
+                            <span class="label">Desde</span>
+                            <p class="value-mini">
+                              {% if data_cadastro %}
+                                {{ data_cadastro.strftime('%d/%m/%Y') if data_cadastro else '' }}
+                              {% else %}
+                                Não disponível
+                              {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="stats-container">
+
+                <div class="stat-card filmes">
+                    <div class="stat-icon {{ rank_filme[2] }}">
+                        <i class="fa-solid fa-trophy {{ rank_filme[1] }}"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <span class="stat-label">Coleção de Filmes</span>
+                            <div class="rank-info-wrapper">
+                                <i class="fa-solid fa-circle-info info-icon"></i>
+                                <div class="rank-tooltip">
+                                    <span class="tooltip-title">Rank Filmes</span>
+                                    <ul class="rank-list">
+                                        <li><span><i class="fa-solid fa-trophy t-bronze"></i> Rank I</span>
+                                            <span>0-10</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-prata"></i> Rank II</span>
+                                            <span>11-50</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-ouro"></i> Rank III</span>
+                                            <span>51-150</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-rubi"></i> Rank IV</span>
+                                            <span>151-300</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-diamante"></i> Rank V</span>
+                                            <span>301+</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="stat-rank">
+                          {{ rank_filme[0] }}
+                        </h3>
+                        <span id="count-filmes" style="display:none;">{{ stats.filmes.quantidade }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-card series">
+                    <div class="stat-icon {{ rank_serie[2] }}">
+                        <i class="fa-solid fa-trophy {{ rank_serie[1] }}"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <span class="stat-label">Maratona de Séries</span>
+                            <div class="rank-info-wrapper">
+                                <i class="fa-solid fa-circle-info info-icon"></i>
+                                <div class="rank-tooltip">
+                                    <span class="tooltip-title">Rank Séries</span>
+                                    <ul class="rank-list">
+                                        <li><span><i class="fa-solid fa-trophy t-bronze"></i> Rank I</span>
+                                            <span>0-5</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-prata"></i> Rank II</span>
+                                            <span>6-15</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-ouro"></i> Rank III</span>
+                                            <span>16-30</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-rubi"></i> Rank IV</span>
+                                            <span>31-60</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-diamante"></i> Rank V</span>
+                                            <span>61+</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="stat-rank">
+                          {{ rank_serie[0] }}
+                        </h3>
+                        <span id="count-series" style="display:none;">{{ stats.series.quantidade }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-card jogos">
+                    <div class="stat-icon {{ rank_jogo[2] }}">
+                        <i class="fa-solid fa-trophy {{ rank_jogo[1] }}"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <span class="stat-label">Biblioteca de Jogos</span>
+                            <div class="rank-info-wrapper">
+                                <i class="fa-solid fa-circle-info info-icon"></i>
+                                <div class="rank-tooltip">
+                                    <span class="tooltip-title">Rank Jogos</span>
+                                    <ul class="rank-list">
+                                        <li><span><i class="fa-solid fa-trophy t-bronze"></i> Rank I</span>
+                                            <span>0-5</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-prata"></i> Rank II</span>
+                                            <span>6-20</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-ouro"></i> Rank III</span>
+                                            <span>21-50</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-rubi"></i> Rank IV</span>
+                                            <span>51-100</span>
+                                        </li>
+                                        <li><span><i class="fa-solid fa-trophy t-diamante"></i> Rank V</span>
+                                            <span>101+</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="stat-rank">
+                          {{ rank_jogo[0] }}
+                        </h3>
+                        <span id="count-jogos" style="display:none;">{{ stats.jogos.quantidade }}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="dashboard-footer">
+                <button class="btn-action editar" id="btn-editar"><i class="fa-solid fa-pen-to-square"></i> Editar
+                    Perfil</button>
+                <button class="btn-action sair" id="btn-sair">
+                  <i class="fa-solid fa-arrow-right-to-bracket"></i> Sair
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="rodape-principal">
+      <div class="links-rodape">
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
+      </div>
+
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
+    </footer>
+
+    <script>
+        const btnEditar = document.getElementById('btn-editar');
+        const nomeUsuario = document.getElementById('nome-usuario');
+
+        // Variável para controlar se está editando ou não
+        let editando = false;
+
+        btnEditar.addEventListener('click', () => {
+            if (!editando) {
+                // Modo edição
+                const nomeAtual = nomeUsuario.innerText;
+                nomeUsuario.innerHTML = `<input type="text" class="input-editar-nome" id="input-nome-temp" value="${nomeAtual}">`;
+                btnEditar.innerHTML = '<i class="fa-solid fa-check"></i> Salvar';
+                btnEditar.style.backgroundColor = '#4caf50';
+                btnEditar.style.color = 'white';
+                editando = true;
+            } else {
+                // Modo salvar
+                const input = document.getElementById('input-nome-temp');
+                const novoNome = input.value;
+
+                if (novoNome.trim() !== "") {
+                    // Chama a API para atualizar o nome
+                    fetch("{{ url_for('perfil.atualizar_nome') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ nome: novoNome })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            nomeUsuario.innerText = data.nome;
+                            btnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Editar Perfil';
+                            btnEditar.style.backgroundColor = '';
+                            btnEditar.style.color = '';
+                            editando = false;
+                        } else {
+                            alert(data.mensagem || "Erro ao atualizar nome.");
+                        }
+                    })
+                    .catch(() => {
+                        alert("Erro ao atualizar nome.");
+                    });
+                } else {
+                    alert("O nome não pode ficar vazio!");
+                    return;
+                }
+            }
+        });
+
+        // Lógica Mobile e Desktop
+        const infoWrappers = document.querySelectorAll('.rank-info-wrapper');
+
+        infoWrappers.forEach(wrapper => {
+            wrapper.addEventListener('click', (event) => {
+                // 1. Impede que o clique feche imediatamente (stopPropagation)
+                event.stopPropagation();
+
+                // 2. Verifica se este tooltip já está aberto
+                const estaAberto = wrapper.classList.contains('ativo');
+
+                // 3. Fecha TODOS os tooltips primeiro (para não ficar 2 abertos)
+                infoWrappers.forEach(w => w.classList.remove('ativo'));
+
+                // 4. Se ele não estava aberto, a gente abre agora.
+                // Se já estava aberto, ele vai cair no passo 3 e fechar (efeito toggle)
+                if (!estaAberto) {
+                    wrapper.classList.add('ativo');
+                }
+            });
+        });
+
+        // Fecha os tooltips se clicar em qualquer lugar fora deles
+        document.addEventListener('click', () => {
+            infoWrappers.forEach(w => w.classList.remove('ativo'));
+        });
+    </script>
+    <script>
+        document.getElementById('btn-sair').onclick = function() {
+        window.location.href = "{{ url_for('auth.logout') }}";
+        }
+    </script>
+
+</body>
+
+</html>

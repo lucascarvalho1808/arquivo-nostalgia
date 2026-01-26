@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-/* --- Fundo da página --- */
+/* fundo da página */
 body {
     background-color: #417eaa;
     font-family: sans-serif;
@@ -16,7 +16,7 @@ body {
     padding: 20px;
 }
 
-/* --- Caixa do formulário --- */
+/* caixa do formulário */
 .cartao-formulario {
     width: 100%;
     max-width: 600px;
@@ -27,7 +27,7 @@ body {
     color: white;
 }
 
-/* --- Logo --- */
+/* logo do formulário */
 .logo-form {
     display: block;
     margin: 0 auto 10px auto;
@@ -48,12 +48,12 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Margem para cima dos campos para preencher --- */
+/* margem inferior dos grupos de campos */
 .grupo-campo {
     margin-bottom: 20px;
 }
 
-/* --- Ajusta os labels --- */
+/* estilização dos labels */
 .label-visual {
     display: flex;
     align-items: center;
@@ -62,14 +62,14 @@ body {
     margin-bottom: 10px;
 }
 
-/* --- Ajusta os ícones --- */
+/* ícones dos campos */
 i {
     font-size: 26px;
     margin-right: 10px;
     color: #0c3757;
 }
 
-/* --- Estilo caixas de input --- */
+/* campos de input */
 input.caixa-branca {
     width: 100%;
     padding: 15px;
@@ -81,7 +81,7 @@ input.caixa-branca {
     box-sizing: border-box;
 }
 
-/* --- Botão de cadastro --- */
+/* botão de cadastro */
 .botao-cadastrar {
     width: 100%;
     padding: 15px;
@@ -102,10 +102,9 @@ input.caixa-branca {
     filter: brightness(1.1);
     background: #042946;
     color: white;
-
 }
 
-/* --- Botão de cadastro --- */
+/* botão de entrar */
 .botao-entrar {
     width: 100%;
     padding: 15px;
@@ -121,27 +120,27 @@ input.caixa-branca {
     transition: background 1.3s;
 }
 
-/* --- Botão de cadastro com o mouse em cima--- */
+/* efeito hover no botão de entrar */
 .botao-entrar:hover {
     filter: brightness(1.1);
     background: #042946;
     color: white;
 }
 
-/* --- Link "Entrar aqui" --- */
+/* link para entrar na página de login */
 .link-entrar {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
 }
 
-/* --- Link "Entrar aqui" com  --- */
+/* estilização do link "entrar aqui" */
 .link-entrar a {
     color: white;
     text-decoration: underline;
 }
 
-/* Faz com que os dois links fiquem separados (esquerda e direita) */
+/* container para os links de login */
 .links-login {
     display: flex;
     justify-content: space-between; 
@@ -149,13 +148,62 @@ input.caixa-branca {
     font-size: 12px; 
 }
 
-/* Estiliza os links da página de login */
+/* estilização dos links de login */
 .links-login a {
     color: white;
     text-decoration: underline;
     font-weight: bold;
 }
 
+/* --- MEDIA QUERIES --- */
+
+@media (max-width: 480px) {
+
+    .cartao-formulario {
+        padding: 30px 15px;
+        width: 100%;
+        margin: 20px auto;
+    }
+
+    .titulo-nostalgia {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+
+    .logo-form {
+        max-width: 150px;
+        margin-bottom: 5px;
+    }
+
+    .botao-cadastrar, 
+    .botao-entrar {
+        font-size: 15px;
+        padding: 12px 10px;
+        white-space: normal; 
+        line-height: 1.2;
+        width: 100%;
+    }
+
+    input.caixa-branca {
+        font-size: 14px;
+        padding: 12px;
+    }
+    
+    .label-visual {
+        font-size: 15px;
+    }
+    
+    i {
+        font-size: 20px;
+    }
+
+    .links-login {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        text-align: center;
+    }
+}
 
 @media (max-width: 300px) {
     .cartao-formulario {

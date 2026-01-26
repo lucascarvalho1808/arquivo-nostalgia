@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+    <title>Nenhum resultado - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/resultados.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" type="image/x-icon">
+</head>
+
+<body>
+
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <a href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo" class="logo-pequena" />
+            </a>
+            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </div>
+
+        <form action="{{ url_for('busca.busca_geral') }}" method="GET" class="barra-busca">
+            <input type="text" name="q" placeholder="Buscar Memórias:" value="{{ termo }}" required>
+            <i class="fa-solid fa-magnifying-glass icone-busca" onclick="this.closest('form').submit()"></i>
+        </form>
+
+        <nav class="menu-icones">
+            <a href="{{ url_for('filmes.index') }}" class="item-menu">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span>Filmes</span>
+            </a>
+            <a href="{{ url_for('series.index') }}" class="item-menu">
+                <i class="fa-solid fa-tv"></i>
+                <span>Séries</span>
+            </a>
+            <a href="{{ url_for('jogos.index') }}" class="item-menu">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Jogos</span>
+            </a>
+            <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('perfil.perfil') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Perfil</span>
+            </a>
+            {% else %}
+            <a href="{{ url_for('auth.login') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Login</span>
+            </a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container-principal">
+        <div class="area-conteudo-central">
+            <div class="sem-resultados-container">
+                <i class="fa-solid fa-compact-disc icone-sem-resultado"></i>
+                <h1>A fita embolou!</h1>
+                <p>Reviramos o arquivo e não achamos essa memória.</p>
+                <p class="termo-buscado">Não encontramos nada para "<strong>{{ termo }}</strong>"</p>
+                
+                <div class="sugestoes">
+                    <p>Tente:</p>
+                    <ul>
+                        <li>Verificar se digitou corretamente</li>
+                        <li>Usar palavras-chave diferentes</li>
+                        <li>Buscar por termos mais gerais</li>
+                    </ul>
+                </div>
+
+                <a href="{{ url_for('main.index') }}" class="btn-voltar-home">
+                    <i class="fa-solid fa-house"></i>
+                    Voltar para a página inicial
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="rodape-principal">
+      <div class="links-rodape">
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
+      </div>
+
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
+
+      <!-- Crédito da API RAWG -->
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
+    </footer>
+
+</body>
+</html>

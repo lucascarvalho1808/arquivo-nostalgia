@@ -1,0 +1,773 @@
+/* variáveis globais de cor e fonte */
+:root {
+  --bg-body: #417eaa;
+  --header-bg: #22658f;
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+}
+
+/* reset básico e fonte padrão */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* configurações gerais do body */
+body {
+  background-color: var(--bg-body);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* cabeçalho fixo no topo */
+.cabecalho-principal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--header-bg);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-height: 100px;
+}
+
+/* container do logo no cabeçalho */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+}
+
+/* logo pequena */
+.logo-pequena {
+  max-width: 100px;
+  margin-bottom: 5px;
+}
+
+/* nome do site no cabeçalho */
+.nome-site-header {
+  font-size: 11px;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* centralização do título no cabeçalho */
+.header-centro {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+
+/* caixa do título central */
+.caixa-titulo {
+  background-color: #0c3757;
+  padding: 10px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* título principal do cabeçalho */
+.caixa-titulo h1 {
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* menu de ícones do cabeçalho */
+.menu-icones {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  width: 200px;
+}
+
+/* item do menu de ícones */
+.item-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.item-menu:hover {
+  opacity: 0.8;
+  color: #0c3757;
+}
+
+.item-menu i {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+/* container principal da página de arquivos */
+.container-pasta {
+  margin-top: 130px;
+  padding: 20px 40px;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  align-self: center;
+}
+
+/* informações da pasta (título, descrição, botões) */
+.info-pasta {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* texto da descrição da pasta */
+.info-conteudo-texto {
+  flex: 1;
+  max-width: 800px;
+}
+
+/* título da pasta */
+.info-pasta h2 {
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* descrição da pasta */
+.info-pasta p {
+  font-size: 18px;
+  color: #e2e8f0;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* botão de exportar lista */
+.btn-exportar {
+  background-color: #0c3757;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  height: fit-content;
+}
+
+.btn-exportar:hover {
+  background-color: #145a8d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-exportar i {
+  font-size: 18px;
+}
+
+/* divisor visual da pasta */
+.divisor-pasta {
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0)
+  );
+  margin-bottom: 30px;
+}
+
+/* rodapé principal */
+.rodape-principal {
+  width: 100%;
+  background-color: #0c3757;
+  color: #d1d1d1;
+  text-align: center;
+  padding: 40px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+/* --- RODAPÉ: LINKS E COPYRIGHT --- */
+
+/* Garante que o rodapé organize os itens em coluna  */
+.rodape-principal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+/* links do rodapé */
+.links-rodape {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.links-rodape a {
+  color: #a0a0a0;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-family: "Segoe UI", sans-serif;
+  transition: color 0.3s;
+}
+
+.links-rodape a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* separador entre links do rodapé */
+.separador {
+  color: #555;
+  font-size: 0.8rem;
+}
+
+/* texto de copyright no rodapé */
+.texto-copyright {
+  font-size: 0.75rem;
+  color: #999;
+  margin-top: 10px;
+}
+
+/* Crédito API - Rodapé */
+.credito-api {
+  font-size: 0.7rem;
+  color: #888;
+  margin-top: 10px;
+}
+
+.credito-api a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.credito-api a:hover {
+  text-decoration: underline;
+}
+
+/* Crédito API - Abaixo da seção de jogos */
+.credito-api-jogos {
+  display: block;
+  text-align: right;
+  font-size: 0.65rem;
+  color: #666;
+  margin-top: 5px;
+  padding-right: 10px;
+}
+
+.credito-api-jogos a {
+  color: #888;
+}
+
+/* responsividade para telas médias */
+@media (max-width: 1024px) {
+  .cabecalho-principal {
+    justify-content: space-between;
+  }
+
+  .menu-icones,
+  .logo-container {
+    width: 180px;
+  }
+
+  .caixa-titulo h1 {
+    font-size: 22px;
+  }
+}
+
+/* responsividade para telas menores */
+@media (max-width: 950px) {
+  .cabecalho-principal {
+    position: relative;
+    flex-direction: column;
+    height: auto;
+    padding: 15px 10px;
+    gap: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .container-pasta {
+    margin-top: 30px;
+    padding: 10px 20px;
+  }
+
+  .logo-container {
+    order: 1;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .menu-icones {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+    gap: 25px;
+  }
+  .header-centro {
+    order: 3;
+    width: 100%;
+    padding: 0 10px;
+  }
+
+  .caixa-titulo {
+    width: 100%;
+    padding: 12px 10px;
+  }
+
+  .caixa-titulo h1 {
+    font-size: 20px;
+    white-space: normal;
+  }
+
+  .item-menu span {
+    display: block;
+  }
+
+  .info-pasta {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .info-conteudo-texto {
+    max-width: 100%;
+  }
+
+  .acoes-pasta {
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap; 
+  }
+}
+
+/* responsividade para telas pequenas */
+@media (max-width: 600px) {
+  .menu-icones {
+    justify-content: space-around;
+    gap: 0;
+    width: 100%;
+  }
+
+  .logo-pequena {
+    max-width: 90px;
+  }
+  .nome-site-header {
+    font-size: 10px;
+  }
+  .item-menu span {
+    font-size: 9px;
+  }
+  .item-menu i {
+    font-size: 16px;
+  }
+
+  .caixa-titulo h1 {
+    font-size: clamp(14px, 5vw, 18px);
+    letter-spacing: 1px;
+  }
+
+  .info-pasta h2 {
+    font-size: 24px;
+    word-wrap: break-word;
+  }
+  .info-pasta p {
+    font-size: 14px;
+  }
+
+  .info-pasta {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-exportar {
+    justify-content: center;
+  }
+}
+
+/* grid dos itens salvos */
+.grid-itens-salvos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+/* card de item salvo */
+.card-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #22658f;
+  transition: transform 0.3s ease;
+  z-index: 1; 
+}
+
+.card-item:hover {
+  transform: translateY(-5px);
+}
+
+/* link do card */
+.link-item {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* container da imagem do card */
+.poster-container {
+  position: relative; 
+  aspect-ratio: 2/3;
+  overflow: hidden;
+}
+
+/* imagem do card */
+.poster-item {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* informações do card */
+.info-item {
+  padding: 1rem;
+}
+
+/* título do item */
+.titulo-item {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* badges do item */
+.badges-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.badge-filme { background: #3b82f6; color: #0c3757; }
+.badge-serie { background: #ffffff; color: #0c3757; }
+.badge-jogo { background: #ffd700; color: #0c3757; }
+
+/* overlay escuro ao passar o mouse no card */
+.overlay-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none; 
+}
+
+.overlay-hover i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* permite clique apenas no ícone e texto do overlay */
+.overlay-hover span, 
+.overlay-hover i {
+  pointer-events: auto;
+}
+
+/* botão de remover item */
+.btn-remover-item {
+  position: absolute;
+  top: 10px;
+  right: 10px; 
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.9);
+  color: white;
+  border: none; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; 
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.btn-remover-item:hover {
+  background: rgba(185, 28, 28, 1);
+  transform: scale(1.1) !important;
+}
+
+.overlay-hover, 
+.btn-remover-item {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+/* exibe overlay e botão ao passar o mouse */
+.card-item:hover .overlay-hover,
+.card-item:hover .btn-remover-item {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* exibe overlay e botão em dispositivos touch */
+.card-item.mobile-active .overlay-hover,
+.card-item.mobile-active .btn-remover-item {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  .card-item:hover .overlay-hover,
+  .card-item:hover .btn-remover-item {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* exibe overlay e botão em dispositivos touch (classe touch-active) */
+.card-item.touch-active .overlay-hover,
+.card-item.touch-active .btn-remover-item {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* garante que o botão de deletar seja clicável no mobile */
+.btn-remover-item {
+  z-index: 20; 
+}
+
+/* mensagem exibida quando não há itens salvos */
+.mensagem-vazia {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mensagem-vazia i { font-size: 4rem; margin-bottom: 1rem; opacity: 0.5; }
+.mensagem-vazia p { font-size: 1.2rem; margin-bottom: 0.5rem; }
+.texto-secundario { font-size: 0.9rem; opacity: 0.7; }
+
+/* container dos botões de ação da pasta */
+.acoes-pasta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* botão de deletar pasta */
+.btn-deletar-pasta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+  text-transform: uppercase;
+}
+.btn-deletar-pasta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
+  filter: brightness(1.1);
+}
+
+/* botão de exportar pasta */
+.btn-exportar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+}
+
+/* modal de confirmação de deleção */
+#modal-delete-lista, .modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(3, 7, 18, 0.55);
+  backdrop-filter: blur(4px);
+  z-index: 4000;
+}
+#modal-delete-lista[aria-hidden="false"],
+.modal-overlay[aria-hidden="false"] {
+  display: flex !important;
+  opacity: 1;
+}
+
+/* conteúdo do modal */
+.modal-content {
+  background-color: #164f75;
+  width: 500px;
+  max-width: 90vw;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+}
+
+/* cabeçalho do modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 15px;
+}
+.modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* botão de fechar modal */
+.btn-close {
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* rodapé do modal */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* botão arredondado do modal */
+.btn-pill {
+  border: none;
+  padding: 10px 35px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+.btn-pill:hover { transform: scale(1.05); }
+
+.btn-pill-cancel {
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #e2e8f0;
+}
+.btn-pill-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white;
+}
+
+/* responsividade da grade de itens salvos */
+@media (max-width: 600px) {
+  .grid-itens-salvos {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .titulo-item { font-size: 0.75rem; }
+  .badge { font-size: 0.6rem; padding: 2px 6px; }
+  
+  /* No celular puro, o texto "Ver Detalhes" pode ser redundante se o card for pequeno,
+     mas mantemos o overlay escuro para destacar que foi clicado */
+  .overlay-hover span { display: none; }
+  .overlay-hover i { font-size: 1.5rem; }
+  
+  .modal-content { width: 95%; padding: 20px; }
+  .modal-footer { flex-direction: column-reverse; }
+  .btn-pill { width: 100%; }
+}
+
+@media (max-width: 380px) {
+  .grid-itens-salvos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .titulo-item { font-size: 0.85rem; }
+}

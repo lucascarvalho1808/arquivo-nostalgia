@@ -2,8 +2,10 @@ import os
 import requests
 from dotenv import load_dotenv
 
+# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
+# Chave da API do TMDB e URLs base
 TMDB_API_KEY = os.environ.get('TMDB_API_KEY')
 BASE_URL = "https://api.themoviedb.org/3"
 IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
@@ -95,7 +97,7 @@ def pesquisar_midia(query, pagina=1):
     """
     Pesquisa por filmes e séries com base em um texto (query).
     """
-    endpoint = f"{BASE_URL}/search/multi" # 'multi' busca filmes e séries ao mesmo tempo
+    endpoint = f"{BASE_URL}/search/multi" 
     params = {
         'api_key': TMDB_API_KEY, 
         'language': 'pt-BR', 
@@ -114,38 +116,39 @@ def pesquisar_midia(query, pagina=1):
 
 def buscar_detalhes_filme(filme_id):
     """
-    Busca os detalhes completos de um filme específico pelo ID.
+    Busca detalhes completos de um filme específico no TMDB.
+    
+    Args:
+        filme_id (int): ID do filme no TMDB
+    
+    Returns:
+        dict: Dados completos do filme incluindo credits e videos
     """
-    endpoint = f"{BASE_URL}/movie/{filme_id}"
-    params = {
-        'api_key': TMDB_API_KEY,
-        'language': 'pt-BR'
-    }
-
     try:
-        response = requests.get(endpoint, params=params)
-        response.raise_for_status()
-        filme = response.json()
-
-        # Formata os dados para um dicionário simples
-        return {
-            'id': filme['id'],
-            'titulo': filme['title'],
-            'sinopse': filme.get('overview', 'Sinopse indisponível.'),
-            'data_lancamento': filme.get('release_date'),
-            'poster_url': f"{IMAGE_BASE_URL}{filme['poster_path']}" if filme.get('poster_path') else None,
-            'backdrop_url': f"{IMAGE_BASE_URL}{filme['backdrop_path']}" if filme.get('backdrop_path') else None,
-            'nota': filme.get('vote_average'),
-            'generos': [g['name'] for g in filme.get('genres', [])], # Lista de nomes dos gêneros
-            'duracao': filme.get('runtime'), # Duração em minutos
-            'tipo': 'movie'
+        url = f"{BASE_URL}/movie/{filme_id}"
+        params = {
+            'api_key': TMDB_API_KEY,  
+            'language': 'pt-BR',
+            'append_to_response': 'credits,videos,release_dates' 
         }
-
-    except requests.exceptions.RequestException as e:
+        
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        return response.json()
+    
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 404:
+            print(f"Filme com ID {filme_id} não encontrado.")
+        else:
+            print(f"Erro HTTP ao buscar filme {filme_id}: {http_err}")
+        return None
+    
+    except Exception as e:
         print(f"Erro ao buscar detalhes do filme {filme_id}: {e}")
         return None
 
-def buscar_filmes_classicos(pagina=1):
+def buscar_filmes_classicos(pagina=[1, 2]):
     """
     Busca filmes bem avaliados (Top Rated) para a seção de Clássicos.
     """
@@ -175,7 +178,7 @@ def buscar_series_nostalgia(pagina=1):
     params = {
         'api_key': TMDB_API_KEY,
         'language': 'pt-BR',
-        'sort_by': 'vote_count.desc', # Ordena por quantidade de votos (geralmente indica clássicos populares)
+        'sort_by': 'vote_count.desc', 
         'first_air_date.lte': '2014-12-31', # Apenas séries lançadas antes de 2014
         'first_air_date.gte': '1990-01-01', # A partir de 1990
         'page': pagina
@@ -251,7 +254,7 @@ def buscar_filmes_por_genero(generos, pagina=1):
         'language': 'pt-BR',
         'page': pagina,
         'sort_by': 'popularity.desc',
-        'with_genres': generos  # Ex: "28,35" = Ação E Comédia
+        'with_genres': generos 
     }
     
     try:
@@ -291,6 +294,158 @@ def buscar_series_por_genero(generos, pagina=1):
     except requests.exceptions.RequestException as e:
         print(f"Erro ao buscar séries por gênero: {e}")
         return []
+
+def buscar_filmes(termo, max_resultados=200):
+    """
+    Busca filmes pelo termo digitado com múltiplas páginas (até 200 resultados).
+    """
+    try:
+        filmes = []
+        pagina = 1
+        
+        while len(filmes) < max_resultados:
+            url = f"{BASE_URL}/search/movie"
+            params = {
+                "api_key": TMDB_API_KEY,
+                "language": "pt-BR",
+                "query": termo,
+                "page": pagina
+            }
+            
+            response = requests.get(url, params=params, timeout=5)
+            dados = response.json()
+            
+            resultados_pagina = dados.get("results", [])
+            
+            # Se não há mais resultados, para o loop
+            if not resultados_pagina:
+                break
+            
+            for filme in resultados_pagina:
+                if len(filmes) >= max_resultados:
+                    break
+                    
+                filmes.append({
+                    "id": filme.get("id"),
+                    "titulo": filme.get("title"),
+                    "poster": f"https://image.tmdb.org/t/p/w300{filme.get('poster_path')}" if filme.get("poster_path") else None,
+                    "ano": filme.get("release_date", "")[:4] if filme.get("release_date") else "",
+                    "nota": filme.get("vote_average"),
+                    "tipo": "filme"
+                })
+            
+            # Se chegou ao limite, para
+            if len(filmes) >= max_resultados:
+                break
+            
+            # Se retornou menos que 20, não há mais páginas
+            if len(resultados_pagina) < 20:
+                break
+            
+            # TMDB tem limite de 500 páginas
+            if pagina >= 500:
+                break
+                
+            pagina += 1
+        
+        return filmes
+        
+    except Exception as e:
+        print(f"Erro ao buscar filmes: {e}")
+        return []
+
+def buscar_series(termo, max_resultados=200):
+    """
+    Busca séries pelo termo digitado com múltiplas páginas (até 200 resultados).
+    """
+    try:
+        series = []
+        pagina = 1
+        
+        while len(series) < max_resultados:
+            url = f"{BASE_URL}/search/tv"
+            params = {
+                "api_key": TMDB_API_KEY,
+                "language": "pt-BR",
+                "query": termo,
+                "page": pagina
+            }
+            
+            response = requests.get(url, params=params, timeout=5)
+            dados = response.json()
+            
+            resultados_pagina = dados.get("results", [])
+            
+            # Se não há mais resultados, para o loop
+            if not resultados_pagina:
+                break
+            
+            for serie in resultados_pagina:
+                if len(series) >= max_resultados:
+                    break
+                    
+                series.append({
+                    "id": serie.get("id"),
+                    "titulo": serie.get("name"),
+                    "poster": f"https://image.tmdb.org/t/p/w300{serie.get('poster_path')}" if serie.get("poster_path") else None,
+                    "ano": serie.get("first_air_date", "")[:4] if serie.get("first_air_date") else "",
+                    "nota": serie.get("vote_average"),
+                    "tipo": "serie"
+                })
+            
+            # Se chegou ao limite, para
+            if len(series) >= max_resultados:
+                break
+            
+            # Se retornou menos que 20, não há mais páginas
+            if len(resultados_pagina) < 20:
+                break
+            
+            # TMDB tem limite de 500 páginas
+            if pagina >= 500:
+                break
+                
+            pagina += 1
+        
+        return series
+        
+    except Exception as e:
+        print(f"Erro ao buscar séries: {e}")
+        return []
+
+def buscar_detalhes_serie(serie_id):
+    """
+    Busca detalhes completos de uma série específica no TMDB.
+    
+    Args:
+        serie_id (int): ID da série no TMDB
+    
+    Returns:
+        dict: Dados completos da série incluindo credits e videos
+    """
+    try:
+        url = f"{BASE_URL}/tv/{serie_id}"
+        params = {
+            'api_key': TMDB_API_KEY,
+            'language': 'pt-BR',
+            'append_to_response': 'credits,videos,content_ratings'  
+        }
+        
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        return response.json()
+    
+    except requests.exceptions.HTTPError as http_err:
+        if response.status_code == 404:
+            print(f"Série com ID {serie_id} não encontrada.")
+        else:
+            print(f"Erro HTTP ao buscar série {serie_id}: {http_err}")
+        return None
+    
+    except Exception as e:
+        print(f"Erro ao buscar detalhes da série {serie_id}: {e}")
+        return None
 
 # Teste rápido das funções
 if __name__ == "__main__":

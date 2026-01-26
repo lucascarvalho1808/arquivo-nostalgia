@@ -1,48 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
     <title>Redefinir Senha - Arquivo Nostalgia</title>
-    <link rel="stylesheet" href="../../static/css/auth.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="cartao-formulario">
-        <img src="../../static/img/logo_arquivo_nostalgia.png" alt="Logotipo" class="logo-form">
-        <h2 class="titulo-nostalgia">Nova Senha</h2>
+      <img
+        src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+        alt="Logotipo"
+        class="logo-form"
+      />
+      <h2 class="titulo-nostalgia">Nova Senha</h2>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <div class="mensagens-flash">
-                    {% for category, message in messages %}
-                        <div class="alerta alerta-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="mensagens-flash">
+        {% for category, message in messages %}
+        <div class="alerta alerta-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
 
-        <form action="" method="POST">
-            {{ form.hidden_tag() }}
-            
-            <div class="grupo-campo">
-                <label class="label-visual"><i class="fa-solid fa-lock"></i> {{ form.senha.label.text }}</label>
-                {{ form.senha(class="caixa-branca", placeholder="Nova senha") }}
-                {% for error in form.senha.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
+      <form action="" method="POST" id="resetForm">
+        {{ form.hidden_tag() }}
 
-            <div class="grupo-campo">
-                <label class="label-visual"><i class="fa-solid fa-lock"></i> {{ form.confirmar_senha.label.text }}</label>
-                {{ form.confirmar_senha(class="caixa-branca", placeholder="Confirme a nova senha") }}
-                {% for error in form.confirmar_senha.errors %}
-                    <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
+        <!-- Campos ocultos para armazenar os tokens -->
+        <input type="hidden" name="access_token" id="access_token" />
+        <input type="hidden" name="refresh_token" id="refresh_token" />
 
-            {{ form.submit(class="botao-entrar") }}
-        </form>
+        <div class="grupo-campo">
+          <label class="label-visual"
+            ><i class="fa-solid fa-lock"></i> Nova Senha</label
+          >
+          {{ form.senha(class="caixa-branca", placeholder="Digite a nova senha")
+          }}
+        </div>
+
+        <div class="grupo-campo">
+          <label class="label-visual"
+            ><i class="fa-solid fa-lock"></i> Confirme a Senha</label
+          >
+          {{ form.confirmar_senha(class="caixa-branca", placeholder="Repita a senha") }}
+        </div>
+
+        {{ form.submit(class="botao-entrar", value="Alterar Minha Senha") }}
+      </form>
     </div>
-</body>
+
+    <script>
+      // Captura os tokens do fragment da URL
+      window.addEventListener("DOMContentLoaded", () => {
+        const fragment = window.location.hash.substring(1);
+        const params = new URLSearchParams(fragment);
+
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
+
+        if (accessToken) {
+          document.getElementById("access_token").value = accessToken;
+          document.getElementById("refresh_token").value = refreshToken || "";
+        } else {
+          // Se não há token, redireciona para esqueceu senha
+          alert("Link de recuperação inválido ou expirado.");
+          window.location.href = "{{ url_for('auth.esqueceu_senha') }}";
+        }
+      });
+    </script>
+  </body>
 </html>

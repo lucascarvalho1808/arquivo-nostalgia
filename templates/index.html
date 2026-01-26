@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
     <title>Arquivo Nostalgia - Início</title>
     <link
       rel="stylesheet"
@@ -25,48 +29,45 @@
         <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
       </div>
 
-      <div class="barra-busca">
-        <input type="text" placeholder="Buscar Memórias:" />
-        <i class="fa-solid fa-magnifying-glass icone-busca"></i>
-      </div>
+      <form action="{{ url_for('busca.busca_geral') }}" method="GET" class="barra-busca">
+          <input type="text" name="q" placeholder="Buscar Memórias:" required />
+          <i class="fa-solid fa-magnifying-glass icone-busca" onclick="this.closest('form').submit()"
+              style="cursor: pointer;">
+           </i>
+       </form>
 
       <nav class="menu-icones">
-        <a href="{{ url_for('filmes') }}" class="item-menu">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
           <i class="fa-solid fa-clapperboard"></i>
           <span>Filmes</span>
         </a>
-        <a href="{{ url_for('series') }}" class="item-menu">
+        <a href="{{ url_for('series.index') }}" class="item-menu">
           <i class="fa-solid fa-tv"></i>
           <span>Séries</span>
         </a>
-        <a href="{{ url_for('jogos') }}" class="item-menu">
+        <a href="{{ url_for('jogos.index') }}" class="item-menu">
           <i class="fa-solid fa-gamepad"></i>
           <span>Jogos</span>
         </a>
 
         {% if current_user.is_authenticated %}
         <!-- MENU PARA QUEM ESTÁ LOGADO -->
-        <a href="{{ url_for('meus_arquivos') }}" class="item-menu">
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
           <i class="fa-regular fa-folder-open"></i>
           <span>Arquivos</span>
         </a>
-        <a href="{{ url_for('perfil') }}" class="item-menu">
+        <a href="{{ url_for('perfil.perfil') }}" class="item-menu">
           <i class="fa-solid fa-circle-user"></i>
           <span>Perfil</span>
         </a>
-        <!-- Botão de Logout  -->
-        <a href="{{ url_for('logout') }}" class="item-menu">
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span>Sair</span>
-        </a>
         {% else %}
         <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
-        <a href="{{ url_for('meus_arquivos') }}" class="item-menu">
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
           <i class="fa-regular fa-folder-open"></i>
           <span>Arquivos</span>
         </a>
-        <a href="{{ url_for('login') }}" class="item-menu">
-          <i class="fa-solid fa-user"></i>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
           <span>Login</span>
         </a>
 
@@ -81,18 +82,19 @@
           Crie sua biografia cultural. Reúna os filmes que você assistiu, as
           séries que maratonou na TV e os jogos que definiram suas tardes.
         </p>
-        <a href="#" class="botao_descricao">Começar meu Arquivo</a>
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="botao_descricao">Começar meu Arquivo</a>
       </section>
 
+      <!-- FILMES POPULARES -->
       <section class="categoria">
-        <a href="{{ url_for('filmes') }}" class="titulo-categoria">
+        <a href="{{ url_for('filmes.index') }}" class="titulo-categoria">
           Filmes <i class="fa-solid fa-arrow-right"></i>
         </a>
         <div class="center">
           <div class="carrossel">
             <div class="carrosselBox" id="slider-filmes">
               {% for filme in filmes %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ filme.id }}" data-tipo="filme">
                 {% if filme.poster_url %}
                 <img
                   src="{{ filme.poster_url }}"
@@ -119,15 +121,16 @@
         </div>
       </section>
 
+      <!-- SÉRIES POPULARES -->
       <section class="categoria">
-        <a href="{{ url_for('series') }}" class="titulo-categoria">
+        <a href="{{ url_for('series.index') }}" class="titulo-categoria">
           Séries <i class="fa-solid fa-arrow-right"></i>
         </a>
         <div class="center">
           <div class="carrossel">
             <div class="carrosselBox" id="slider-series">
               {% for serie in series %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ serie.id }}" data-tipo="serie">
                 {% if serie.poster_url %}
                 <img
                   src="{{ serie.poster_url }}"
@@ -154,43 +157,53 @@
         </div>
       </section>
 
+      <!-- JOGOS POPULARES -->
       <section class="categoria">
-        <a href="{{ url_for('jogos') }}" class="titulo-categoria">
+        <a href="{{ url_for('jogos.index') }}" class="titulo-categoria">
           Jogos <i class="fa-solid fa-arrow-right"></i>
         </a>
         <div class="center">
           <div class="carrossel">
             <div class="carrosselBox" id="slider-jogos">
-              {% for jogo in jogos %} {% if jogo.origem_imagem == 'steam' %}
-              <!-- ESTILO 1: STEAM (Capa Limpa Vertical - Igual Filmes) -->
-              <div class="item-poster poster-clean">
-                <a href="#">
+              {% for jogo in jogos %}
+              
+              {% if jogo.origem_imagem == 'steam' %}
+              <!-- ESTILO 1: STEAM -->
+              <div class="item-poster poster-clean steam-card" data-id="{{ jogo.id }}" data-tipo="jogo">
+                <div class="poster-wrapper">
                   <img
                     src="{{ jogo.poster_url }}"
                     alt="{{ jogo.titulo }}"
-                    class="poster-img"
+                    class="poster-jogos"
                     onerror="this.onerror=null; this.src='{{ jogo.imagem_rawg }}';"
                   />
-                </a>
+                  <div class="game-info-overlay">
+                    <h3 class="game-title">{{ jogo.titulo }}</h3>
+                  </div>
+                </div>
               </div>
 
               {% else %}
-              <!-- ESTILO 2: RAWG (O Estilo Clássico que você quer) -->
-              <div class="game-card">
-                <div class="game-img-container">
+              <!-- ESTILO 2: RAWG -->
+              <div class="game-card" data-id="{{ jogo.id }}" data-tipo="jogo">
+                <div class="item-poster poster-clean">
                   {% if jogo.poster_url %}
                   <img
                     src="{{ jogo.poster_url }}"
                     alt="{{ jogo.titulo }}"
-                    class="game-img"
+                    class="poster-jogos"
                   />
                   {% else %}
                   <div class="poster-placeholder">Sem Imagem</div>
                   {% endif %}
                 </div>
-                <h3 class="game-title">{{ jogo.titulo }}</h3>
+                <div class="game-info-overlay">
+                  <h3 class="game-title">{{ jogo.titulo }}</h3>
+                </div>
               </div>
-              {% endif %} {% endfor %}
+              {% endif %}
+              
+              {% endfor %}
             </div>
             <a
               class="switchLeft sliderButton"
@@ -250,7 +263,7 @@
       </section>
       {% endif %}
 
-      <!-- FILMES EXTRAS -->
+      <!-- FILMES CLÁSSICOS -->
       <section class="categoria">
         <div class="titulo-categoria">
           Clássicos do Cinema <i class="fa-solid fa-star"></i>
@@ -259,7 +272,7 @@
           <div class="carrossel">
             <div class="carrosselBox" id="slider-filmes-destaque">
               {% for filme in filmes_destaque %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ filme.id }}" data-tipo="filme">
                 {% if filme.poster_url %}
                 <img
                   src="{{ filme.poster_url }}"
@@ -286,7 +299,7 @@
         </div>
       </section>
 
-      <!-- SÉRIES EXTRAS -->
+      <!-- SÉRIES NOSTALGIA -->
       <section class="categoria">
         <div class="titulo-categoria">
           Séries que Marcaram Época
@@ -296,7 +309,7 @@
           <div class="carrossel">
             <div class="carrosselBox" id="slider-series-nostalgia">
               {% for serie in series_nostalgia %}
-              <div class="item-poster poster-clean">
+              <div class="item-poster poster-clean" data-id="{{ serie.id }}" data-tipo="serie">
                 {% if serie.poster_url %}
                 <img
                   src="{{ serie.poster_url }}"
@@ -326,15 +339,21 @@
 
     <footer class="rodape-principal">
       <div class="links-rodape">
-        <a href="#">Termos de Uso</a>
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
         <span class="separador">|</span>
-        <a href="#">Política de Privacidade</a>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
       </div>
 
       <!-- Texto de Copyright -->
       <div class="texto-copyright">
         Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
       </div>
+
+      <!-- Crédito da API RAWG -->
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
     </footer>
 
     <!-- Scripts Externos -->

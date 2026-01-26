@@ -1,0 +1,334 @@
+/* Reset e cores gerais */
+:root {
+    --bg-body: #417eaa;
+    --header-bg: #22658f;
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Cabeçalho fixo */
+.cabecalho-principal {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--header-bg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    min-height: 100px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+}
+
+.logo-pequena {
+    max-width: 100px;
+    margin-bottom: 5px;
+}
+
+.nome-site-header {
+    font-size: 11px;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header-centro {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+}
+
+.caixa-titulo {
+    background-color: #0c3757;
+    padding: 10px 40px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.caixa-titulo h1 {
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.menu-icones {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-end;
+    width: 200px;
+}
+
+.item-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.item-menu:hover {
+    opacity: 0.8;
+    color: #0c3757;
+}
+
+.item-menu i {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Estilo do miolo (card central) */
+
+/* Container que segura o card */
+.main-conteudo {
+    width: 100%;
+    margin-top: 140px; 
+    display: flex;
+    justify-content: center;
+    padding: 0 20px 40px 20px;
+    flex: 1;
+}
+
+/* O Card Azul */
+.card-politica {
+    width: 100%;
+    max-width: 900px;
+    min-height: 500px;
+    background-color: #084063; 
+    border-radius: 25px;
+    padding: 50px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative; 
+    z-index: 1;
+}
+
+/* --- FORMATAÇÃO DO TEXTO DA POLÍTICA --- */
+.card-texto {
+    color: #e2e8f0; 
+    font-size: 16px;
+    line-height: 1.7; 
+    text-align: justify;
+    flex: 1;
+    margin-bottom: 30px;
+}
+
+/* Títulos das seções (1. Introdução, etc) */
+.card-texto h3 {
+    color: #ffffff; 
+    font-size: 1.4rem;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    font-weight: 800;
+    /* Linha separar seções */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+.card-texto p {
+    margin-bottom: 15px;
+}
+
+/* Listas */
+.card-texto ul, .card-texto ol {
+    margin-bottom: 25px;
+    padding-left: 25px;
+    text-align: left;
+}
+
+.card-texto li {
+    margin-bottom: 10px;
+}
+
+/* Cor dos marcadores (bolinhas e números) da lista */
+.card-texto li::marker {
+    color: #00d2ff;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Palavras em destaque */
+.card-texto strong {
+    color: #00d2ff; 
+    font-weight: 700;
+}
+
+/* Ênfase (itálico) para termos técnicos */
+.card-texto em {
+    color: #ffffff;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* Data de atualização no topo */
+.data-atualizacao {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding-bottom: 15px;
+}
+
+.data-atualizacao strong {
+    color: #00d2ff; 
+}
+
+/* Detalhe do Rodapé do Card */
+.detalhe-inferior {
+    width: 50px;
+    height: 4px;
+    background-color: white;
+    border-radius: 2px;
+    align-self: center;
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+/* --- Footer --- */
+.rodape-principal {
+    width: 100%;
+    background-color: #0c3757;
+    color: #d1d1d1;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0px;
+    margin-top: auto;
+    flex-shrink: 0;
+    height: auto;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 15px 0;
+}
+
+/* --- Links Footer --- */
+.links-rodape {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- Links Footer Estilização --- */
+.links-rodape a {
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Segoe UI', sans-serif;
+    transition: color 0.3s;
+}
+
+/* --- Links Footer Hover --- */
+.links-rodape a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* --- Links Footer Separador --- */
+.separador {
+    color: #555;
+    font-size: 0.8rem;
+}
+
+/* --- Texto Copyrigth e Frase de Efeito --- */
+.texto-copyright {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* Responsividade */
+
+@media (max-width: 1070px) {
+    .cabecalho-principal { justify-content: space-between; }
+    .menu-icones, .logo-container { width: 180px; }
+    .caixa-titulo h1 { font-size: 22px; }
+}
+
+@media (max-width: 990px) {
+    .cabecalho-principal {
+        position: relative; 
+        flex-direction: column;
+        height: auto;
+        padding: 15px 10px;
+        gap: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); 
+    }
+
+    .main-conteudo {
+        margin-top: 30px;
+    }
+
+    .logo-container { order: 1; width: 100%; margin-bottom: 5px; }
+    .menu-icones { order: 2; width: 100%; justify-content: center; gap: 25px; }
+    .header-centro { order: 3; width: 100%; padding: 0 10px; }
+
+    .caixa-titulo { width: 100%; padding: 12px 10px; }
+    .caixa-titulo h1 { font-size: 22px; white-space: normal; }
+    .item-menu span { display: block; }
+}
+
+@media (max-width: 600px) {
+    .menu-icones { justify-content: space-around; gap: 0; width: 100%; }
+    .logo-pequena { max-width: 90px; }
+    .nome-site-header { font-size: 10px; }
+    .item-menu span { font-size: 9px; }
+    .item-menu i { font-size: 16px; }
+
+    .caixa-titulo h1 { 
+        font-size: 22px; 
+        letter-spacing: 1px;
+    }
+
+    .card-politica {
+        padding: 30px 20px;
+        border-radius: 15px;
+    }
+}

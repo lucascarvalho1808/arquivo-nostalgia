@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+    <title>Termos de Uso - Arquivo Nostalgia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/politica.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <header class="cabecalho-principal">
+        <div class="logo-container">
+            <a href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}" alt="Logo"
+                    class="logo-pequena" />
+            </a>
+            <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+        </div>
+
+        <div class="header-centro">
+            <div class="caixa-titulo">
+                <h1>Termos de Uso</h1>
+            </div>
+        </div>
+
+        <nav class="menu-icones">
+            <a href="{{ url_for('filmes.index') }}" class="item-menu">
+                <i class="fa-solid fa-clapperboard"></i>
+                <span>Filmes</span>
+            </a>
+            <a href="{{ url_for('series.index') }}" class="item-menu">
+                <i class="fa-solid fa-tv"></i>
+                <span>Séries</span>
+            </a>
+            <a href="{{ url_for('jogos.index') }}" class="item-menu">
+                <i class="fa-solid fa-gamepad"></i>
+                <span>Jogos</span>
+            </a>
+
+            {% if current_user.is_authenticated %}
+            <!-- MENU PARA QUEM ESTÁ LOGADO -->
+            <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="{{ url_for('perfil.perfil') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Perfil</span>
+            </a>
+            {% else %}
+            <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+            <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+                <i class="fa-regular fa-folder-open"></i>
+                <span>Arquivos</span>
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="item-menu">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Login</span>
+            </a>
+
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="main-conteudo">
+
+        <div class="card-politica">
+            <div class="card-texto">
+                <p class="data-atualizacao"><strong>Última atualização:</strong> 04 de Fevereiro de 2026</p>
+
+                <h3>1. Aceitação dos Termos</h3>
+                <p>
+                    Ao acessar e criar uma conta no <em><strong>Arquivo Nostalgia</strong></em>, você concorda em cumprir estes Termos de Uso e todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, está proibido de usar ou acessar este site.
+                </p>
+
+                <h3>2. Descrição do Serviço</h3>
+                <p>
+                    O <em>Arquivo Nostalgia</em> é uma ferramenta web que permite aos usuários catalogar, organizar e relembrar filmes, séries, desenhos e jogos. O projeto não possui fins lucrativos ou comerciais diretos.
+                </p>
+
+                <h3>3. Uso de Conteúdo e Propriedade Intelectual</h3>
+                <ul>
+                    <li>
+                        <strong>Do Sistema:</strong> O código-fonte, design, logotipo e a estrutura do <em>Arquivo Nostalgia</em> são de propriedade intelectual dos desenvolvedores do projeto.
+                    </li>
+                    <li>
+                        <strong>Das Obras Catalogadas:</strong> As imagens (pôsteres, capas), sinopses, títulos e metadados de filmes, séries e jogos exibidos no site são de propriedade de seus respectivos detentores de direitos autorais. Estes dados são fornecidos por terceiros através das APIs: <strong>The Movie Database (TMDB)</strong>, <strong>RAWG Video Games Database</strong> e <strong>Steam Web API</strong>. O uso neste site é para fins informativos e de catalogação pessoal.
+                    </li>
+                </ul>
+
+                <h3>4. Responsabilidades do Usuário</h3>
+                <p>Ao utilizar o sistema, você concorda em:</p>
+                <ol>
+                    <li>Fornecer informações verdadeiras e atuais durante o cadastro.</li>
+                    <li>Manter a confidencialidade da sua senha de acesso.</li>
+                    <li>Não utilizar o serviço para qualquer finalidade ilegal ou não autorizada.</li>
+                    <li>Não tentar comprometer a integridade ou segurança do sistema (ex: ataques de injeção de código ou sobrecarga de requisições).</li>
+                </ol>
+
+                <h3>5. Limitação de Responsabilidade</h3>
+                <ul>
+                    <li>
+                        <strong>Disponibilidade:</strong> Não garantimos que o serviço estará disponível de forma ininterrupta ou livre de erros. O serviço pode ser descontinuado a qualquer momento sem aviso prévio.
+                    </li>
+                    <li>
+                        <strong>Perda de Dados:</strong> Não nos responsabilizamos por falhas no banco de dados, exclusão acidental de listas ou perda de informações da conta. Recomenda-se não utilizar esta plataforma como <em>único</em> meio de backup de informações críticas.
+                    </li>
+                    <li>
+                        <strong>Precisão dos Dados:</strong> Não garantimos a precisão das informações fornecidas pelas APIs externas.
+                    </li>
+                </ul>
+
+                <h3>6. Links para Sites de Terceiros</h3>
+                <p>
+                    Nosso serviço pode conter links para sites externos (como trailers oficiais de jogos ou filmes e séries) que não são operados por nós. Não temos controle sobre o conteúdo e práticas desses sites e não aceitamos responsabilidade por suas respectivas políticas de privacidade.
+                </p>
+
+                <h3>7. Alterações nos Termos</h3>
+                <p>
+                    Podemos revisar estes Termos de Uso a qualquer momento. Ao continuar a usar o <em>Arquivo Nostalgia</em> após quaisquer alterações, você concorda em ficar vinculado à versão atualizada dos termos.
+                </p>
+
+                <h3>8. Lei Aplicável</h3>
+                <p>
+                    Estes termos são regidos e interpretados de acordo com as leis da República Federativa do Brasil, e você se submete irrevogavelmente à jurisdição exclusiva dos tribunais deste estado ou localidade.
+                </p>
+            </div>
+
+            <div class="detalhe-inferior"></div>
+        </div>
+
+    </main>
+
+    <footer class="rodape-principal">
+      <div class="links-rodape">
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
+      </div>
+
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
+    </footer>
+</body>
+</html>

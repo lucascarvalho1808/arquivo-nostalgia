@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+    <title>{{ lista.nome if lista else 'Arquivo' }} - Arquivo Nostalgia</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base_arquivo.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <header class="cabecalho-principal">
+      <div class="logo-container">
+        <a href="{{ url_for('main.index') }}">
+          <img
+        src="{{ url_for('static', filename='img/logo_arquivo_nostalgia.png') }}"
+        alt="Logo"
+        class="logo-pequena"
+          />
+        </a>
+        <span class="nome-site-header">ARQUIVO NOSTALGIA</span>
+      </div>
+
+      <div class="header-centro">
+        <div class="caixa-titulo">
+          <h1>Arquivo Nostalgia</h1>
+        </div>
+      </div>
+
+      <nav class="menu-icones">
+        <a href="{{ url_for('filmes.index') }}" class="item-menu">
+          <i class="fa-solid fa-clapperboard"></i>
+          <span>Filmes</span>
+        </a>
+        <a href="{{ url_for('series.index') }}" class="item-menu">
+          <i class="fa-solid fa-tv"></i>
+          <span>Séries</span>
+        </a>
+        <a href="{{ url_for('jogos.index') }}" class="item-menu">
+          <i class="fa-solid fa-gamepad"></i>
+          <span>Jogos</span>
+        </a>
+
+        {% if current_user.is_authenticated %}
+        <!-- MENU PARA QUEM ESTÁ LOGADO -->
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('perfil.perfil') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Perfil</span>
+        </a>
+        {% else %}
+        <!-- MENU PARA QUEM NÃO ESTÁ LOGADO -->
+        <a href="{{ url_for('arquivos.meus_arquivos') }}" class="item-menu">
+          <i class="fa-regular fa-folder-open"></i>
+          <span>Arquivos</span>
+        </a>
+        <a href="{{ url_for('auth.login') }}" class="item-menu">
+          <i class="fa-solid fa-circle-user"></i>
+          <span>Login</span>
+        </a>
+
+        {% endif %}
+      </nav>
+    </header>
+
+    <main class="container-pasta">
+      <section class="info-pasta">
+        <div class="info-conteudo-texto">
+          <h2 id="tituloPasta">{{ lista.nome if lista else 'Minha Pasta' }}</h2>
+          <p id="descricaoPasta">
+            {{ lista.descricao if lista and lista.descricao else 'Sem descrição'
+            }}
+          </p>
+        </div>
+
+        <div class="acoes-pasta">
+          <button class="btn-exportar" id="btn-exportar-csv">
+            <i class="fa-solid fa-file-export"></i> BAIXAR
+          </button>
+
+          <button
+            id="btn-delete-lista"
+            class="btn-deletar-pasta"
+            title="Deletar arquivo"
+          >
+            <i class="fa-solid fa-trash-can"></i> DELETAR
+          </button>
+        </div>
+      </section>
+
+      <hr class="divisor-pasta" />
+
+      <!-- Grid de Itens Salvos -->
+      <section class="grid-itens-salvos">
+        {% if itens %} {% for item in itens %}
+        <div class="card-item">
+          <a
+            {% if item.tipo == "filme" %}
+              href="{{ url_for('detalhes.filme', filme_id=item.api_id) }}"
+              class="link-item"
+            {% elif item.tipo == "serie" %}
+              href="{{ url_for('detalhes.serie', serie_id=item.api_id) }}"
+              class="link-item"
+            {% elif item.tipo == "jogo" %}
+              href="{{ url_for('detalhes.jogo', jogo_id=item.api_id) }}"
+              class="link-item"
+            {% endif %}
+          >
+            <div class="poster-container">
+              <img
+                src="{{ item.poster_url }}"
+                alt="{{ item.titulo }}"
+                class="poster-item"
+              />
+              <div class="overlay-hover">
+                <i class="fa-solid fa-eye"></i>
+                <span>Ver Detalhes</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <h3 class="titulo-item">{{ item.titulo }}</h3>
+              <div class="badges-item">
+                {% if item.tipo == 'filme' %}
+                <span class="badge badge-filme">
+                  <i class="fa-solid fa-clapperboard"></i> Filme
+                </span>
+                {% elif item.tipo == 'serie' %}
+                <span class="badge badge-serie">
+                  <i class="fa-solid fa-tv"></i> Série
+                </span>
+                {% elif item.tipo == 'jogo' %}
+                <span class="badge badge-jogo">
+                  <i class="fa-solid fa-gamepad"></i> Jogo
+                </span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
+          <button
+            class="btn-remover-item"
+            data-item-id="{{ item.id }}"
+            title="Remover da lista"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+        {% endfor %} {% else %}
+        <div class="mensagem-vazia">
+          <i class="fa-regular fa-folder-open"></i>
+          <p>Esta pasta ainda não tem itens salvos.</p>
+          <p class="texto-secundario">
+            Adicione filmes, séries ou jogos visitando suas páginas de detalhes!
+          </p>
+        </div>
+        {% endif %}
+      </section>
+    </main>
+
+    <footer class="rodape-principal">
+      <div class="links-rodape">
+        <a href="{{ url_for('main.termos') }}">Termos de Uso</a>
+        <span class="separador">|</span>
+        <a href="{{ url_for('main.privacidade') }}">Política de Privacidade</a>
+      </div>
+
+      <!-- Texto de Copyright -->
+      <div class="texto-copyright">
+        Arquivo Nostalgia &copy; 2025. Feito para quem não esquece de onde veio.
+      </div>
+
+      <!-- Crédito da API RAWG -->
+      <p class="credito-api">
+        Game data powered by
+        <a href="https://rawg.io" target="_blank" rel="noopener">RAWG</a>
+      </p>
+    </footer>
+
+    <div id="modal-delete-lista" class="modal-overlay" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-delete-title">DELETAR ARQUIVO</h3>
+          <span class="btn-close modal-close">&times;</span>
+        </div>
+
+        <div class="modal-body">
+          <p
+            id="modal-delete-text"
+            style="font-size: 1.1rem; color: #e2e8f0; margin-top: 10px"
+          >
+            Deseja deletar este arquivo? Esta ação não pode ser desfeita.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button id="modal-delete-cancel" class="btn-pill btn-pill-cancel">
+            Cancelar
+          </button>
+          <button id="modal-delete-confirm" class="btn-pill btn-pill-danger">
+            Deletar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-delete-item" class="modal-overlay" aria-hidden="true">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-delete-item-title">REMOVER CONTEÚDO</h3>
+          <span class="btn-close modal-close">&times;</span>
+        </div>
+
+        <div class="modal-body">
+          <p
+            id="modal-delete-item-text"
+            style="font-size: 1.1rem; color: #e2e8f0; margin-top: 10px"
+          >
+            Deseja remover este conteúdo da lista?
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            id="modal-delete-item-cancel"
+            class="btn-pill btn-pill-cancel"
+          >
+            Cancelar
+          </button>
+          <button
+            id="modal-delete-item-confirm"
+            class="btn-pill btn-pill-danger"
+          >
+            Remover
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const btnDelete = document.getElementById("btn-delete-lista");
+        const modal = document.getElementById("modal-delete-lista");
+        const txt = document.getElementById("modal-delete-text");
+        const btnCancel = document.getElementById("modal-delete-cancel");
+        const btnConfirm = document.getElementById("modal-delete-confirm");
+        const btnClose = document.querySelector(
+          "#modal-delete-lista .modal-close",
+        );
+
+        function openModal() {
+          modal.setAttribute("aria-hidden", "false");
+          btnConfirm.focus();
+        }
+        function closeModal() {
+          modal.setAttribute("aria-hidden", "true");
+        }
+
+        if (!btnDelete) return;
+
+        btnDelete.addEventListener("click", (e) => {
+          e.preventDefault();
+          const nome = "{{ lista.nome | e }}";
+          txt.textContent = `Deseja deletar "${nome}"? Esta ação não pode ser desfeita.`;
+          openModal();
+        });
+
+        btnCancel.addEventListener("click", closeModal);
+        if (btnClose) btnClose.addEventListener("click", closeModal);
+
+        modal.addEventListener("click", (ev) => {
+          if (ev.target === modal) closeModal();
+        });
+        document.addEventListener("keydown", (ev) => {
+          if (ev.key === "Escape") closeModal();
+        });
+
+        btnConfirm.addEventListener("click", async () => {
+          try {
+            const listaId = "{{ lista.id }}";
+            const resp = await fetch(`/arquivos/deletar-pasta/${listaId}`, {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            });
+            const data = await resp.json();
+
+            if (resp.ok && data.success) {
+              closeModal();
+              // 1. Mostra a mensagem
+              mostrarToast("Arquivo deletado com sucesso!", "success");
+
+              // 2. Espera 1,5 segundos para o usuário ler, depois redireciona
+              setTimeout(() => {
+                window.location.href =
+                  "{{ url_for('arquivos.meus_arquivos') }}";
+              }, 1500);
+            } else {
+              closeModal();
+              mostrarToast(
+                "Erro ao deletar: " + (data.message || "tente novamente"),
+                "error",
+              );
+            }
+          } catch (err) {
+            console.error(err);
+            closeModal();
+            mostrarToast("Erro ao deletar. Tente novamente.", "error");
+          }
+        });
+      })();
+    </script>
+    <script>
+      (function () {
+        let itemIdToDelete = null;
+        const modalItem = document.getElementById("modal-delete-item");
+        const btnCancelItem = document.getElementById(
+          "modal-delete-item-cancel",
+        );
+        const btnConfirmItem = document.getElementById(
+          "modal-delete-item-confirm",
+        );
+        const btnCloseItem = document.querySelector(
+          "#modal-delete-item .modal-close",
+        );
+
+        // Abre o modal ao clicar no botão de remover
+        document.querySelectorAll(".btn-remover-item").forEach((btn) => {
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            // Captura o ID que está no HTML do botão e salva na variável
+            itemIdToDelete = this.getAttribute("data-item-id");
+
+            document
+              .getElementById("modal-delete-item")
+              .setAttribute("aria-hidden", "false");
+          });
+        });
+
+        function closeModalItem() {
+          modalItem.setAttribute("aria-hidden", "true");
+          itemIdToDelete = null;
+        }
+
+        btnCancelItem.addEventListener("click", closeModalItem);
+        if (btnCloseItem)
+          btnCloseItem.addEventListener("click", closeModalItem);
+
+        modalItem.addEventListener("click", (ev) => {
+          if (ev.target === modalItem) closeModalItem();
+        });
+        document.addEventListener("keydown", (ev) => {
+          if (ev.key === "Escape") closeModalItem();
+        });
+
+        btnConfirmItem.addEventListener("click", async () => {
+          if (!itemIdToDelete) return;
+
+          try {
+            const resp = await fetch(
+              `/arquivos/remover-item/${itemIdToDelete}`,
+              {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+              },
+            );
+            const data = await resp.json();
+
+            if (resp.ok && data.success) {
+              // Remove o card da tela visualmente
+              const btnRemovido = document.querySelector(
+                `.btn-remover-item[data-item-id="${itemIdToDelete}"]`,
+              );
+              if (btnRemovido) {
+                const card = btnRemovido.closest(".card-item");
+                if (card) {
+                  card.style.transition = "transform 0.3s, opacity 0.3s";
+                  card.style.transform = "scale(0)";
+                  card.style.opacity = "0";
+                  setTimeout(() => card.remove(), 300);
+                }
+              }
+              mostrarToast("Conteúdo removido com sucesso!", "success");
+            } else {
+              mostrarToast(
+                "Erro ao remover conteúdo: " +
+                  (data.message || "tente novamente"),
+                "error",
+              );
+            }
+          } catch (err) {
+            mostrarToast("Erro ao remover conteúdo. Tente novamente.", "error");
+          }
+          closeModalItem();
+        });
+      })();
+    </script>
+    <script>
+      function mostrarToast(mensagem, tipo = "success") {
+        // Cores baseadas no tipo
+        const cor =
+          tipo === "success"
+            ? "#22c55e"
+            : tipo === "error"
+              ? "#ef4444"
+              : "#f59e42";
+
+        const toast = document.createElement("div");
+        toast.textContent = mensagem;
+        toast.style.position = "fixed";
+        toast.style.bottom = "32px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.background = cor;
+        toast.style.color = "#fff";
+        toast.style.padding = "14px 28px";
+        toast.style.borderRadius = "50px"; 
+        toast.style.fontWeight = "bold";
+        toast.style.boxShadow = "0 4px 16px rgba(0,0,0,0.3)";
+        toast.style.zIndex = "9999";
+        toast.style.textAlign = "center"; 
+        toast.style.minWidth = "300px"; 
+
+        document.body.appendChild(toast);
+
+        // Remove após 3.2 segundos
+        setTimeout(() => {
+          toast.style.transition = "opacity 0.5s ease";
+          toast.style.opacity = "0";
+          setTimeout(() => toast.remove(), 500);
+        }, 3200);
+      }
+    </script>
+    <script>
+      // Ativa o botão em conjunto com a rota de download da lista do usuário em formato CSV
+      document.getElementById('btn-exportar-csv').addEventListener('click', function() {
+        const listaId = "{{ lista.id }}";
+        const url = `/arquivos/exportar-csv/${listaId}`;
+        window.location.href = url; 
+      });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  
+      const cardLinks = document.querySelectorAll(".card-item .link-item");
+
+      cardLinks.forEach((link) => {
+        link.addEventListener("click", function (e) {
+      
+          // Verificação de mouse
+          if (e.pointerType === "mouse") return;
+
+          // Código para touch
+          const card = this.closest(".card-item");
+          const isActive = card.classList.contains("mobile-active");
+
+          // Se o card não está ativo (Primeiro Toque)
+          if (!isActive) {
+            // Bloqueia a entrada no link
+            e.preventDefault();
+
+            // Fecha todos os outros cards que estejam abertos
+            document.querySelectorAll(".card-item").forEach((c) => {
+              c.classList.remove("mobile-active");
+            });
+
+            // Adiciona a classe neste card (Mostra o overlay e botões)
+            card.classList.add("mobile-active");
+          }
+      
+          // Se já estava ativo (isActive == true), o código não faz nada
+        });
+      });
+
+      // Fecha o overlay se clicar no fundo vazio (Lógica Mobile)
+      document.addEventListener("click", function (e) {
+        if (!e.target.closest(".card-item")) {
+          document.querySelectorAll(".card-item").forEach((c) => {
+            c.classList.remove("mobile-active");
+          });
+        }
+      });
+    });
+  </script>
+  </body>
+</html>

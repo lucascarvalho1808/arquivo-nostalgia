@@ -2,11 +2,13 @@ import os
 import google.generativeai as genai
 from dotenv import load_dotenv
 
+# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
+# Obtém a chave da API Gemini do arquivo .env
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
-# Configura a API
+# Configura a API Gemini se a chave estiver disponível
 if GEMINI_API_KEY:
     genai.configure(api_key=GEMINI_API_KEY)
 else:
@@ -14,15 +16,17 @@ else:
 
 def gerar_arquivo_confidencial(titulo, tipo_midia):
     """
-    Gera uma curiosidade rápida de bastidores (Trivia) sobre a mídia.
-    Ideal para a seção 'Arquivo Confidencial' da home.
+    Gera uma curiosidade rápida de bastidores sobre a mídia.
+    Usada para a seção 'Arquivo Confidencial' da página inicial
     """
     if not GEMINI_API_KEY:
         return "Curiosidade confidencial indisponível no momento."
 
     try:
+        # Seleciona o modelo Gemini para geração de conteúdo
         model = genai.GenerativeModel('gemini-2.5-flash')
 
+        # Prompt para orientar o estilo e o conteúdo da resposta
         prompt = f"""
         Aja como um especialista em curiosidades de cinema, séries e games.
         Escreva UMA única curiosidade surpreendente de bastidores sobre o {tipo_midia}: "{titulo}".
@@ -37,16 +41,17 @@ def gerar_arquivo_confidencial(titulo, tipo_midia):
         "Originalmente, a máquina do tempo seria uma geladeira, mas Spielberg mudou a ideia por medo de que crianças começassem a se trancar em geladeiras."
         """
 
+        # Gera o conteúdo usando o modelo Gemini
         response = model.generate_content(prompt)
         
-        # Retorna o texto gerado 
+        # Retorna o texto gerado, removendo espaços extras
         return response.text.strip()
 
     except Exception as e:
         print(f"Erro ao gerar curiosidade para '{titulo}': {e}")
         return "Dados confidenciais corrompidos. Tente novamente mais tarde."
 
-# Teste rápido
+# Teste 
 if __name__ == "__main__":
     print("Testando Curiosidade do Dia")
     # Teste com o exemplo que você deu para ver se a IA segue o padrão
