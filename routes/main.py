@@ -45,14 +45,6 @@ def index():
         series_nostalgia=series_nostalgia
     )
 
-@main_bp.route('/perfil')
-@login_required
-def perfil():
-    """
-    Página de perfil do usuário autenticado.
-    """
-    return f"<h1>Página de Perfil</h1><p>Bem-vindo, {current_user.username}!</p>"
-
 @main_bp.route('/termos')
 def termos():
     """

@@ -51,7 +51,8 @@ def login():
                 user = User(
                     id=user_data.id if hasattr(user_data, "id") else user_data.get("id"),
                     email=user_data.email if hasattr(user_data, "email") else user_data.get("email"),
-                    username=username
+                    username=username,
+                    created_at=getattr(user_data, "created_at", None) if hasattr(user_data, "created_at") else user_data.get("created_at")
                 )
                 login_user(user)
 

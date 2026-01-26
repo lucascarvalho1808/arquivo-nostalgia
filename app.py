@@ -15,6 +15,7 @@ from routes.busca import busca_bp
 from routes.listas import listas_bp
 from routes.detalhes import detalhes_bp
 from routes.arquivos import arquivos_bp
+from routes.perfil import perfil_bp
 from services.agendador_ranking import agendador
 
 # Carrega variáveis de ambiente do arquivo .env
@@ -42,7 +43,12 @@ def load_user(user_id):
         if user_response and user_response.user and user_response.user.id == user_id:
             user_data = user_response.user
             username = user_data.user_metadata.get('username', 'Usuário')
-            return User(id=user_data.id, email=user_data.email, username=username)
+            return User(
+                id=user_data.id,
+                email=user_data.email,
+                username=username,
+                created_at=getattr(user_data, 'created_at', None)
+            )
     except Exception as e:
         print(f"Erro ao carregar usuário da sessão: {e}")
     return None
@@ -57,6 +63,7 @@ app.register_blueprint(busca_bp)
 app.register_blueprint(listas_bp, url_prefix='/listas')
 app.register_blueprint(detalhes_bp, url_prefix='/detalhes')
 app.register_blueprint(arquivos_bp)
+app.register_blueprint(perfil_bp)
 
 # Inicia o agendador de ranking (atualização diária do CSV)
 agendador.iniciar()
