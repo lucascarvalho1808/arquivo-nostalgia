@@ -2,9 +2,9 @@ tipo,posicao,api_id,titulo,poster_url,contagem
 filme,1,1306368,"Dinheiro Suspeito (2026)","https://image.tmdb.org/t/p/w500/bm04TGkE5ySrHbHlO6YloYZvs4P.jpg",1
 filme,2,1242898,"Predador: Terras Selvagens (2025)","https://image.tmdb.org/t/p/w500/7AYPGnLTmU6zDtMMAWqeUkCi7Tw.jpg",1
 filme,3,83533,"Avatar: Fogo e Cinzas (2025)","https://image.tmdb.org/t/p/w500/9k2zKeUfcKkAz1dGt5MP6dZMm4G.jpg",1
-serie,1,1399,"Game of Thrones (2011)","https://image.tmdb.org/t/p/w500/eDn8XWA0a4U3zOhd1gh7HExdt4Y.jpg",2
-serie,2,224372,"O Cavaleiro dos Sete Reinos (2026)","https://image.tmdb.org/t/p/w500/mweOUz4YNESmCPNP24mnaHkxF70.jpg",1
+serie,1,1399,"Game of Thrones (2011)","https://image.tmdb.org/t/p/w500/eDn8XWA0a4U3zOhd1gh7HExdt4Y.jpg",3
+serie,2,224372,"O Cavaleiro dos Sete Reinos (2026)","https://image.tmdb.org/t/p/w500/mweOUz4YNESmCPNP24mnaHkxF70.jpg",2
 serie,3,1622,"Supernatural (2005)","https://image.tmdb.org/t/p/w500/eK4gEBWNGJoxCD67KFKzaKfSzWU.jpg",1
-jogo,1,3498,"Grand Theft Auto V (2013)","https://media.rawg.io/media/games/20a/20aa03a10cda45239fe22d035c0ebe64.jpg",1
-jogo,2,28,"Red Dead Redemption 2 (2018)","https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",1
-jogo,3,802,"Borderlands 2 (2012)","https://media.rawg.io/media/games/49c/49c3dfa4ce2f6f140cc4825868e858cb.jpg",1
+jogo,1,28,"Red Dead Redemption 2 (2018)","https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",2
+jogo,2,3328,"The Witcher 3: Wild Hunt (2015)","https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6bcdbc.jpg",2
+jogo,3,5286,"Tomb Raider (2013) (2013)","https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg",2
