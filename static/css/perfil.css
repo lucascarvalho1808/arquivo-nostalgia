@@ -1,6 +1,4 @@
-/* =========================================
-   1. RESET E CORES GERAIS
-   ========================================= */
+/* Reset e cores gerais*/
 :root {
     --bg-body: #417eaa;
     --header-bg: #22658f;
@@ -23,9 +21,7 @@ body {
     display: flex; flex-direction: column; overflow-x: hidden;
 }
 
-/* =========================================
-   2. CABEÇALHO ORIGINAL (FIXO)
-   ========================================= */
+/* Cabeçalho original (fixo) */
 .cabecalho-principal {
     display: flex; align-items: center; justify-content: space-between;
     padding: 10px 30px; flex-wrap: wrap; gap: 15px;
@@ -55,9 +51,7 @@ body {
 .item-menu:hover { opacity: 0.8; color: #0c3757; }
 .item-menu i { font-size: 18px; margin-bottom: 5px; }
 
-/* =========================================
-   3. LAYOUT DO DASHBOARD
-   ========================================= */
+/* Layout do dashboard */
 .container-dashboard {
     flex: 1;
     display: flex;
@@ -222,9 +216,7 @@ body {
 .btn-action.sair { background: transparent; color: #ff6b6b; border: 1px solid rgba(255, 107, 107, 0.3); }
 .btn-action.sair:hover { background: #ff6b6b; color: white; }
 
-/* =========================================
-   4. ESTILO DO TOOLTIP (Ranking)
-   ========================================= */
+/* Estilo do Ranking */
 .rank-info-wrapper {
     position: relative;
     display: inline-flex;
@@ -325,9 +317,7 @@ body {
     border-color: transparent transparent #0f3047 transparent; 
 }
 
-/* =========================================
-   5. RODAPÉ ORIGINAL
-   ========================================= */
+/* Rodapé original */
 .rodape-principal {
     width: 100%; background-color: var(--footer-bg); color: #d1d1d1;
     text-align: center; padding: 20px 0; font-size: 14px;
@@ -339,9 +329,7 @@ body {
 .separador { color: #555; }
 .texto-copyright { font-size: 0.75rem; color: #999; }
 
-/* =========================================
-   6. RESPONSIVIDADE
-   ========================================= */
+/* Responsividade */
 @media (max-width: 950px) {
     .cabecalho-principal { position: relative; flex-direction: column; height: auto; padding: 15px 10px; gap: 15px; }
     .logo-container { order: 1; width: 100%; margin-bottom: 5px; }

@@ -1,6 +1,4 @@
-/* =========================================
-   1. RESET E VARIÁVEIS GERAIS
-   ========================================= */
+/* Reset e cores gerais */
 :root {
     --bg-body: #417eaa;
     --header-bg: #22658f;
@@ -24,9 +22,7 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================================
-   2. CABEÇALHO FIXO
-   ========================================= */
+/* Cabeçalho fixo */
 .cabecalho-principal {
     display: flex;
     align-items: center;
@@ -120,9 +116,7 @@ body {
     margin-bottom: 5px;
 }
 
-/* =========================================
-   3. ESTILO DO MIOLO (CARD CENTRAL)
-   ========================================= */
+/* Estilo do miolo (card central) */
 
 /* Container que segura o card */
 .main-conteudo {
@@ -290,9 +284,7 @@ body {
     margin-top: 5px;
 }
 
-/* =========================================
-   5. RESPONSIVIDADE
-   ========================================= */
+/* Responsividade */
 
 @media (max-width: 1070px) {
     .cabecalho-principal { justify-content: space-between; }

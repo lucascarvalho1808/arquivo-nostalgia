@@ -69,11 +69,10 @@ app.register_blueprint(perfil_bp)
 # Inicia o agendador de ranking (atualização diária do CSV)
 agendador.iniciar()
 
-# lembrar de tirar parte do debug ao final do projeto 
 if __name__ == '__main__':
     try:
-        app.run(debug=True)
+        # Remova debug=True para produção
+        app.run()
     finally:
         # Para o agendador ao encerrar a aplicação
         agendador.parar()
-# fim do debug

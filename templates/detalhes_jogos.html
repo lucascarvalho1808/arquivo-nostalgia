@@ -398,14 +398,18 @@
     </div>
 
     <script>
+      // Variável para armazenar o arquivo selecionado
       let arquivoSelecionado = null;
+      // Variável para armazenar os dados do conteúdo a ser adicionado
       let dadosConteudo = null;
 
+      // Função para mover o carrossel de imagens dos jogos
       function moverCarrosselJogos(distancia) {
         const container = document.getElementById("carrosselJogos");
         container.scrollBy({ left: distancia, behavior: "smooth" });
       }
 
+      // Função para preparar os dados e abrir o modal de seleção de arquivo
       function adicionarLista(id, tipo) {
         dadosConteudo = {
           api_id: id,
@@ -416,6 +420,7 @@
         abrirModalSelecionarArquivo();
       }
 
+      // Função para abrir o modal de seleção de arquivo e carregar as listas do usuário
       function abrirModalSelecionarArquivo() {
         arquivoSelecionado = null;
         document.getElementById("btn-confirmar-adicao").disabled = true;
@@ -451,11 +456,13 @@
           });
       }
 
+      // Função para fechar o modal de seleção de arquivo
       function fecharModalSelecionarArquivo() {
         document.getElementById("modal-selecionar-arquivo").style.display =
           "none";
       }
 
+      // Evento para confirmar a adição do item à lista selecionada
       document.getElementById("btn-confirmar-adicao").onclick = function () {
         if (!arquivoSelecionado || !dadosConteudo) return;
         fetch("/listas/adicionar-item", {
@@ -483,10 +490,12 @@
           });
       };
 
+      // Função para abrir o modal de criação de novo arquivo
       function abrirModalNovaPasta() {
         document.getElementById("modal-nova-pasta").classList.add("active");
       }
 
+      // Função para fechar o modal de criação de novo arquivo e limpar os campos
       function fecharModalNovaPasta() {
         document.getElementById("modal-nova-pasta").classList.remove("active");
         document.getElementById("nomePasta").value = "";
@@ -496,6 +505,7 @@
           .forEach((c) => c.classList.remove("selected"));
       }
 
+      // Evento para selecionar a cor do novo arquivo
       document.querySelectorAll(".color-circle").forEach((cor) => {
         cor.addEventListener("click", () => {
           document
@@ -505,6 +515,7 @@
         });
       });
 
+      // Evento para criar um novo arquivo ao clicar no botão correspondente
       document.querySelector("#modal-nova-pasta .btn-create").onclick =
         async function () {
           const nome = document.getElementById("nomePasta").value.trim();
@@ -539,6 +550,7 @@
             });
         };
 
+      // Função para traduzir a sinopse do jogo usando a API MyMemory
       async function traduzirSinopse() {
         const sinopse = document.getElementById("sinopse-texto");
         const btn = document.querySelector(".btn-traduzir");
