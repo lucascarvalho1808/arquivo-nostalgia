@@ -8,8 +8,6 @@
 
 O **Arquivo Nostalgia** é um sistema web que permite aos usuários registrar e organizar **filmes, séries, desenhos e jogos** que marcaram suas vidas. Uma plataforma nostálgica para catalogar suas memórias culturais.
 
-![Screenshot da aplicação](static/img/screenshot.png)
-
 ## 🎯 Objetivo
 
 Este projeto visa resolver o problema das **memórias afetivas fragmentadas** na era digital, permitindo que cada usuário monte seu próprio "arquivo nostálgico" personalizado, reunindo em um só lugar todo o entretenimento que fez parte de sua história.
@@ -129,19 +127,31 @@ A aplicação estará disponível em `http://localhost:5000`
 ## 🎨 Capturas de Tela
 
 ### Página Inicial
-![Screenshot da Página Inicial](CAMINHO/DA/IMAGEM_HOME.png)
+![Screenshot da Página Inicial](static/img/pag_inicial.jpeg)
 
-### Páginas de conteúdos Filmes
+### Arquivo Confidencial
+![Screenshot do Arquivo Confidencial](static/img/arquivo_confidencial.png)
 
-### Páginas de conteúdos Séries
+### Páginas de conteúdos dos Filmes
+![Screenshot da Página de conteúdos Filmes](static/img/filmes.png)
 
-### Páginas de conteúdos Jogos
+### Páginas de conteúdos das Séries
+![Screenshot da Página de conteúdos Séries](static/img/series.png)
+
+### Páginas de conteúdos dos Jogos
+![Screenshot da Página de conteúdos Jogos](static/img/jogos.png)
+
+### Detalhes dos conteúdos
+![Screenshot da Página de detalhes](static/img/detalhes.png)
 
 ### Sistema de Busca
+![Screenshot do Sistema de Busca](static/img/busca.png)
 
 ### Página "Meus Arquivos"
+![Screenshot da Página "Meus Arquivos"](static/img/arquivos.png)
 
 ### Perfil do Usuário
+![Screenshot da Página Perfil do Usuário](static/img/perfil.png)
 
 ## 🔒 Autenticação
 
@@ -330,18 +340,31 @@ The application will be available at `http://localhost:5000`
 ## 🎨 Screenshots
 
 ### Home Page
+![Screenshot da Página Inicial](static/img/pag_inicial.jpeg)
+
+### Confidential File
+![Screenshot do Arquivo Confidencial](static/img/arquivo_confidencial.png)
 
 ### Movies Content Pages
+![Screenshot da Página de conteúdos Filmes](static/img/filmes.png)
 
 ### Series Content Pages
+![Screenshot da Página de conteúdos Séries](static/img/series.png)
 
 ### Games Content Pages
+![Screenshot da Página de conteúdos Jogos](static/img/jogos.png)
+
+### Content details
+![Screenshot da Página de detalhes](static/img/detalhes.png)
 
 ### Search System
+![Screenshot do Sistema de Busca](static/img/busca.png)
 
 ### "My Archives" Page
+![Screenshot da Página "Meus Arquivos"](static/img/arquivos.png)
 
 ### User Profile
+![Screenshot da Página Perfil do Usuário](static/img/perfil.png)
 
 ## 🔒 Authentication
 
