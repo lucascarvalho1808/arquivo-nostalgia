@@ -532,7 +532,6 @@ body {
 /* --- MEDIA QUERIES --- */
 
 @media (min-width: 1024px) {
-
     .sidebar-filtro {
         max-height: 85vh;
         height: auto;
@@ -569,15 +568,16 @@ body {
     }
 
     .grade-posters {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         gap: 20px;
         padding-bottom: 40px;
     }
 
     .item-poster {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 2/3;
+        width: 160px;
+        height: 240px;
+        aspect-ratio: unset;
+        margin: 0 auto;
     }
 }
 
