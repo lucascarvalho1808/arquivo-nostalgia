@@ -891,6 +891,68 @@ body {
   }
 }
 
+@media (max-width: 600px) {
+
+    .cabecalho-principal {
+        flex-direction: column;
+        padding: 10px 15px;
+        gap: 8px; 
+        height: auto;
+    }
+
+    .logo-container {
+        order: 1;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .menu-icones {
+        order: 2;
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 2px;
+        gap: 0;
+    }
+
+    .barra-busca {
+        order: 3;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .barra-busca input {
+        padding: 6px 15px;
+        height: 35px;      
+        font-size: 14px;
+    }
+    
+    .icone-busca {
+        font-size: 14px;
+        right: 12px;
+    }
+
+    .logo-pequena {
+        max-width: 90px; 
+        margin-bottom: 0;
+    }
+    
+    .nome-site-header {
+        font-size: 10px;
+    }
+
+    .item-menu span {
+        font-size: 9px;
+        margin-top: 2px;
+    }
+
+    .item-menu i {
+        font-size: 16px;
+        margin-bottom: 0;
+    }
+}
+
 @media (max-width: 500px) {
   .equipe-grid {
     grid-template-columns: 1fr;

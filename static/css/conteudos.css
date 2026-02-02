@@ -611,14 +611,15 @@ body {
     }
 
     .grade-posters {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 15px;
-        padding: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); 
+        gap: 20px;
+        padding-bottom: 40px;
     }
 
     .item-poster {
-        width: 140px;
-        height: 210px;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 2/3;
     }
 
     .input-gatilho,
@@ -736,8 +737,8 @@ body {
         width: 210px;
         top: 280px;
         bottom: auto;
-        max-height: calc(100vh - 300px);
-        height: auto;
+        height: calc(100dvh - 280px);
+        max-height: none;
         display: flex;
         flex-direction: column;
         z-index: 1999;
@@ -752,6 +753,7 @@ body {
         overflow-y: auto;
         min-height: 0;
         padding: 10px;
+        padding-bottom: 10px;
     }
 
     .botao-buscar {
