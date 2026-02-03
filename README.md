@@ -49,6 +49,16 @@ Este projeto visa resolver o problema das **memórias afetivas fragmentadas** na
 - **JavaScript** - Interatividade
 - **[Font Awesome](https://fontawesome.com/)** - Ícones
 
+### Diagrama de Casos de Uso (UML)
+
+![Diagrama de Casos de Uso](img-readme/diagrama_casos_de_uso.png)
+
+---
+
+### Projeto Arquitetural
+
+![Arquitetura do Sistema](img-readme/projeto_arquitetural.png)
+
 ## 📋 Pré-requisitos
 
 - Python 3.8 ou superior
